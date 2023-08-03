@@ -1,5 +1,4 @@
 https://sfyyh.github.io/categories/index.html
-https://sfyyh.github.io/2023/08/03/test/
 https://sfyyh.github.io/2023/08/03/my-first-blog/
 https://sfyyh.github.io/tags/index.html
 https://sfyyh.github.io/repository/index.html
@@ -10,6 +9,4 @@ https://sfyyh.github.io/404.html
 https://sfyyh.github.io/2023/08/03/hello-world/
 https://sfyyh.github.io/
 https://sfyyh.github.io/tags/%E7%BD%91%E5%AE%89/
-https://sfyyh.github.io/tags/Vue/
 https://sfyyh.github.io/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/
-https://sfyyh.github.io/categories/%E6%8A%80%E6%9C%AF/

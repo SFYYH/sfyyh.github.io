@@ -7694,7 +7694,7 @@ body.okayNav-loaded {
   }
 
   .navbar-nav > li {
-    float: left;
+    float: center;
   }
 
   .navbar-nav > li > a {
