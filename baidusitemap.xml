@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://blog.ioimp.top/2023/11/13/docker/</loc>
+    <lastmod>2023-11-13</lastmod>
+  </url>
+  <url>
     <loc>http://blog.ioimp.top/2023/08/21/%E5%B0%9D%E8%AF%95%E5%AE%89%E8%A3%85Boilerpipe-py3%E6%97%B6%E5%87%BA%E7%8E%B0404%E9%94%99%E8%AF%AF/</loc>
     <lastmod>2023-08-21</lastmod>
   </url>
