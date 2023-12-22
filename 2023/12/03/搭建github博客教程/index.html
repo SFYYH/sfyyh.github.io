@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>搭建github博客教程 | 山城冰荔枝</title>
+  <meta name="description" content="【2023最新版】Hexo+github搭建个人博客并绑定个人域名Hexo+github搭建个人博客并绑定个人域名安装并配置Node.jsNode.js下载:【它让JavaScript成为与PHP、Python、Perl、Ruby等服务端语言平起平坐的脚本语言。】 教程：https:&#x2F;&#x2F;blog.csdn.net&#x2F;weixin\_52799373&#x2F;article&#x2F;details&#x2F;123840137">
+<meta property="og:type" content="article">
+<meta property="og:title" content="搭建github博客教程">
+<meta property="og:url" content="http://blog.ioimp.top/2023/12/03/%E6%90%AD%E5%BB%BAgithub%E5%8D%9A%E5%AE%A2%E6%95%99%E7%A8%8B/index.html">
+<meta property="og:site_name" content="山城冰荔枝">
+<meta property="og:description" content="【2023最新版】Hexo+github搭建个人博客并绑定个人域名Hexo+github搭建个人博客并绑定个人域名安装并配置Node.jsNode.js下载:【它让JavaScript成为与PHP、Python、Perl、Ruby等服务端语言平起平坐的脚本语言。】 教程：https:&#x2F;&#x2F;blog.csdn.net&#x2F;weixin\_52799373&#x2F;article&#x2F;details&#x2F;123840137">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/566631a93202e6841e3b9728d4181c78.png">
+<meta property="og:image" content="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/c55ce90256466fb4321c7ceec2174333.png">
+<meta property="og:image" content="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/910c8ab64ab09363b6746b621bc8055a.png">
+<meta property="og:image" content="https://proxy.iximp.top/https://img-blog.csdnimg.cn/a24b65ce36754df5b84ebd74dcae3937.png">
+<meta property="og:image" content="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/ffb1c86562ad1f7c9e38918c6a71ac24.png">
+<meta property="og:image" content="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/40764e8f2ea3b220e1492173880c71b4.png">
+<meta property="og:image" content="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/0b809bb5e4c84157c139e010e1bc7917.png">
+<meta property="og:image" content="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/124885ee5a5be2c2605f30b880329825.png">
+<meta property="og:image" content="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/93962986201290891b09b0266420f301.png">
+<meta property="og:image" content="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/7c03fe7e8d60be5cf82963e8103f9f6b.png">
+<meta property="og:image" content="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/975e56860c24c8076fb91ad2ec24e4f2.png">
+<meta property="og:image" content="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/745143e1d8f6411d54566506d555c313.png">
+<meta property="og:image" content="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/5dad89898d2144898261ea18aefaa30f.png">
+<meta property="og:image" content="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/85937e8781a64d4a893c4981e00e6a26.png">
+<meta property="og:image" content="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/681b76b969aa195e15d44c8bfc71565c.png">
+<meta property="og:image" content="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/412c15c15d8987484a32f9546e4f9095.png">
+<meta property="og:image" content="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/5f5f79045917c6d093df24b22e641516.png">
+<meta property="og:image" content="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/15bc2a357a6eac25ec4719dcec9c5007.png">
+<meta property="og:image" content="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/5a2a4dabd744ba6a750102dfc623993e.png">
+<meta property="og:image" content="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/aa9870ef4369263b6560c13aa5d753c9.png">
+<meta property="og:image" content="https://proxy.iximp.top/https://img-blog.csdnimg.cn/c05cd48fac0243ff9963413b078d2fcc.png">
+<meta property="og:image" content="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/d12390a33a7bc45be0582ac20092c28b.png">
+<meta property="og:image" content="https://proxy.iximp.top/https://img-blog.csdnimg.cn/8389594494d846358792082d4096fce7.png">
+<meta property="og:image" content="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/e28a8a9ed9eb2848f84075e0e0aeba0e.png">
+<meta property="og:image" content="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/8e0ff6ac2ae7b9712214f13438a40f27.png">
+<meta property="og:image" content="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/1a1fed2db4bbb066f43e879fb70cf5c5.png">
+<meta property="og:image" content="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/cee71aa9a5c2766541aac4d5aa03c48a.png">
+<meta property="og:image" content="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/6af8bde01cd64d3a7e38d3e4c2fd9816.png">
+<meta property="og:image" content="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/34cc88e45553f0dad679ca75f96168c2.png">
+<meta property="og:image" content="https://proxy.iximp.top/https://img-blog.csdnimg.cn/20200603101902230.png">
+<meta property="og:image" content="https://proxy.iximp.top/https://img-blog.csdnimg.cn/202006031025357.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dfMzE3,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://proxy.iximp.top/https://img-blog.csdnimg.cn/20200603102554725.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dfMzE3,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://proxy.iximp.top/https://img-blog.csdnimg.cn/20200603102735768.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dfMzE3,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://proxy.iximp.top/https://img-blog.csdnimg.cn/20200603102157756.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dfMzE3,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://proxy.iximp.top/https://img-blog.csdnimg.cn/20200603102223280.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dfMzE3,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://proxy.iximp.top/https://img-blog.csdnimg.cn/2020060310174263.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dfMzE3,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://proxy.iximp.top/https://img-blog.csdnimg.cn/20200603101823216.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dfMzE3,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://proxy.iximp.top/https://img-blog.csdnimg.cn/20200603103159683.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dfMzE3,size_16,color_FFFFFF,t_70">
+<meta property="article:published_time" content="2023-12-03T03:47:04.000Z">
+<meta property="article:modified_time" content="2023-12-03T03:52:10.585Z">
+<meta property="article:author" content="山城冰荔枝">
+<meta property="article:tag" content="博客搭建教程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/566631a93202e6841e3b9728d4181c78.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://blog.ioimp.top/2023/12/03/%E6%90%AD%E5%BB%BAgithub%E5%8D%9A%E5%AE%A2%E6%95%99%E7%A8%8B/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="山城冰荔枝" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/SFYYH" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">山城冰荔枝</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> BeiJing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/SFYYH" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>跑起来会有风!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E5%AD%A6%E4%B9%A0/">Java学习</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Jenkins/">Jenkins</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/K8s/">K8s</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ubuntu/">Ubuntu</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/proxy/">proxy</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/">实用技巧</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%80%E5%8F%91%E5%A5%87%E9%81%87%E8%AE%B0/">开发奇遇记</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E6%9D%82%E7%83%A9/">数据杂烩</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E7%B1%BB%E5%AD%A6%E4%B9%A0/">杂类学习</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%88%AC%E8%99%AB%E5%BC%80%E5%8F%91/">爬虫开发</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%96%91%E9%9A%BE%E8%A7%A3%E7%AD%94/">疑难解答</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA/">网站搭建</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">网络安全</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Boilerpipe/" rel="tag">Boilerpipe</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ES6/" rel="tag">ES6</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GitHub/" rel="tag">GitHub</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Grafana/" rel="tag">Grafana</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java%E5%AD%A6%E4%B9%A0/" rel="tag">Java学习</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins/" rel="tag">Jenkins</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins%E5%AD%A6%E4%B9%A0/" rel="tag">Jenkins学习</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/K8s%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/" rel="tag">K8s基础学习</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux%E5%AD%A6%E4%B9%A0/" rel="tag">Linux学习</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/" rel="tag">Node.js</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Rancher/" rel="tag">Rancher</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scrapy%E7%88%AC%E8%99%AB/" rel="tag">Scrapy爬虫</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Stack-Overflow/" rel="tag">Stack Overflow</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cAdvisor/" rel="tag">cAdvisor</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/clash/" rel="tag">clash</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dolphinscheduler/" rel="tag">dolphinscheduler</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/influxDB/" rel="tag">influxDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kali-linux/" rel="tag">kali-linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/url%E5%9C%B0%E5%9D%80%E5%8F%98%E8%BF%81/" rel="tag">url地址变迁</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E2%80%9C%E7%9F%A5%E8%AF%86%E5%BA%93%E5%A4%87%E4%BB%BD/" rel="tag">“知识库备份&quot;</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0/" rel="tag">前端学习</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/" rel="tag">博客搭建教程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%B9%B3%E5%8F%B0/" rel="tag">大数据分析平台</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%9D%E5%A1%94%E9%9D%A2%E6%9D%BF/" rel="tag">宝塔面板</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%82%E6%AD%A5%E6%93%8D%E4%BD%9C/" rel="tag">异步操作</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" rel="tag">微服务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8B%AF%E6%95%91%E5%B0%8F%E7%99%BD%E7%B3%BB%E5%88%97/" rel="tag">拯救小白系列</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E7%AB%A0%E6%94%B6%E5%BD%95/" rel="tag">文章收录</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%97%A5%E5%B8%B8%E5%B0%8FBUG/" rel="tag">日常小BUG</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%97%E9%80%8F%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A/" rel="tag">渗透必知必会</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%88%AC%E8%99%AB%E6%95%B0%E6%8D%AE/" rel="tag">爬虫数据</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A3%81%E7%9B%98%E5%88%86%E5%8C%BA/" rel="tag">磁盘分区</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A7%81%E5%9F%9F/" rel="tag">私域</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E7%A8%8B%E7%9F%A5%E8%AF%86/" rel="tag">编程知识</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E5%AE%89/" rel="tag">网安</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E8%AF%BE/" rel="tag">网课</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Boilerpipe/" style="font-size: 13px;">Boilerpipe</a> <a href="/tags/Docker/" style="font-size: 13px;">Docker</a> <a href="/tags/ES6/" style="font-size: 13.75px;">ES6</a> <a href="/tags/GitHub/" style="font-size: 13.25px;">GitHub</a> <a href="/tags/Grafana/" style="font-size: 13px;">Grafana</a> <a href="/tags/Java%E5%AD%A6%E4%B9%A0/" style="font-size: 13px;">Java学习</a> <a href="/tags/Jenkins/" style="font-size: 13px;">Jenkins</a> <a href="/tags/Jenkins%E5%AD%A6%E4%B9%A0/" style="font-size: 13px;">Jenkins学习</a> <a href="/tags/K8s%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/" style="font-size: 13px;">K8s基础学习</a> <a href="/tags/Linux%E5%AD%A6%E4%B9%A0/" style="font-size: 13px;">Linux学习</a> <a href="/tags/Node-js/" style="font-size: 13.5px;">Node.js</a> <a href="/tags/Rancher/" style="font-size: 13px;">Rancher</a> <a href="/tags/Scrapy%E7%88%AC%E8%99%AB/" style="font-size: 14px;">Scrapy爬虫</a> <a href="/tags/Stack-Overflow/" style="font-size: 13px;">Stack Overflow</a> <a href="/tags/cAdvisor/" style="font-size: 13px;">cAdvisor</a> <a href="/tags/clash/" style="font-size: 13px;">clash</a> <a href="/tags/dolphinscheduler/" style="font-size: 13.25px;">dolphinscheduler</a> <a href="/tags/influxDB/" style="font-size: 13px;">influxDB</a> <a href="/tags/kali-linux/" style="font-size: 13px;">kali-linux</a> <a href="/tags/url%E5%9C%B0%E5%9D%80%E5%8F%98%E8%BF%81/" style="font-size: 13px;">url地址变迁</a> <a href="/tags/%E2%80%9C%E7%9F%A5%E8%AF%86%E5%BA%93%E5%A4%87%E4%BB%BD/" style="font-size: 13px;">“知识库备份"</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0/" style="font-size: 13.75px;">前端学习</a> <a href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/" style="font-size: 13px;">博客搭建教程</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%B9%B3%E5%8F%B0/" style="font-size: 13.25px;">大数据分析平台</a> <a href="/tags/%E5%AE%9D%E5%A1%94%E9%9D%A2%E6%9D%BF/" style="font-size: 13px;">宝塔面板</a> <a href="/tags/%E5%BC%82%E6%AD%A5%E6%93%8D%E4%BD%9C/" style="font-size: 13.25px;">异步操作</a> <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" style="font-size: 13px;">微服务</a> <a href="/tags/%E6%8B%AF%E6%95%91%E5%B0%8F%E7%99%BD%E7%B3%BB%E5%88%97/" style="font-size: 13.25px;">拯救小白系列</a> <a href="/tags/%E6%96%87%E7%AB%A0%E6%94%B6%E5%BD%95/" style="font-size: 13.25px;">文章收录</a> <a href="/tags/%E6%97%A5%E5%B8%B8%E5%B0%8FBUG/" style="font-size: 13.25px;">日常小BUG</a> <a href="/tags/%E6%B8%97%E9%80%8F%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A/" style="font-size: 13px;">渗透必知必会</a> <a href="/tags/%E7%88%AC%E8%99%AB%E6%95%B0%E6%8D%AE/" style="font-size: 13px;">爬虫数据</a> <a href="/tags/%E7%A3%81%E7%9B%98%E5%88%86%E5%8C%BA/" style="font-size: 13px;">磁盘分区</a> <a href="/tags/%E7%A7%81%E5%9F%9F/" style="font-size: 13px;">私域</a> <a href="/tags/%E7%BC%96%E7%A8%8B%E7%9F%A5%E8%AF%86/" style="font-size: 13px;">编程知识</a> <a href="/tags/%E7%BD%91%E5%AE%89/" style="font-size: 13.5px;">网安</a> <a href="/tags/%E7%BD%91%E8%AF%BE/" style="font-size: 13px;">网课</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">十二月 2023</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">十一月 2023</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">八月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">七月 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">五月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">十二月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">八月 2022</a><span class="archive-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/22/%E5%AE%8F%E4%BB%BB%E5%8A%A1%E5%92%8C%E5%BE%AE%E4%BB%BB%E5%8A%A1%E7%9A%84%E5%8C%BA%E5%88%AB/" class="title">宏任务和微任务的区别</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-21T16:52:10.000Z" itemprop="datePublished">2023-12-22</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/22/%E4%B8%BA%E4%BB%80%E4%B9%88%E8%AF%B4%E5%90%8C%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%98%AF%E9%9D%9E%E8%80%97%E6%97%B6%E4%BB%BB%E5%8A%A1%EF%BC%8C%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%98%AF%E8%80%97%E6%97%B6%E4%BB%BB%E5%8A%A1/" class="title">为什么说同步任务是非耗时任务，异步任务是耗时任务</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-21T16:35:58.000Z" itemprop="datePublished">2023-12-22</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/22/Node%E4%B8%ADasync-await%E7%9A%84%E8%AF%A6%E8%A7%A3/" class="title">Node中async/await的详解</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-21T16:23:35.000Z" itemprop="datePublished">2023-12-22</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/21/Node%E4%B8%ADPromise-%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%84%8F%E6%80%9D/" class="title">Node中Promise 对象的意思</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-21T02:56:30.000Z" itemprop="datePublished">2023-12-21</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/21/npm%E5%92%8Cpnpm%E7%9A%84%E5%8C%BA%E5%88%AB/" class="title">npm和pnpm的区别</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-21T01:43:41.000Z" itemprop="datePublished">2023-12-21</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-搭建github博客教程" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      搭建github博客教程
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2023/12/03/%E6%90%AD%E5%BB%BAgithub%E5%8D%9A%E5%AE%A2%E6%95%99%E7%A8%8B/" class="article-date">
+	  <time datetime="2023-12-03T03:47:04.000Z" itemprop="datePublished">2023-12-03</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/%E6%9D%82%E7%B1%BB%E5%AD%A6%E4%B9%A0/">杂类学习</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/" rel="tag">博客搭建教程</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2023/12/03/%E6%90%AD%E5%BB%BAgithub%E5%8D%9A%E5%AE%A2%E6%95%99%E7%A8%8B/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 2.4k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 9(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="【2023最新版】Hexo-github搭建个人博客并绑定个人域名"><a href="#【2023最新版】Hexo-github搭建个人博客并绑定个人域名" class="headerlink" title="【2023最新版】Hexo+github搭建个人博客并绑定个人域名"></a>【2023最新版】Hexo+github搭建个人博客并绑定个人域名</h1><h2 id="Hexo-github搭建个人博客并绑定个人域名"><a href="#Hexo-github搭建个人博客并绑定个人域名" class="headerlink" title="Hexo+github搭建个人博客并绑定个人域名"></a><a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=Hexo&spm=1001.2101.3001.7020">Hexo</a>+github搭建个人博客并绑定个人域名</h2><h4 id="安装并配置Node-js"><a href="#安装并配置Node-js" class="headerlink" title="安装并配置Node.js"></a>安装并配置Node.js</h4><p>Node.js下载:【它让JavaScript成为与PHP、Python、Perl、Ruby等服务端语言平起平坐的脚本语言。】</p>
+<p>教程：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin/_52799373/article/details/123840137%EF%BC%88%E8%BF%87%E7%A8%8B%E8%AF%A6%E7%BB%86%EF%BC%8C%E8%BF%98%E8%A6%86%E7%9B%96win11%EF%BC%8C%E8%AF%84%E8%AE%BA%E4%B8%8B%E9%9D%A2%E8%BF%98%E6%9C%89%E5%B8%88%E5%8F%94%E7%9A%84%E8%B6%B3%E8%BF%B9%EF%BC%89">https://blog.csdn.net/weixin\_52799373/article/details/123840137（过程详细，还覆盖win11，评论下面还有师叔的足迹）</a></p>
+<p>注意一</p>
+<p>全局安装最常用的 express 模块 进行测试命令如下:</p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">npm</span> install express -g</span><br></pre></td></tr></table></figure>
+
+<p>报错图片：</p>
+<p><img src="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/566631a93202e6841e3b9728d4181c78.png"></p>
+<p>解决方法：</p>
+<ul>
+<li><p>【亲测有效】</p>
+</li>
+<li><p>需要删除 npmrc 文件。</p>
+</li>
+<li><p>**强调：**不是nodejs安装目录npm模块下的那个npmrc文件</p>
+</li>
+<li><p>而是在 C:\Users\（你的用户名）\下的.npmrc文件</p>
+</li>
+<li><p><em><strong>聪明的你，一定想到了直接用evering搜索，省的还要调用文件管理器在一点一点的找</strong></em></p>
+</li>
+</ul>
+<p><img src="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/c55ce90256466fb4321c7ceec2174333.png"></p>
+<p>注意二</p>
+<p><strong>在文章第四歩测试上查看安装结果</strong></p>
+<p>可能会出现下面照片结果，更改了目录为什么还是C盘目录下，这时候只需要以管理员身份运行命令即可。</p>
+<p>在下面路径下找到cmd.exe并且管理员身份运行即可。</p>
+<p>推测：出像这种现象的原因就是执行权限不够，推荐大家在桌面建立一个快捷方式（管理员命令的）cmd</p>
+<figure class="highlight vbnet"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">C:</span>\Windows\System32\cmd.exe</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/910c8ab64ab09363b6746b621bc8055a.png"></p>
+<p>创建管理员权限的cmd桌面快捷方式</p>
+<p><img src="https://proxy.iximp.top/https://img-blog.csdnimg.cn/a24b65ce36754df5b84ebd74dcae3937.png"></p>
+<h4 id="安装并配置Git"><a href="#安装并配置Git" class="headerlink" title="安装并配置Git"></a>安装并配置Git</h4><p>git是一个并源的分布式版本控制系统，可以有效、高速地处理从很小到非常大的项目版本管理</p>
+<p>Windows系统Git安装教程：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/xueweisuoyong/p/11914045.html">https://www.cnblogs.com/xueweisuoyong/p/11914045.html</a></p>
+<h4 id="生成SSH-Keys"><a href="#生成SSH-Keys" class="headerlink" title="生成SSH Keys"></a>生成SSH Keys</h4><p>生成ssh</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C <span class="string">&quot;你的邮箱地址&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/ffb1c86562ad1f7c9e38918c6a71ac24.png"></p>
+<p>找到秘钥位置并复制</p>
+<p><img src="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/40764e8f2ea3b220e1492173880c71b4.png"></p>
+<p>测试ssh是否绑定成功</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -T git<span class="meta">@github</span>.<span class="property">com</span></span><br></pre></td></tr></table></figure>
+
+<p>如果问你（yes or no）,直接 yes 就可以得到下面这段话</p>
+<p><img src="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/0b809bb5e4c84157c139e010e1bc7917.png"></p>
+<h4 id="本地访问博客"><a href="#本地访问博客" class="headerlink" title="本地访问博客"></a>本地访问博客</h4><p>1、创建一个名为 Blog 的文件，在里面启用 Git Bash Here</p>
+<p><img src="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/124885ee5a5be2c2605f30b880329825.png"></p>
+<p>2、初始化hexo</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo <span class="keyword">init</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/93962986201290891b09b0266420f301.png"></p>
+<p>3、生成本地的hexo页面</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/7c03fe7e8d60be5cf82963e8103f9f6b.png"></p>
+<p>4、访问</p>
+<p>打开本地服务区</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:4000/</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/975e56860c24c8076fb91ad2ec24e4f2.png"></p>
+<blockquote>
+<p>长按 Ctrl + c 关闭服务器</p>
+</blockquote>
+<p><img src="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/745143e1d8f6411d54566506d555c313.png"></p>
+<h4 id="上传到Github"><a href="#上传到Github" class="headerlink" title="上传到Github"></a>上传到Github</h4><p>修改-config.yml文件</p>
+<p><img src="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/5dad89898d2144898261ea18aefaa30f.png"></p>
+<p>把图片上位置更换成</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">deploy</span>:  <span class="class"><span class="keyword">type</span>: git  repository: 你的github地址  branch: main</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/85937e8781a64d4a893c4981e00e6a26.png"></p>
+<p>安装hexo-deployer-git 自动部署发布工具</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo<span class="operator">-</span>deployer<span class="operator">-</span>git <span class="comment">--save</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/681b76b969aa195e15d44c8bfc71565c.png"></p>
+<p>生成页面</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo g</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/412c15c15d8987484a32f9546e4f9095.png"></p>
+<p>注意一</p>
+<p>如果报错如下：（无报错，请忽略此条）</p>
+<p>报错信息是提示hexo的yml配置文件 冒号后面少了空格解决方案：到提示行将对应的空格补上即可</p>
+<p><img src="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/5f5f79045917c6d093df24b22e641516.png"></p>
+<p>本地文件上传到Github上面</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+
+<p>中间会出现一个登录界面，可以用令牌登录。（令牌及时保存，就看不到了）</p>
+<p>结束以后就上传 Github 就成功了！！！</p>
+<p><img src="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/15bc2a357a6eac25ec4719dcec9c5007.png"></p>
+<p>注意二</p>
+<p>如果出现如图错误网络报错，再次尝试，多次尝试，直到更换WiFi~~~~</p>
+<p><img src="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/5a2a4dabd744ba6a750102dfc623993e.png"></p>
+<h4 id="访问GitHub博客"><a href="#访问GitHub博客" class="headerlink" title="访问GitHub博客"></a>访问GitHub博客</h4><p><img src="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/aa9870ef4369263b6560c13aa5d753c9.png"></p>
+<p>访问博客，开始的页面是初始化页面，没有做美化和增加内容。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://wushishu.github.io/</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://proxy.iximp.top/https://img-blog.csdnimg.cn/c05cd48fac0243ff9963413b078d2fcc.png"></p>
+<h3 id="第二部分-文档学习"><a href="#第二部分-文档学习" class="headerlink" title="第二部分 文档学习"></a>第二部分 文档学习</h3><h4 id="撰写博客"><a href="#撰写博客" class="headerlink" title="撰写博客"></a>撰写博客</h4><p><em><strong>电脑要必须有Typora！电脑要必须有Typora！电脑要必须有Typora！</strong></em>（重要的事情说三遍）</p>
+<p>文本教程：<a target="_blank" rel="noopener" href="https://dhndzwxj.vercel.app/3276806131.html">https://dhndzwxj.vercel.app/3276806131.html</a></p>
+<p>hexo标签教程：<a target="_blank" rel="noopener" href="http://haiyong.site/post/cda958f2.html%EF%BC%88%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3%E7%9C%8B%E9%9C%80%E6%B1%82%E5%8A%A0%E4%B8%8D%E5%8A%A0%EF%BC%89">http://haiyong.site/post/cda958f2.html（参考文档看需求加不加）</a></p>
+<p>我们打开自己的博客根目录，跟着我一个个了解里面的这些文件（夹）都是干什么的：</p>
+<p><img src="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/d12390a33a7bc45be0582ac20092c28b.png"></p>
+<ul>
+<li><p><code>_config.yml</code>：俗称站点配置文件，很多与博客网站的格式、内容相关的设置都需要在里面改。</p>
+</li>
+<li><p><code>node_modules</code>:存储Hexo插件的文件，可以实现各种扩展功能。一般不需要管。</p>
+</li>
+<li><p><code>package.json</code>：别问我，我也不知道干嘛的。</p>
+</li>
+<li><p><code>scaffolds</code>：模板文件夹，里面的<code>post.md</code>文件可以设置每一篇博客的模板。具体用起来就知道能干嘛了。</p>
+</li>
+<li><p><code>source</code>：非常重要。所有的个人文件都在里面！</p>
+</li>
+<li><p><code>themes</code>：主题文件夹，可以从<a target="_blank" rel="noopener" href="https://hexo.io/themes/" title="Hexo主题官网">Hexo主题官网</a>或者网上大神的Github主页下载各种各样美观的主题，让自己的网站变得逼格高端的关键！</p>
+</li>
+</ul>
+<p>接下来重点介绍<code>source</code>文件夹。新建的博客中，<code>source</code>文件夹下默认只有一个子文件夹——<code>_posts</code>。我们写的博客都放在这个子文件夹里面。我们还可以在<code>source</code>里面新建各种子文件夹满足自己的个性化需求，对初学者而言，我们先把精力放在主线任务上，然后再来搞这些细节。</p>
+<blockquote>
+<p>hexo官方文档：<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/commands.html">https://hexo.io/zh-cn/docs/commands.html</a></p>
+</blockquote>
+<p><img src="https://proxy.iximp.top/https://img-blog.csdnimg.cn/8389594494d846358792082d4096fce7.png"></p>
+<p>写好内容后，在命令行一键三连：</p>
+<blockquote>
+<p>‘hexo cl’命令用于清除缓存文件（db.json）和已生成的静态文件（public）。</p>
+<p>例如：在更换主题后，如果发现站点更改不生效，可以运行该命令。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo cl</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo g</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+
+<p>然后随便打开一个浏览器，在网址栏输入<code>localhost:4000/</code>，就能发现自己的网站更新了！不过这只是在本地进行了更新，要想部署到网上（Github上），输入如下代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+
+<p>然后在浏览器地址栏输入<code>https://yourname.github.io</code>，或者<code>yourname.github.io</code>就能在网上浏览自己的博客了！</p>
+<p>以上，我们的博客网站1.0版本就搭建完成了，如果没有更多的需求，做到这里基本上就可以了。如果有更多的要求，还需要进一步的精耕细作！</p>
+<h4 id="精耕细作"><a href="#精耕细作" class="headerlink" title="精耕细作"></a>精耕细作</h4><p>**海拥\Butterfly 主题美化：**<a target="_blank" rel="noopener" href="http://haiyong.site/post/22e1d5da.html">http://haiyong.site/post/22e1d5da.html</a></p>
+<p><strong>Butterfly参考文档（小白慎入，但是他也是你走向DIY必须迈出的一歩）</strong>:<a target="_blank" rel="noopener" href="https://butterfly.js.org/posts/dc584b87/#Post-Front-matter">https://butterfly.js.org/posts/dc584b87/#Post-Front-matter</a></p>
+<p>文章中要更改的文件（.yml .bug 等）可以要用viscode打开！！！</p>
+<p>Butterfly 主题安装</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone -b master https://github.com/jerryc127/hexo-theme-butterfly.git themes/butterfly</span><br></pre></td></tr></table></figure>
+
+<p>这里面如果报错，如下图所示（长路漫漫，bug满满）</p>
+<p><img src="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/e28a8a9ed9eb2848f84075e0e0aeba0e.png"></p>
+<p>只需要在命令行中执行</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --<span class="keyword">global</span> --<span class="keyword">unset</span> http.proxy git config --<span class="keyword">global</span> --<span class="keyword">unset</span> https.proxy</span><br></pre></td></tr></table></figure>
+
+<p>再次安装主题即可成功</p>
+<p><img src="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/8e0ff6ac2ae7b9712214f13438a40f27.png"></p>
+<p><strong>应用主题</strong></p>
+<figure class="highlight vbnet"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">theme:</span> butterfly</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/1a1fed2db4bbb066f43e879fb70cf5c5.png"></p>
+<p><strong>安装插件</strong></p>
+<p>如果你没有 pug 以及 stylus 的渲染器，请下载安装：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo<span class="operator">-</span>renderer<span class="operator">-</span>pug hexo<span class="operator">-</span>renderer<span class="operator">-</span>stylus <span class="comment">--save</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/cee71aa9a5c2766541aac4d5aa03c48a.png"></p>
+<h4 id="Butterfly-主题美化"><a href="#Butterfly-主题美化" class="headerlink" title="Butterfly 主题美化"></a>Butterfly 主题美化</h4><p>生成文章唯一链接</p>
+<p>Hexo的默认文章链接格式是年，月，日，标题这种格式来生成的。如果你的标题是中文的话，那你的URL链接就会包含中文，</p>
+<p>复制后的URL路径就是把中文变成了一大堆字符串编码，如果你在其他地方用这边文章的url链接，偶然你又修改了改文章的标题，那这个URL链接就会失效。为了给每一篇文章来上一个属于自己的链接，写下此教程，利用 hexo-abbrlink 插件，A Hexo plugin to generate static post link based on post titles ,来解决这个问题。 参考github官方： hexo-abbrlink 按照此教程配置完之后如下：</p>
+<p>1、安装插件，在博客根目录 [Blogroot] 下打开终端，运行以下指令：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo<span class="operator">-</span>abbrlink <span class="comment">--save</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/6af8bde01cd64d3a7e38d3e4c2fd9816.png"></p>
+<p>2、插件安装成功后，在根目录 [Blogroot] 的配置文件 _config.yml 找到 permalink：</p>
+<p><img src="https://proxy.iximp.top/https://img-blog.csdnimg.cn/img_convert/34cc88e45553f0dad679ca75f96168c2.png"></p>
+<h4 id="发布博客"><a href="#发布博客" class="headerlink" title="发布博客"></a>发布博客</h4><p>这次了解我上面只有一个HelloWord的时候，为什么不让右键新建，<strong>因为需要命令生成啊，铁汁！</strong></p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">npm</span> <span class="selector-tag">i</span> <span class="selector-tag">hexo-deployer-git</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo <span class="keyword">new</span> post <span class="string">&quot;新建博客文章名&quot;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo cl &amp;&amp; hexo g  &amp;&amp; hexo s</span><br></pre></td></tr></table></figure>
+
+<h4 id="hexo更换背景图片"><a href="#hexo更换背景图片" class="headerlink" title="hexo更换背景图片"></a>hexo更换背景图片</h4><p>背景图片参考网址：</p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://wallhaven.cc/">https://wallhaven.cc/</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://wall.alphacoders.com/">https://wall.alphacoders.com/</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://bz.zzzmh.cn/index">https://bz.zzzmh.cn/index</a></p>
+</li>
+</ul>
+<p><em>本方法解决的是多次同步到GitHub上背景图片未成功的情况</em></p>
+<p>直接更改原文件</p>
+<p>图片所在目录：<code>hexo/themes/landscape/source/css/images/</code></p>
+<p>图片名称：<code>banner.jpg</code></p>
+<h3 id=""><a href="#" class="headerlink" title=""></a></h3><h3 id="第三部分-绑定自己的域名"><a href="#第三部分-绑定自己的域名" class="headerlink" title="第三部分 绑定自己的域名"></a>第三部分 绑定自己的域名</h3><p>博客地址：<a target="_blank" rel="noopener" href="https://www.likecs.com/show-30474.html">https://www.likecs.com/show-30474.html</a></p>
+<p><strong>绑定之后你就有有一个自己专属的博客了。</strong></p>
+<p>买一个域名，可以一块钱白嫖，但是续费贵的飞天！！！</p>
+<p><em><strong>注意请谨慎绑定，想我就会出现提交一次 (hexo d) ,需要重新绑定域名</strong></em></p>
+<blockquote>
+<p>声明：如果遇到什么不懂的可以先百度，在不懂可以微信我wushibo0820</p>
+</blockquote>
+<h2 id="问题：解决-103-x69-x74-x40-103-105-116-104-x75-x62-46-x63-111-109-Permission-denied-publickey-fatal-Could-not-read-from-remote-repository-Pleas"><a href="#问题：解决-103-x69-x74-x40-103-105-116-104-x75-x62-46-x63-111-109-Permission-denied-publickey-fatal-Could-not-read-from-remote-repository-Pleas" class="headerlink" title="问题：解决&#103;&#x69;&#x74;&#x40;&#103;&#105;&#116;&#104;&#x75;&#x62;&#46;&#x63;&#111;&#109;: Permission denied (publickey). fatal: Could not read from remote repository. Pleas"></a>问题：解决<a href="mailto:&#103;&#x69;&#x74;&#x40;&#103;&#105;&#116;&#104;&#x75;&#x62;&#46;&#x63;&#111;&#109;">&#103;&#x69;&#x74;&#x40;&#103;&#105;&#116;&#104;&#x75;&#x62;&#46;&#x63;&#111;&#109;</a>: Permission denied (publickey). fatal: Could not read from remote repository. Pleas</h2><p><img src="https://proxy.iximp.top/https://img-blog.csdnimg.cn/20200603101902230.png"></p>
+<h4 id="一-原因分析"><a href="#一-原因分析" class="headerlink" title="一:原因分析"></a>一:原因分析</h4><p>Permission denied (publickey) 没有权限的publickey ，出现这错误一般是以下两种原因</p>
+<ul>
+<li>客户端与服务端未生成 ssh key</li>
+<li>客户端与服务端的ssh key不匹配</li>
+</ul>
+<p>找到问题的原因了，解决办法也就有了，重新生成一次ssh key ，服务端也重新配置一次即可。</p>
+<h4 id="-1"><a href="#-1" class="headerlink" title=""></a></h4><h4 id="二-客户端生成ssh-key"><a href="#二-客户端生成ssh-key" class="headerlink" title="二:客户端生成ssh key"></a>二:客户端生成ssh key</h4><p>在cmd里面输入</p>
+<p>ssh-keygen -t rsa -C “<a href="mailto:&#x78;&#x78;&#120;&#x78;&#120;&#120;&#120;&#x78;&#64;&#113;&#x71;&#46;&#99;&#111;&#x6d;">&#x78;&#x78;&#120;&#x78;&#120;&#120;&#120;&#x78;&#64;&#113;&#x71;&#46;&#99;&#111;&#x6d;</a>“</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C <span class="string">&quot;youremail@example.com&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>xxxxxx<a href="mailto:youremail@example.com">@qq.com</a>改为自己的邮箱即可，途中会让你输入密码啥的，不需要管，一路回车即可，会生成你的ssh key。（如果重新生成的话会覆盖之前的ssh key。）</p>
+<p><img src="https://proxy.iximp.top/https://img-blog.csdnimg.cn/202006031025357.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dfMzE3,size_16,color_FFFFFF,t_70"></p>
+<h4 id="三-输入箭头处路径"><a href="#三-输入箭头处路径" class="headerlink" title="三:输入箭头处路径"></a>三:输入箭头处路径</h4><p><img src="https://proxy.iximp.top/https://img-blog.csdnimg.cn/20200603102554725.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dfMzE3,size_16,color_FFFFFF,t_70"></p>
+<h4 id="四-打开id-rsa-pub文件-并且复制内容"><a href="#四-打开id-rsa-pub文件-并且复制内容" class="headerlink" title="四:打开id_rsa.pub文件,并且复制内容"></a>四:打开id_rsa.pub文件,并且复制内容</h4><p><img src="https://proxy.iximp.top/https://img-blog.csdnimg.cn/20200603102735768.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dfMzE3,size_16,color_FFFFFF,t_70"></p>
+<h4 id="配置服务端"><a href="#配置服务端" class="headerlink" title="配置服务端"></a>配置服务端</h4><h4 id="五-在github上打开箭头处-点击Setting"><a href="#五-在github上打开箭头处-点击Setting" class="headerlink" title="五:在github上打开箭头处,点击Setting"></a>五:在github上打开箭头处,点击Setting</h4><p><img src="https://proxy.iximp.top/https://img-blog.csdnimg.cn/20200603102157756.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dfMzE3,size_16,color_FFFFFF,t_70"></p>
+<h4 id="六-点击SSH-and-GPG-keys"><a href="#六-点击SSH-and-GPG-keys" class="headerlink" title="六:点击SSH and GPG keys"></a>六:点击SSH and GPG keys</h4><p><img src="https://proxy.iximp.top/https://img-blog.csdnimg.cn/20200603102223280.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dfMzE3,size_16,color_FFFFFF,t_70"></p>
+<h4 id="七-打开你刚刚生成的id-rsa-pub，将里面的内容复制，进入你的github账号，在settings下，SSH-and-GPG-keys下new-SSH-key，然后将id-rsa-pub里的内容复制到Key中，完成后Add-SSH-Key。"><a href="#七-打开你刚刚生成的id-rsa-pub，将里面的内容复制，进入你的github账号，在settings下，SSH-and-GPG-keys下new-SSH-key，然后将id-rsa-pub里的内容复制到Key中，完成后Add-SSH-Key。" class="headerlink" title="七:打开你刚刚生成的id_rsa.pub，将里面的内容复制，进入你的github账号，在settings下，SSH and GPG keys下new SSH key，然后将id_rsa.pub里的内容复制到Key中，完成后Add SSH Key。"></a>七:打开你刚刚生成的id_rsa.pub，将里面的内容复制，进入你的github账号，在settings下，SSH and GPG keys下new SSH key，然后将id_rsa.pub里的内容复制到Key中，完成后Add SSH Key。</h4><p><img src="https://proxy.iximp.top/https://img-blog.csdnimg.cn/2020060310174263.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dfMzE3,size_16,color_FFFFFF,t_70"></p>
+<h4 id="八-然后添加后入下图所示"><a href="#八-然后添加后入下图所示" class="headerlink" title="八:然后添加后入下图所示"></a>八:然后添加后入下图所示</h4><p><img src="https://proxy.iximp.top/https://img-blog.csdnimg.cn/20200603101823216.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dfMzE3,size_16,color_FFFFFF,t_70"></p>
+<h4 id="九-用idea再次提交文件到-github上-显示提交成功"><a href="#九-用idea再次提交文件到-github上-显示提交成功" class="headerlink" title="九:用idea再次提交文件到 github上,显示提交成功"></a>九:用idea再次提交文件到 github上,显示提交成功</h4><p><img src="https://proxy.iximp.top/https://img-blog.csdnimg.cn/20200603103159683.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dfMzE3,size_16,color_FFFFFF,t_70"></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://blog.ioimp.top/2023/12/03/%E6%90%AD%E5%BB%BAgithub%E5%8D%9A%E5%AE%A2%E6%95%99%E7%A8%8B/" title="搭建github博客教程" target="_blank" rel="external">http://blog.ioimp.top/2023/12/03/搭建github博客教程/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/SFYYH" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/SFYYH" target="_blank"><span class="text-dark">山城冰荔枝</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2023/12/03/scrapy%E5%85%A5%E9%97%A8%E8%AF%BE%E4%BB%B6/" title="scrapy入门课件"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2023/11/24/kubernetes%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5/" title="kubernetes核心概念"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="" data-mobile-sites="qq"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/SFYYH" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/SFYYH" target="_blank"> colincora </a>base on <a href="https://sfyyh.github.io/" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+
+
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300,"hOffset":400,"vOffset":-38},"mobile":{"show":true},"react":"opacity:1","dialog":{"enable":true,"script":{"every idle 10s":"text1","tap face":"text2","tap body":"text3"}},"log":false});</script></body>
+</html>

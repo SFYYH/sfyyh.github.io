@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Ubuntu 18.04 出现GLIBC_2.28 not found的解决方法(亲测有效) | 山城冰荔枝</title>
+  <meta name="description" content="Ubuntu 18.04 出现GLIBC_2.28 not found的解决方法(亲测有效)环境12# uname -aLinux Ubuntu 5.4.0-144-generic #161~18.04.1-Ubuntu SMP Fri Feb 10 15:55:22 UTC 2023 x86_64 x86_64 x86_64 GNU&#x2F;Linux  分析原因glibc是linux底层的API库。通">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ubuntu 18.04 出现GLIBC_2.28 not found的解决方法(亲测有效)">
+<meta property="og:url" content="http://blog.ioimp.top/2023/11/21/Ubuntu-18-04-%E5%87%BA%E7%8E%B0GLIBC-2-28-not-found%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95-%E4%BA%B2%E6%B5%8B%E6%9C%89%E6%95%88/index.html">
+<meta property="og:site_name" content="山城冰荔枝">
+<meta property="og:description" content="Ubuntu 18.04 出现GLIBC_2.28 not found的解决方法(亲测有效)环境12# uname -aLinux Ubuntu 5.4.0-144-generic #161~18.04.1-Ubuntu SMP Fri Feb 10 15:55:22 UTC 2023 x86_64 x86_64 x86_64 GNU&#x2F;Linux  分析原因glibc是linux底层的API库。通">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/5ea130bc73c341d183a14190db14e8b4.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/de34ac38295e4c8e9f5854cbc3a18aa1.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/94237d434d92453481306bf27dba3d1b.png">
+<meta property="article:published_time" content="2023-11-21T10:34:43.000Z">
+<meta property="article:modified_time" content="2023-11-21T10:37:29.586Z">
+<meta property="article:author" content="山城冰荔枝">
+<meta property="article:tag" content="日常小BUG">
+<meta property="article:tag" content="Linux学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/5ea130bc73c341d183a14190db14e8b4.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://blog.ioimp.top/2023/11/21/Ubuntu-18-04-%E5%87%BA%E7%8E%B0GLIBC-2-28-not-found%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95-%E4%BA%B2%E6%B5%8B%E6%9C%89%E6%95%88/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="山城冰荔枝" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/SFYYH" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">山城冰荔枝</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> BeiJing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/SFYYH" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>跑起来会有风!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E5%AD%A6%E4%B9%A0/">Java学习</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Jenkins/">Jenkins</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/K8s/">K8s</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ubuntu/">Ubuntu</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/proxy/">proxy</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/">实用技巧</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%80%E5%8F%91%E5%A5%87%E9%81%87%E8%AE%B0/">开发奇遇记</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E6%9D%82%E7%83%A9/">数据杂烩</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E7%B1%BB%E5%AD%A6%E4%B9%A0/">杂类学习</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%88%AC%E8%99%AB%E5%BC%80%E5%8F%91/">爬虫开发</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%96%91%E9%9A%BE%E8%A7%A3%E7%AD%94/">疑难解答</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA/">网站搭建</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">网络安全</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Boilerpipe/" rel="tag">Boilerpipe</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ES6/" rel="tag">ES6</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GitHub/" rel="tag">GitHub</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Grafana/" rel="tag">Grafana</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java%E5%AD%A6%E4%B9%A0/" rel="tag">Java学习</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins/" rel="tag">Jenkins</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins%E5%AD%A6%E4%B9%A0/" rel="tag">Jenkins学习</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/K8s%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/" rel="tag">K8s基础学习</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux%E5%AD%A6%E4%B9%A0/" rel="tag">Linux学习</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/" rel="tag">Node.js</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Rancher/" rel="tag">Rancher</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scrapy%E7%88%AC%E8%99%AB/" rel="tag">Scrapy爬虫</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Stack-Overflow/" rel="tag">Stack Overflow</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cAdvisor/" rel="tag">cAdvisor</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/clash/" rel="tag">clash</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dolphinscheduler/" rel="tag">dolphinscheduler</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/influxDB/" rel="tag">influxDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kali-linux/" rel="tag">kali-linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/url%E5%9C%B0%E5%9D%80%E5%8F%98%E8%BF%81/" rel="tag">url地址变迁</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E2%80%9C%E7%9F%A5%E8%AF%86%E5%BA%93%E5%A4%87%E4%BB%BD/" rel="tag">“知识库备份&quot;</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0/" rel="tag">前端学习</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/" rel="tag">博客搭建教程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%B9%B3%E5%8F%B0/" rel="tag">大数据分析平台</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%9D%E5%A1%94%E9%9D%A2%E6%9D%BF/" rel="tag">宝塔面板</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%82%E6%AD%A5%E6%93%8D%E4%BD%9C/" rel="tag">异步操作</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" rel="tag">微服务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8B%AF%E6%95%91%E5%B0%8F%E7%99%BD%E7%B3%BB%E5%88%97/" rel="tag">拯救小白系列</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E7%AB%A0%E6%94%B6%E5%BD%95/" rel="tag">文章收录</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%97%A5%E5%B8%B8%E5%B0%8FBUG/" rel="tag">日常小BUG</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%97%E9%80%8F%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A/" rel="tag">渗透必知必会</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%88%AC%E8%99%AB%E6%95%B0%E6%8D%AE/" rel="tag">爬虫数据</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A3%81%E7%9B%98%E5%88%86%E5%8C%BA/" rel="tag">磁盘分区</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A7%81%E5%9F%9F/" rel="tag">私域</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E7%A8%8B%E7%9F%A5%E8%AF%86/" rel="tag">编程知识</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E5%AE%89/" rel="tag">网安</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E8%AF%BE/" rel="tag">网课</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Boilerpipe/" style="font-size: 13px;">Boilerpipe</a> <a href="/tags/Docker/" style="font-size: 13px;">Docker</a> <a href="/tags/ES6/" style="font-size: 13.75px;">ES6</a> <a href="/tags/GitHub/" style="font-size: 13.25px;">GitHub</a> <a href="/tags/Grafana/" style="font-size: 13px;">Grafana</a> <a href="/tags/Java%E5%AD%A6%E4%B9%A0/" style="font-size: 13px;">Java学习</a> <a href="/tags/Jenkins/" style="font-size: 13px;">Jenkins</a> <a href="/tags/Jenkins%E5%AD%A6%E4%B9%A0/" style="font-size: 13px;">Jenkins学习</a> <a href="/tags/K8s%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/" style="font-size: 13px;">K8s基础学习</a> <a href="/tags/Linux%E5%AD%A6%E4%B9%A0/" style="font-size: 13px;">Linux学习</a> <a href="/tags/Node-js/" style="font-size: 13.5px;">Node.js</a> <a href="/tags/Rancher/" style="font-size: 13px;">Rancher</a> <a href="/tags/Scrapy%E7%88%AC%E8%99%AB/" style="font-size: 14px;">Scrapy爬虫</a> <a href="/tags/Stack-Overflow/" style="font-size: 13px;">Stack Overflow</a> <a href="/tags/cAdvisor/" style="font-size: 13px;">cAdvisor</a> <a href="/tags/clash/" style="font-size: 13px;">clash</a> <a href="/tags/dolphinscheduler/" style="font-size: 13.25px;">dolphinscheduler</a> <a href="/tags/influxDB/" style="font-size: 13px;">influxDB</a> <a href="/tags/kali-linux/" style="font-size: 13px;">kali-linux</a> <a href="/tags/url%E5%9C%B0%E5%9D%80%E5%8F%98%E8%BF%81/" style="font-size: 13px;">url地址变迁</a> <a href="/tags/%E2%80%9C%E7%9F%A5%E8%AF%86%E5%BA%93%E5%A4%87%E4%BB%BD/" style="font-size: 13px;">“知识库备份"</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0/" style="font-size: 13.75px;">前端学习</a> <a href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/" style="font-size: 13px;">博客搭建教程</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%B9%B3%E5%8F%B0/" style="font-size: 13.25px;">大数据分析平台</a> <a href="/tags/%E5%AE%9D%E5%A1%94%E9%9D%A2%E6%9D%BF/" style="font-size: 13px;">宝塔面板</a> <a href="/tags/%E5%BC%82%E6%AD%A5%E6%93%8D%E4%BD%9C/" style="font-size: 13.25px;">异步操作</a> <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" style="font-size: 13px;">微服务</a> <a href="/tags/%E6%8B%AF%E6%95%91%E5%B0%8F%E7%99%BD%E7%B3%BB%E5%88%97/" style="font-size: 13.25px;">拯救小白系列</a> <a href="/tags/%E6%96%87%E7%AB%A0%E6%94%B6%E5%BD%95/" style="font-size: 13.25px;">文章收录</a> <a href="/tags/%E6%97%A5%E5%B8%B8%E5%B0%8FBUG/" style="font-size: 13.25px;">日常小BUG</a> <a href="/tags/%E6%B8%97%E9%80%8F%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A/" style="font-size: 13px;">渗透必知必会</a> <a href="/tags/%E7%88%AC%E8%99%AB%E6%95%B0%E6%8D%AE/" style="font-size: 13px;">爬虫数据</a> <a href="/tags/%E7%A3%81%E7%9B%98%E5%88%86%E5%8C%BA/" style="font-size: 13px;">磁盘分区</a> <a href="/tags/%E7%A7%81%E5%9F%9F/" style="font-size: 13px;">私域</a> <a href="/tags/%E7%BC%96%E7%A8%8B%E7%9F%A5%E8%AF%86/" style="font-size: 13px;">编程知识</a> <a href="/tags/%E7%BD%91%E5%AE%89/" style="font-size: 13.5px;">网安</a> <a href="/tags/%E7%BD%91%E8%AF%BE/" style="font-size: 13px;">网课</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">十二月 2023</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">十一月 2023</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">八月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">七月 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">五月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">十二月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">八月 2022</a><span class="archive-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/22/%E5%AE%8F%E4%BB%BB%E5%8A%A1%E5%92%8C%E5%BE%AE%E4%BB%BB%E5%8A%A1%E7%9A%84%E5%8C%BA%E5%88%AB/" class="title">宏任务和微任务的区别</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-21T16:52:10.000Z" itemprop="datePublished">2023-12-22</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/22/%E4%B8%BA%E4%BB%80%E4%B9%88%E8%AF%B4%E5%90%8C%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%98%AF%E9%9D%9E%E8%80%97%E6%97%B6%E4%BB%BB%E5%8A%A1%EF%BC%8C%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%98%AF%E8%80%97%E6%97%B6%E4%BB%BB%E5%8A%A1/" class="title">为什么说同步任务是非耗时任务，异步任务是耗时任务</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-21T16:35:58.000Z" itemprop="datePublished">2023-12-22</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/22/Node%E4%B8%ADasync-await%E7%9A%84%E8%AF%A6%E8%A7%A3/" class="title">Node中async/await的详解</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-21T16:23:35.000Z" itemprop="datePublished">2023-12-22</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/21/Node%E4%B8%ADPromise-%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%84%8F%E6%80%9D/" class="title">Node中Promise 对象的意思</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-21T02:56:30.000Z" itemprop="datePublished">2023-12-21</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/21/npm%E5%92%8Cpnpm%E7%9A%84%E5%8C%BA%E5%88%AB/" class="title">npm和pnpm的区别</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-21T01:43:41.000Z" itemprop="datePublished">2023-12-21</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-Ubuntu-18-04-出现GLIBC-2-28-not-found的解决方法-亲测有效" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Ubuntu 18.04 出现GLIBC_2.28 not found的解决方法(亲测有效)
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2023/11/21/Ubuntu-18-04-%E5%87%BA%E7%8E%B0GLIBC-2-28-not-found%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95-%E4%BA%B2%E6%B5%8B%E6%9C%89%E6%95%88/" class="article-date">
+	  <time datetime="2023-11-21T10:34:43.000Z" itemprop="datePublished">2023-11-21</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/Ubuntu/">Ubuntu</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/Linux%E5%AD%A6%E4%B9%A0/" rel="tag">Linux学习</a>, <a class="article-tag-link-link" href="/tags/%E6%97%A5%E5%B8%B8%E5%B0%8FBUG/" rel="tag">日常小BUG</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2023/11/21/Ubuntu-18-04-%E5%87%BA%E7%8E%B0GLIBC-2-28-not-found%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95-%E4%BA%B2%E6%B5%8B%E6%9C%89%E6%95%88/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 819(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 3(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h2 id="Ubuntu-18-04-出现GLIBC-2-28-not-found的解决方法-亲测有效"><a href="#Ubuntu-18-04-出现GLIBC-2-28-not-found的解决方法-亲测有效" class="headerlink" title="Ubuntu 18.04 出现GLIBC_2.28 not found的解决方法(亲测有效)"></a>Ubuntu 18.04 出现GLIBC_2.28 not found的解决方法(亲测有效)</h2><h5 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># uname -a</span><br><span class="line">Linux Ubuntu 5.4.0-144-generic #161~18.04.1-Ubuntu SMP Fri Feb 10 15:55:22 UTC 2023 x86_64 x86_64 x86_64 GNU/Linux</span><br></pre></td></tr></table></figure>
+
+<h5 id="分析原因"><a href="#分析原因" class="headerlink" title="分析原因"></a>分析原因</h5><p>glibc是linux底层的API库。通常情况下，有些环境需要glibc更高的版本才支持，比如<code>GLIBC_2.28</code>。</p>
+<p>另外对它操作升级，可能有导致系统崩溃的风险。</p>
+<h5 id="经验与教训"><a href="#经验与教训" class="headerlink" title="经验与教训"></a>经验与教训</h5><p>使用<code>GLIBC_xxx</code>的源码包编译升级的惨案:</p>
+<ul>
+<li><p>提醒：在其他博客教程上，有些网友(我也不另外,后面可拯救回来)就按照教程并使用<code>GLIBC_xxx</code>的源码包并去升级，结果往往是系统崩溃而告终。</p>
+</li>
+<li><p>glibc库对linux系统非常重要，轻易不要更换。如果需要更换，需提前备份好原本的相关库以防万一。</p>
+</li>
+<li><p>若在使用源码包去升级之后出现<code>segmentation fault</code>,命令无法使用的情况。</p>
+</li>
+<li><p>解决方法：<br>若安装失败，可能导致各指令出错，除了cd、pwd基本都不可使用，这时候千万不要关闭窗口(如果关闭将导致将无法打开，只能重装系统)，比如安装libc-2.28.so出错了，需拯救系统。可尝试输入其中一条</p>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">export LD_PRELOAD=/lib64/librt-2.XX.so</span><br><span class="line">export LD_PRELOAD=/lib64/libm-2.XX.so</span><br><span class="line">export LD_PRELOAD=/lib64/libpthread-2.XX.so</span><br><span class="line">export LD_PRELOAD=/lib64/libc-2.XX.so</span><br><span class="line">export LD_PRELOAD=/lib/x86_64-linux-gnu/libc-2.XX.so</span><br></pre></td></tr></table></figure>
+
+<p>(XX指原本的版本，看文件夹有哪个就试一下)，然后ls这些指令就可以用了，再使用ln -s把以前的库链接回来。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd /lib/x86_64-linux-gnu</span><br><span class="line">ll     # 文件详细信息</span><br><span class="line"></span><br><span class="line">ln -sf libc-2.27.so libc.so.6   # libc-2.27.so是原有版本</span><br><span class="line">rm  libc-2.28.so     #删除</span><br></pre></td></tr></table></figure>
+
+<h5 id="软件包升级GLIBC-2-28"><a href="#软件包升级GLIBC-2-28" class="headerlink" title="软件包升级GLIBC_2.28"></a>软件包升级<code>GLIBC_2.28</code></h5><p><code>1</code> 查看服务器当前版本，命令如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">strings /lib/x86_64-linux-gnu/libc.so.6 | grep GLIBC_</span><br></pre></td></tr></table></figure>
+
+<p>返回的结果如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">GLIBC_2.2.5</span><br><span class="line">GLIBC_2.2.6</span><br><span class="line">GLIBC_2.3</span><br><span class="line">GLIBC_2.3.2</span><br><span class="line">GLIBC_2.3.3</span><br><span class="line">GLIBC_2.3.4</span><br><span class="line">GLIBC_2.4</span><br><span class="line">GLIBC_2.5</span><br><span class="line">GLIBC_2.6</span><br><span class="line">GLIBC_2.7</span><br><span class="line">GLIBC_2.8</span><br><span class="line">GLIBC_2.9</span><br><span class="line">GLIBC_2.10</span><br><span class="line">GLIBC_2.11</span><br><span class="line">GLIBC_2.12</span><br><span class="line">GLIBC_2.13</span><br><span class="line">GLIBC_2.14</span><br><span class="line">GLIBC_2.15</span><br><span class="line">GLIBC_2.16</span><br><span class="line">GLIBC_2.17</span><br><span class="line">GLIBC_2.18</span><br><span class="line">GLIBC_2.22</span><br><span class="line">GLIBC_2.23</span><br><span class="line">GLIBC_2.24</span><br><span class="line">GLIBC_2.25</span><br><span class="line">GLIBC_2.26</span><br><span class="line">GLIBC_2.27</span><br><span class="line">GLIBC_PRIVATE</span><br></pre></td></tr></table></figure>
+
+<p>说明服务器当前是没有GLIBC_2.28</p>
+<p><code>2</code> 使用软件包升级方式</p>
+<ul>
+<li><p>参考<a target="_blank" rel="noopener" href="https://packages.debian.org/buster/">debian网址</a>并搜索想要的软件或者工具等，如<code>libc6</code>,有结果如下：<br><img src="https://img-blog.csdnimg.cn/5ea130bc73c341d183a14190db14e8b4.png" alt="在这里插入图片描述"><br>具体就不介绍了，请浏览官网了解。</p>
+</li>
+<li><p>添加软件源，<code>/etc/apt/sources.list</code>文件中像下面这样添加一行：</p>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">deb http://security.debian.org/debian-security buster/updates main </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>系统可用的软件包更新，刷新软件包的缓存</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update  # 更新软件源</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>apt-get update</code>之后若出现下面提示：<br><code>由于没有公钥，无法验证下列签名： NO_PUBKEY 112695A0E562B32A NO_PUBKEY 54404762BBB6E853</code></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 112695A0E562B32A 54404762BBB6E853</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>其中后面的<code>112695A0E562B32A 54404762BBB6E853</code>就是上面提到的<code>NO_PUBKEY 112695A0E562B32A NO_PUBKEY 54404762BBB6E853</code>中的公钥，替换成对应的即可。然后重新<code>apt-get update</code>即可。</p>
+</li>
+<li><p>查看软件包可更新列表</p>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt list --upgradable   </span><br></pre></td></tr></table></figure>
+
+<p>如下图所示：<br><img src="https://img-blog.csdnimg.cn/de34ac38295e4c8e9f5854cbc3a18aa1.png" alt="在这里插入图片描述"></p>
+<ul>
+<li>安装libc6</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install libc6-dev  /sudo apt install libc6</span><br></pre></td></tr></table></figure>
+
+<p><code>3</code> 查看服务器当前版本：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">strings /lib/x86_64-linux-gnu/libc.so.6 | grep GLIBC_</span><br></pre></td></tr></table></figure>
+
+<p>返回的结果如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">GLIBC_2.2.5</span><br><span class="line">GLIBC_2.2.6</span><br><span class="line">GLIBC_2.3</span><br><span class="line">GLIBC_2.3.2</span><br><span class="line">GLIBC_2.3.3</span><br><span class="line">GLIBC_2.3.4</span><br><span class="line">GLIBC_2.4</span><br><span class="line">GLIBC_2.5</span><br><span class="line">GLIBC_2.6</span><br><span class="line">GLIBC_2.7</span><br><span class="line">GLIBC_2.8</span><br><span class="line">GLIBC_2.9</span><br><span class="line">GLIBC_2.10</span><br><span class="line">GLIBC_2.11</span><br><span class="line">GLIBC_2.12</span><br><span class="line">GLIBC_2.13</span><br><span class="line">GLIBC_2.14</span><br><span class="line">GLIBC_2.15</span><br><span class="line">GLIBC_2.16</span><br><span class="line">GLIBC_2.17</span><br><span class="line">GLIBC_2.18</span><br><span class="line">GLIBC_2.22</span><br><span class="line">GLIBC_2.23</span><br><span class="line">GLIBC_2.24</span><br><span class="line">GLIBC_2.25</span><br><span class="line">GLIBC_2.26</span><br><span class="line">GLIBC_2.27</span><br><span class="line">GLIBC_2.28     # 多出该版本，说明安装成功，系统也能正常使用。</span><br><span class="line">GLIBC_PRIVATE</span><br></pre></td></tr></table></figure>
+
+<p>如下图所示：<br><img src="https://img-blog.csdnimg.cn/94237d434d92453481306bf27dba3d1b.png" alt="在这里插入图片描述"></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://blog.ioimp.top/2023/11/21/Ubuntu-18-04-%E5%87%BA%E7%8E%B0GLIBC-2-28-not-found%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95-%E4%BA%B2%E6%B5%8B%E6%9C%89%E6%95%88/" title="Ubuntu 18.04 出现GLIBC_2.28 not found的解决方法(亲测有效)" target="_blank" rel="external">http://blog.ioimp.top/2023/11/21/Ubuntu-18-04-出现GLIBC-2-28-not-found的解决方法-亲测有效/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/SFYYH" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/SFYYH" target="_blank"><span class="text-dark">山城冰荔枝</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2023/11/22/%E8%AE%B0%E4%B8%80%E6%AC%A1jenkins%E6%9E%84%E5%BB%BA%E5%A4%B1%E8%B4%A5%E7%9A%84%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/" title="记一次jenkins构建失败的踩坑记录"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2023/11/17/%E7%A7%81%E5%9F%9F%E6%96%87%E7%AB%A0%E6%95%B4%E7%90%86%E3%80%90%E4%B8%80%E3%80%91/" title="私域文章整理【一】"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="" data-mobile-sites="qq"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/SFYYH" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/SFYYH" target="_blank"> colincora </a>base on <a href="https://sfyyh.github.io/" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+
+
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300,"hOffset":400,"vOffset":-38},"mobile":{"show":true},"react":"opacity:1","dialog":{"enable":true,"script":{"every idle 10s":"text1","tap face":"text2","tap body":"text3"}},"log":false});</script></body>
+</html>

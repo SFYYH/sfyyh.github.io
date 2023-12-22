@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Scarpy_分布式爬虫 | 山城冰荔枝</title>
+  <meta name="description" content="分布式爬虫一. 增量式爬虫​		增量式爬虫, 顾名思义. 可以对网站进行反复抓取. 然后发现新东西了就保存起来. 遇到了以前抓取过的内容就自动过滤掉即可. 其核心思想就两个字. 去重. 并且可以反复去重. 今天运行一下. 明天再运行一下. 将不同的数据过滤出来. 相同的数据去除掉(不保存)即可.  ​		此时, 我们以天涯为目标来尝试一下完成增量式爬虫.  spider:  12345678910">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Scarpy_分布式爬虫">
+<meta property="og:url" content="http://blog.ioimp.top/2023/12/03/Scarpy-%E5%88%86%E5%B8%83%E5%BC%8F%E7%88%AC%E8%99%AB/index.html">
+<meta property="og:site_name" content="山城冰荔枝">
+<meta property="og:description" content="分布式爬虫一. 增量式爬虫​		增量式爬虫, 顾名思义. 可以对网站进行反复抓取. 然后发现新东西了就保存起来. 遇到了以前抓取过的内容就自动过滤掉即可. 其核心思想就两个字. 去重. 并且可以反复去重. 今天运行一下. 明天再运行一下. 将不同的数据过滤出来. 相同的数据去除掉(不保存)即可.  ​		此时, 我们以天涯为目标来尝试一下完成增量式爬虫.  spider:  12345678910">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.ioimp.top/images/scrapy02/image-20210812152215427.png">
+<meta property="article:published_time" content="2023-12-03T03:59:26.000Z">
+<meta property="article:modified_time" content="2023-12-03T04:04:23.779Z">
+<meta property="article:author" content="山城冰荔枝">
+<meta property="article:tag" content="Scrapy爬虫">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.ioimp.top/images/scrapy02/image-20210812152215427.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://blog.ioimp.top/2023/12/03/Scarpy-%E5%88%86%E5%B8%83%E5%BC%8F%E7%88%AC%E8%99%AB/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="山城冰荔枝" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/SFYYH" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">山城冰荔枝</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> BeiJing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/SFYYH" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>跑起来会有风!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E5%AD%A6%E4%B9%A0/">Java学习</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Jenkins/">Jenkins</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/K8s/">K8s</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ubuntu/">Ubuntu</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/proxy/">proxy</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/">实用技巧</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%80%E5%8F%91%E5%A5%87%E9%81%87%E8%AE%B0/">开发奇遇记</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E6%9D%82%E7%83%A9/">数据杂烩</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E7%B1%BB%E5%AD%A6%E4%B9%A0/">杂类学习</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%88%AC%E8%99%AB%E5%BC%80%E5%8F%91/">爬虫开发</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%96%91%E9%9A%BE%E8%A7%A3%E7%AD%94/">疑难解答</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA/">网站搭建</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">网络安全</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Boilerpipe/" rel="tag">Boilerpipe</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ES6/" rel="tag">ES6</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GitHub/" rel="tag">GitHub</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Grafana/" rel="tag">Grafana</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java%E5%AD%A6%E4%B9%A0/" rel="tag">Java学习</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins/" rel="tag">Jenkins</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins%E5%AD%A6%E4%B9%A0/" rel="tag">Jenkins学习</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/K8s%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/" rel="tag">K8s基础学习</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux%E5%AD%A6%E4%B9%A0/" rel="tag">Linux学习</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/" rel="tag">Node.js</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Rancher/" rel="tag">Rancher</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scrapy%E7%88%AC%E8%99%AB/" rel="tag">Scrapy爬虫</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Stack-Overflow/" rel="tag">Stack Overflow</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cAdvisor/" rel="tag">cAdvisor</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/clash/" rel="tag">clash</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dolphinscheduler/" rel="tag">dolphinscheduler</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/influxDB/" rel="tag">influxDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kali-linux/" rel="tag">kali-linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/url%E5%9C%B0%E5%9D%80%E5%8F%98%E8%BF%81/" rel="tag">url地址变迁</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E2%80%9C%E7%9F%A5%E8%AF%86%E5%BA%93%E5%A4%87%E4%BB%BD/" rel="tag">“知识库备份&quot;</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0/" rel="tag">前端学习</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/" rel="tag">博客搭建教程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%B9%B3%E5%8F%B0/" rel="tag">大数据分析平台</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%9D%E5%A1%94%E9%9D%A2%E6%9D%BF/" rel="tag">宝塔面板</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%82%E6%AD%A5%E6%93%8D%E4%BD%9C/" rel="tag">异步操作</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" rel="tag">微服务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8B%AF%E6%95%91%E5%B0%8F%E7%99%BD%E7%B3%BB%E5%88%97/" rel="tag">拯救小白系列</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E7%AB%A0%E6%94%B6%E5%BD%95/" rel="tag">文章收录</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%97%A5%E5%B8%B8%E5%B0%8FBUG/" rel="tag">日常小BUG</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%97%E9%80%8F%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A/" rel="tag">渗透必知必会</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%88%AC%E8%99%AB%E6%95%B0%E6%8D%AE/" rel="tag">爬虫数据</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A3%81%E7%9B%98%E5%88%86%E5%8C%BA/" rel="tag">磁盘分区</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A7%81%E5%9F%9F/" rel="tag">私域</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E7%A8%8B%E7%9F%A5%E8%AF%86/" rel="tag">编程知识</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E5%AE%89/" rel="tag">网安</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E8%AF%BE/" rel="tag">网课</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Boilerpipe/" style="font-size: 13px;">Boilerpipe</a> <a href="/tags/Docker/" style="font-size: 13px;">Docker</a> <a href="/tags/ES6/" style="font-size: 13.75px;">ES6</a> <a href="/tags/GitHub/" style="font-size: 13.25px;">GitHub</a> <a href="/tags/Grafana/" style="font-size: 13px;">Grafana</a> <a href="/tags/Java%E5%AD%A6%E4%B9%A0/" style="font-size: 13px;">Java学习</a> <a href="/tags/Jenkins/" style="font-size: 13px;">Jenkins</a> <a href="/tags/Jenkins%E5%AD%A6%E4%B9%A0/" style="font-size: 13px;">Jenkins学习</a> <a href="/tags/K8s%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/" style="font-size: 13px;">K8s基础学习</a> <a href="/tags/Linux%E5%AD%A6%E4%B9%A0/" style="font-size: 13px;">Linux学习</a> <a href="/tags/Node-js/" style="font-size: 13.5px;">Node.js</a> <a href="/tags/Rancher/" style="font-size: 13px;">Rancher</a> <a href="/tags/Scrapy%E7%88%AC%E8%99%AB/" style="font-size: 14px;">Scrapy爬虫</a> <a href="/tags/Stack-Overflow/" style="font-size: 13px;">Stack Overflow</a> <a href="/tags/cAdvisor/" style="font-size: 13px;">cAdvisor</a> <a href="/tags/clash/" style="font-size: 13px;">clash</a> <a href="/tags/dolphinscheduler/" style="font-size: 13.25px;">dolphinscheduler</a> <a href="/tags/influxDB/" style="font-size: 13px;">influxDB</a> <a href="/tags/kali-linux/" style="font-size: 13px;">kali-linux</a> <a href="/tags/url%E5%9C%B0%E5%9D%80%E5%8F%98%E8%BF%81/" style="font-size: 13px;">url地址变迁</a> <a href="/tags/%E2%80%9C%E7%9F%A5%E8%AF%86%E5%BA%93%E5%A4%87%E4%BB%BD/" style="font-size: 13px;">“知识库备份"</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0/" style="font-size: 13.75px;">前端学习</a> <a href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/" style="font-size: 13px;">博客搭建教程</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%B9%B3%E5%8F%B0/" style="font-size: 13.25px;">大数据分析平台</a> <a href="/tags/%E5%AE%9D%E5%A1%94%E9%9D%A2%E6%9D%BF/" style="font-size: 13px;">宝塔面板</a> <a href="/tags/%E5%BC%82%E6%AD%A5%E6%93%8D%E4%BD%9C/" style="font-size: 13.25px;">异步操作</a> <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" style="font-size: 13px;">微服务</a> <a href="/tags/%E6%8B%AF%E6%95%91%E5%B0%8F%E7%99%BD%E7%B3%BB%E5%88%97/" style="font-size: 13.25px;">拯救小白系列</a> <a href="/tags/%E6%96%87%E7%AB%A0%E6%94%B6%E5%BD%95/" style="font-size: 13.25px;">文章收录</a> <a href="/tags/%E6%97%A5%E5%B8%B8%E5%B0%8FBUG/" style="font-size: 13.25px;">日常小BUG</a> <a href="/tags/%E6%B8%97%E9%80%8F%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A/" style="font-size: 13px;">渗透必知必会</a> <a href="/tags/%E7%88%AC%E8%99%AB%E6%95%B0%E6%8D%AE/" style="font-size: 13px;">爬虫数据</a> <a href="/tags/%E7%A3%81%E7%9B%98%E5%88%86%E5%8C%BA/" style="font-size: 13px;">磁盘分区</a> <a href="/tags/%E7%A7%81%E5%9F%9F/" style="font-size: 13px;">私域</a> <a href="/tags/%E7%BC%96%E7%A8%8B%E7%9F%A5%E8%AF%86/" style="font-size: 13px;">编程知识</a> <a href="/tags/%E7%BD%91%E5%AE%89/" style="font-size: 13.5px;">网安</a> <a href="/tags/%E7%BD%91%E8%AF%BE/" style="font-size: 13px;">网课</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">十二月 2023</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">十一月 2023</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">八月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">七月 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">五月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">十二月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">八月 2022</a><span class="archive-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/22/%E5%AE%8F%E4%BB%BB%E5%8A%A1%E5%92%8C%E5%BE%AE%E4%BB%BB%E5%8A%A1%E7%9A%84%E5%8C%BA%E5%88%AB/" class="title">宏任务和微任务的区别</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-21T16:52:10.000Z" itemprop="datePublished">2023-12-22</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/22/%E4%B8%BA%E4%BB%80%E4%B9%88%E8%AF%B4%E5%90%8C%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%98%AF%E9%9D%9E%E8%80%97%E6%97%B6%E4%BB%BB%E5%8A%A1%EF%BC%8C%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%98%AF%E8%80%97%E6%97%B6%E4%BB%BB%E5%8A%A1/" class="title">为什么说同步任务是非耗时任务，异步任务是耗时任务</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-21T16:35:58.000Z" itemprop="datePublished">2023-12-22</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/22/Node%E4%B8%ADasync-await%E7%9A%84%E8%AF%A6%E8%A7%A3/" class="title">Node中async/await的详解</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-21T16:23:35.000Z" itemprop="datePublished">2023-12-22</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/21/Node%E4%B8%ADPromise-%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%84%8F%E6%80%9D/" class="title">Node中Promise 对象的意思</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-21T02:56:30.000Z" itemprop="datePublished">2023-12-21</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/21/npm%E5%92%8Cpnpm%E7%9A%84%E5%8C%BA%E5%88%AB/" class="title">npm和pnpm的区别</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-21T01:43:41.000Z" itemprop="datePublished">2023-12-21</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-Scarpy-分布式爬虫" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Scarpy_分布式爬虫
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2023/12/03/Scarpy-%E5%88%86%E5%B8%83%E5%BC%8F%E7%88%AC%E8%99%AB/" class="article-date">
+	  <time datetime="2023-12-03T03:59:26.000Z" itemprop="datePublished">2023-12-03</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/%E7%88%AC%E8%99%AB%E5%BC%80%E5%8F%91/">爬虫开发</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/Scrapy%E7%88%AC%E8%99%AB/" rel="tag">Scrapy爬虫</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2023/12/03/Scarpy-%E5%88%86%E5%B8%83%E5%BC%8F%E7%88%AC%E8%99%AB/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 1.7k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 7(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="分布式爬虫"><a href="#分布式爬虫" class="headerlink" title="分布式爬虫"></a>分布式爬虫</h1><h2 id="一-增量式爬虫"><a href="#一-增量式爬虫" class="headerlink" title="一. 增量式爬虫"></a>一. 增量式爬虫</h2><p>​		增量式爬虫, 顾名思义. 可以对网站进行反复抓取. 然后发现新东西了就保存起来. 遇到了以前抓取过的内容就自动过滤掉即可. 其核心思想就两个字. 去重. 并且可以反复去重. 今天运行一下. 明天再运行一下. 将不同的数据过滤出来. 相同的数据去除掉(不保存)即可. </p>
+<p>​		此时, 我们以天涯为目标来尝试一下完成增量式爬虫. </p>
+<p>spider: </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> scrapy</span><br><span class="line"><span class="keyword">from</span> redis <span class="keyword">import</span> Redis</span><br><span class="line"><span class="keyword">from</span> tianya.items <span class="keyword">import</span> TianyaItem</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TySpider</span>(scrapy.Spider):</span><br><span class="line"></span><br><span class="line">    name = <span class="string">&#x27;ty&#x27;</span></span><br><span class="line">    allowed_domains = [<span class="string">&#x27;tianya.cn&#x27;</span>]</span><br><span class="line">    start_urls = [<span class="string">&#x27;http://bbs.tianya.cn/list-worldlook-1.shtml&#x27;</span>]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, name=<span class="literal">None</span>, **kwargs</span>):</span><br><span class="line">        self.red = Redis(password=<span class="string">&quot;123456&quot;</span>, db=<span class="number">6</span>, decode_responses=<span class="literal">True</span>)</span><br><span class="line">        <span class="built_in">super</span>().__init__(name, **kwargs)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">parse</span>(<span class="params">self, resp, **kwargs</span>):</span><br><span class="line">        tbodys = resp.css(<span class="string">&quot;.tab-bbs-list tbody&quot;</span>)[<span class="number">1</span>:]</span><br><span class="line">        <span class="keyword">for</span> tbody <span class="keyword">in</span> tbodys:</span><br><span class="line">            hrefs = tbody.xpath(<span class="string">&quot;./tr/td[1]/a/@href&quot;</span>).extract()</span><br><span class="line">            <span class="keyword">for</span> h <span class="keyword">in</span> hrefs:</span><br><span class="line">                <span class="comment"># 两个方案.</span></span><br><span class="line">                url = resp.urljoin(h)</span><br><span class="line">                <span class="comment"># 判断是否在该set集合中有数据</span></span><br><span class="line">                r = self.red.sismember(<span class="string">&quot;tianya:details&quot;</span>, url)  </span><br><span class="line">                <span class="comment">#   1. url去重. 优点: 简单, 缺点: 如果有人回复了帖子.就无法提取到最新的数据了</span></span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">not</span> r:</span><br><span class="line">                    <span class="keyword">yield</span> scrapy.Request(url=resp.urljoin(h), callback=self.parse_details)</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    <span class="built_in">print</span>(<span class="string">f&quot;该url已经被抓取过<span class="subst">&#123;url&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">        next_href = resp.xpath(<span class="string">&quot;//div[@class=&#x27;short-pages-2 clearfix&#x27;]/div[@class=&#x27;links&#x27;]/a[last()]/@href&quot;</span>).extract_first()</span><br><span class="line">        <span class="keyword">yield</span> scrapy.Request(url=resp.urljoin(next_href), callback=self.parse)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">parse_details</span>(<span class="params">self, resp, **kwargs</span>):</span><br><span class="line">        title = resp.xpath(<span class="string">&#x27;//*[@id=&quot;post_head&quot;]/h1/span[1]/span/text()&#x27;</span>).extract_first()</span><br><span class="line">        content = resp.xpath(<span class="string">&#x27;//*[@id=&quot;bd&quot;]/div[4]/div[1]/div/div[2]/div[1]/text()&#x27;</span>).extract_first()</span><br><span class="line">        item = TianyaItem()</span><br><span class="line">        item[<span class="string">&#x27;title&#x27;</span>] = title</span><br><span class="line">        item[<span class="string">&#x27;content&#x27;</span>] = content</span><br><span class="line">        <span class="comment"># 提取完数据. 该url进入redis</span></span><br><span class="line">        self.red.sadd(<span class="string">&quot;tianya:details&quot;</span>, resp.url)  </span><br><span class="line">        <span class="keyword">return</span> item</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>​	pipelines</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Define your item pipelines here</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Don&#x27;t forget to add your pipeline to the ITEM_PIPELINES setting</span></span><br><span class="line"><span class="comment"># See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># useful for handling different item types with a single interface</span></span><br><span class="line"><span class="keyword">from</span> itemadapter <span class="keyword">import</span> ItemAdapter</span><br><span class="line"><span class="keyword">from</span> redis <span class="keyword">import</span> Redis</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TianyaPipeline</span>:</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">process_item</span>(<span class="params">self, item, spider</span>):</span><br><span class="line">        <span class="comment">#   2. 数据内容去重. 优点: 保证数据的一致性. 缺点: 需要每次都把数据从网页中提取出来</span></span><br><span class="line">        <span class="built_in">print</span>(json.dumps(<span class="built_in">dict</span>(item)))</span><br><span class="line">        r = self.red.sadd(<span class="string">&quot;tianya:pipelines:items&quot;</span>, json.dumps(<span class="built_in">dict</span>(item)))</span><br><span class="line">        <span class="keyword">if</span> r:</span><br><span class="line">            <span class="comment"># 进入数据库</span></span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;存入数据库&quot;</span>, item[<span class="string">&#x27;title&#x27;</span>])</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;已经在数据里了&quot;</span>, item[<span class="string">&#x27;title&#x27;</span>])</span><br><span class="line">        <span class="keyword">return</span> item</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">open_spider</span>(<span class="params">self, spider</span>):</span><br><span class="line">        self.red = Redis(password=<span class="string">&quot;123456&quot;</span>, db=<span class="number">6</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">close_spider</span>(<span class="params">self, spider</span>):</span><br><span class="line">        self.red.close()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>上述方案是直接用redis进行的去重. 我们还可以选择使用数据库, mongodb进行过滤. 原理都一样, 不在赘述. </p>
+<h2 id="二-分布式爬虫"><a href="#二-分布式爬虫" class="headerlink" title="二. 分布式爬虫"></a>二. 分布式爬虫</h2><p>​		分布式爬虫, 就是搭建一个分布式的集群, 让其对一组资源进行分布联合爬取. </p>
+<p>​		既然要集群来抓取. 意味着会有好几个爬虫同时运行. 那此时就非常容易产生这样一个问题. 如果有重复的url怎么办?  在原来的程序中. scrapy中会由调度器来自动完成这个任务. 但是, 此时是多个爬虫一起跑. 而我们又知道不同的机器之间是不能直接共享调度器的. 怎么办? 我们可以采用redis来作为各个爬虫的调度器. 此时我们引出一个新的模块叫scrapy-redis. 在该模块中提供了这样一组操作. 它们重写了scrapy中的调度器. 并将调度队列和去除重复的逻辑全部引入到了redis中. 这样就形成了这样一组结构</p>
+<p><img src="/images/scrapy02/image-20210812152215427.png" alt="image-20210812152215427"></p>
+<p>​	整体工作流程:</p>
+<pre><code>1. 某个爬虫从redis_key获取到起始url. 传递给引擎, 到调度器. 然后把起始url直接丢到redis的请求队列里. 开始了scrapy的爬虫抓取工作.  
+2. 如果抓取过程中产生了新的请求. 不论是哪个节点产生的, 最终都会到redis的去重集合中进行判定是否抓取过. 
+3. 如果抓取过. 直接就放弃该请求. 如果没有抓取过. 自动丢到redis请求队列中. 
+4. 调度器继续从redis请求队列里获取要进行抓取的请求. 完成爬虫后续的工作. 
+</code></pre>
+<p>接下来. 我们用scrapy-redis完成上述流程</p>
+<ol>
+<li><p>首先, 创建项目, 和以前一样, 该怎么创建还怎么创建. </p>
+</li>
+<li><p>修改Spider. 将start_urls注释掉. 更换成redis_key</p>
+</li>
+<li><p>然后再settings中对redis以及scrapy_redis配置一下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">REDIS_HOST = <span class="string">&quot;127.0.0.1&quot;</span></span><br><span class="line">REDIS_PORT = <span class="number">6379</span></span><br><span class="line">REDIS_DB = <span class="number">8</span></span><br><span class="line">REDIS_PARAMS = &#123;</span><br><span class="line">    <span class="string">&quot;password&quot;</span>:<span class="string">&quot;123456&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># scrapy-redis配置信息  # 固定的</span></span><br><span class="line">SCHEDULER = <span class="string">&quot;scrapy_redis.scheduler.Scheduler&quot;</span></span><br><span class="line">SCHEDULER_PERSIST = <span class="literal">True</span>  <span class="comment"># 如果为真. 在关闭时自动保存请求信息, 如果为假, 则不保存请求信息</span></span><br><span class="line">DUPEFILTER_CLASS = <span class="string">&quot;scrapy_redis.dupefilter.RFPDupeFilter&quot;</span> <span class="comment"># 去重的逻辑. 要用redis的</span></span><br><span class="line">ITEM_PIPELINES = &#123;</span><br><span class="line">   <span class="string">&#x27;tianya2.pipelines.Tianya2Pipeline&#x27;</span>: <span class="number">300</span>,</span><br><span class="line">    <span class="string">&#x27;scrapy_redis.pipelines.RedisPipeline&#x27;</span>: <span class="number">301</span>  <span class="comment"># 配置redis的pipeline</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>布隆过滤器:</p>
+<p>​	平时, 我们如果需要对数据进行去重操作可以有以下方案: </p>
+<pre><code>1. 直接用set集合来存储url. (最low的方案)
+2. 用set集合存储hash过的url. scrapy默认
+3. 用redis来存储hash过的请求, scrapy-redis默认就是这样做的. 如果请求非常非常多. redis压力是很大的.
+4. 用布隆过滤器. 
+</code></pre>
+<p>布隆过滤器的原理: 其实它里面就是一个改良版的bitmap. 何为bitmap, 假设我提前准备好一个数组, 然后把源数据经过hash计算. 会计算出一个数字. 我们按照下标来找到该下标对应的位置. 然后设置成1. </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">a = 李嘉诚</span><br><span class="line">b = 张翠山</span><br><span class="line">....</span><br><span class="line"></span><br><span class="line">[<span class="number">0</span>],[<span class="number">0</span>],[<span class="number">0</span>],[<span class="number">0</span>],[<span class="number">0</span>],[<span class="number">0</span>],[<span class="number">0</span>],[<span class="number">0</span>],[<span class="number">0</span>]  <span class="number">10</span>个长度数组</span><br><span class="line"></span><br><span class="line"><span class="built_in">hash</span>(a) = <span class="number">3</span></span><br><span class="line"><span class="built_in">hash</span>(b) = <span class="number">3</span></span><br><span class="line"></span><br><span class="line">[<span class="number">0</span>],[<span class="number">0</span>],[<span class="number">0</span>],[<span class="number">1</span>],[<span class="number">0</span>],[<span class="number">0</span>],[<span class="number">0</span>],[<span class="number">0</span>],[<span class="number">0</span>] </span><br><span class="line"><span class="built_in">hash</span>(张三) = <span class="number">6</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 找的时候依然执行该hash算法. 然后直接去找对应下标的位置看看是不是1. 是1就有, 不是1就没有</span></span><br></pre></td></tr></table></figure>
+
+<p>这样有个不好的现象. 容易误判. 如果hash算法选的不够好. 很容易搞错. 那怎么办. 多选几个hash算法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">a = 李嘉诚</span><br><span class="line">b = 张翠山</span><br><span class="line"></span><br><span class="line">[<span class="number">0</span>],[<span class="number">0</span>],[<span class="number">0</span>],[<span class="number">0</span>],[<span class="number">0</span>],[<span class="number">0</span>],[<span class="number">0</span>],[<span class="number">0</span>],[<span class="number">0</span>],[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">hash1(a) = <span class="number">3</span></span><br><span class="line">hash2(a) = <span class="number">4</span></span><br><span class="line"></span><br><span class="line">hash1(b) = <span class="number">2</span></span><br><span class="line">hash2(b) = <span class="number">5</span></span><br><span class="line"></span><br><span class="line">[<span class="number">0</span>],[<span class="number">0</span>],[<span class="number">1</span>],[<span class="number">1</span>],[<span class="number">1</span>],[<span class="number">1</span>],[<span class="number">0</span>],[<span class="number">0</span>],[<span class="number">0</span>],[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 找的时候, 重新按照这个hash的顺序, 在重新执行一遍. 依然会得到2个值. 分别去这两个位置看是否是1. 如果全是1, 就有,  如果有一个是0, 就没有. </span></span><br></pre></td></tr></table></figure>
+
+<p>在scrapy-redis中想要使用布隆过滤器是非常简单的. 你可以自己去写这个布隆过滤器的逻辑. 不过我建议直接用第三方的就可以了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装布隆过滤器</span></span><br><span class="line">pip install scrapy_redis_bloomfilter</span><br><span class="line"></span><br><span class="line"><span class="comment"># 去重类，要使用 BloomFilter 请替换 DUPEFILTER_CLASS</span></span><br><span class="line">DUPEFILTER_CLASS = <span class="string">&quot;scrapy_redis_bloomfilter.dupefilter.RFPDupeFilter&quot;</span></span><br><span class="line"><span class="comment"># 哈希函数的个数，默认为 6，可以自行修改</span></span><br><span class="line">BLOOMFILTER_HASH_NUMBER = <span class="number">6</span></span><br><span class="line"><span class="comment"># BloomFilter 的 bit 参数，默认 30，占用 128MB 空间，去重量级 1 亿</span></span><br><span class="line">BLOOMFILTER_BIT = <span class="number">30</span>	</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://blog.ioimp.top/2023/12/03/Scarpy-%E5%88%86%E5%B8%83%E5%BC%8F%E7%88%AC%E8%99%AB/" title="Scarpy_分布式爬虫" target="_blank" rel="external">http://blog.ioimp.top/2023/12/03/Scarpy-分布式爬虫/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/SFYYH" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/SFYYH" target="_blank"><span class="text-dark">山城冰荔枝</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2023/12/03/13-Scrapy-Splash%E7%9A%84%E4%BD%BF%E7%94%A8/" title="Scrapy_Splash的使用"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2023/12/03/crawlSpider/" title="crawlSpider"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="" data-mobile-sites="qq"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/SFYYH" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/SFYYH" target="_blank"> colincora </a>base on <a href="https://sfyyh.github.io/" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+
+
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300,"hOffset":400,"vOffset":-38},"mobile":{"show":true},"react":"opacity:1","dialog":{"enable":true,"script":{"every idle 10s":"text1","tap face":"text2","tap body":"text3"}},"log":false});</script></body>
+</html>
