@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://blog.ioimp.top/2023/12/23/Vue%E4%B8%ADjs%E5%BC%95%E5%85%A5%E5%9B%BE%E7%89%87%E7%9A%84%E6%96%B9%E6%B3%95/</loc>
+    <lastmod>2023-12-23</lastmod>
+  </url>
+  <url>
+    <loc>http://blog.ioimp.top/2023/12/23/Vue%E4%B8%ADv-model%E5%AF%B9%E5%BA%94%E4%B8%8D%E5%90%8C%E7%9A%84%E8%A1%A8%E5%8D%95%E6%A0%87%E7%AD%BE%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E5%BC%8F/</loc>
+    <lastmod>2023-12-23</lastmod>
+  </url>
+  <url>
+    <loc>http://blog.ioimp.top/2023/12/23/JS%E4%B8%AD%E4%BB%80%E4%B9%88%E6%98%AF%E4%BA%8B%E4%BB%B6%E5%86%92%E6%B3%A1/</loc>
+    <lastmod>2023-12-23</lastmod>
+  </url>
+  <url>
+    <loc>http://blog.ioimp.top/2023/12/23/MVVM%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</loc>
+    <lastmod>2023-12-22</lastmod>
+  </url>
+  <url>
+    <loc>http://blog.ioimp.top/2023/12/22/Vue%E4%B8%AD-main-js-APP-vue%E5%92%8C-index-html-%E7%9A%84%E4%BD%9C%E7%94%A8%E5%92%8C%E5%85%B3%E7%B3%BB/</loc>
+    <lastmod>2023-12-22</lastmod>
+  </url>
+  <url>
     <loc>http://blog.ioimp.top/2023/12/22/%E4%B8%BA%E4%BB%80%E4%B9%88-yarn-build%E5%91%BD%E4%BB%A4%E9%9D%9E%E5%B8%B8%E8%80%97%E6%97%B6/</loc>
     <lastmod>2023-12-22</lastmod>
   </url>
