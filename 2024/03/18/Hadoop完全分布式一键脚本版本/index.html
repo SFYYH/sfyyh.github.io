@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>山城冰荔枝</title>
+  <meta name="description" content="内容转载自：linux-hadoop完全分布式集群搭建 - Xavier的博客 | Xavier Blog (830sir.top) 欢迎关注博主：https:&#x2F;&#x2F;blog.830sir.top&#x2F; “Yeah It’s on. ” 1wget -O hadoop.txt https:&#x2F;&#x2F;fs-im-kefu.7moor-fs1.com&#x2F;29397395&#x2F;4d2c3f00-7d4c-11e5-af">
+<meta property="og:type" content="article">
+<meta property="og:title" content="山城冰荔枝">
+<meta property="og:url" content="http://blog.ioimp.top/2024/03/18/Hadoop%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%80%E9%94%AE%E8%84%9A%E6%9C%AC%E7%89%88%E6%9C%AC/index.html">
+<meta property="og:site_name" content="山城冰荔枝">
+<meta property="og:description" content="内容转载自：linux-hadoop完全分布式集群搭建 - Xavier的博客 | Xavier Blog (830sir.top) 欢迎关注博主：https:&#x2F;&#x2F;blog.830sir.top&#x2F; “Yeah It’s on. ” 1wget -O hadoop.txt https:&#x2F;&#x2F;fs-im-kefu.7moor-fs1.com&#x2F;29397395&#x2F;4d2c3f00-7d4c-11e5-af">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-03-18T00:50:11.144Z">
+<meta property="article:modified_time" content="2024-03-18T03:57:46.071Z">
+<meta property="article:author" content="山城冰荔枝">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://blog.ioimp.top/2024/03/18/Hadoop%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%80%E9%94%AE%E8%84%9A%E6%9C%AC%E7%89%88%E6%9C%AC/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="山城冰荔枝" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.jpeg" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+    <link href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.css" rel="stylesheet">
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/SFYYH" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">山城冰荔枝</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> BeiJing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-yyp">
+          <a href="/yyps">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">易优评项目进度</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/SFYYH" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>跑起来会有风!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E5%AD%A6%E4%B9%A0/">Java学习</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Jenkins/">Jenkins</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/K8s/">K8s</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ubuntu/">Ubuntu</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/proxy/">proxy</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><span class="category-list-count">18</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">博客搭建</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/">实用技巧</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%80%E5%8F%91%E5%A5%87%E9%81%87%E8%AE%B0/">开发奇遇记</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%88%91%E7%9A%84%E4%B9%A6%E7%B1%8D/">我的书籍</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E6%9D%82%E7%83%A9/">数据杂烩</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E7%B1%BB%E5%AD%A6%E4%B9%A0/">杂类学习</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%A8%A1%E5%9D%97%E5%AE%89%E8%A3%85/">模块安装</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%88%AC%E8%99%AB%E5%BC%80%E5%8F%91/">爬虫开发</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%96%91%E9%9A%BE%E8%A7%A3%E7%AD%94/">疑难解答</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA/">网站搭建</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">网络安全</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%80%83%E7%A0%94%E6%95%B0%E5%AD%A6/">考研数学</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%8B%A5%E4%BE%9D%E6%A1%86%E6%9E%B6/">若依框架</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94%E6%9D%82%E8%B0%88/">随笔杂谈</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98-%E4%BB%BFB%E7%AB%99/">项目实战-仿B站</a><span class="category-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Boilerpipe/" rel="tag">Boilerpipe</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ES6/" rel="tag">ES6</a><span class="tag-list-count">18</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FastJson/" rel="tag">FastJson</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GitHub/" rel="tag">GitHub</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Grafana/" rel="tag">Grafana</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E6%B6%88%E6%81%AF%E8%BD%AC%E6%8D%A2%E5%99%A8/" rel="tag">HTTP消息转换器</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java%E5%AD%A6%E4%B9%A0/" rel="tag">Java学习</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins/" rel="tag">Jenkins</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins%E5%AD%A6%E4%B9%A0/" rel="tag">Jenkins学习</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/K8s%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/" rel="tag">K8s基础学习</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux%E5%AD%A6%E4%B9%A0/" rel="tag">Linux学习</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/" rel="tag">Node.js</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pure%E4%B8%BB%E9%A2%98/" rel="tag">Pure主题</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Rancher/" rel="tag">Rancher</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scrapy%E7%88%AC%E8%99%AB/" rel="tag">Scrapy爬虫</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Stack-Overflow/" rel="tag">Stack Overflow</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue%E5%9F%BA%E7%A1%80/" rel="tag">Vue基础</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebPack/" rel="tag">WebPack</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cAdvisor/" rel="tag">cAdvisor</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/clash/" rel="tag">clash</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dolphinscheduler/" rel="tag">dolphinscheduler</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ffmpeg/" rel="tag">ffmpeg</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/influxDB/" rel="tag">influxDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kali-linux/" rel="tag">kali-linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux%E5%BF%98%E8%AE%B0%E5%AF%86%E7%A0%81/" rel="tag">linux忘记密码</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/restFul%E6%8E%A5%E5%8F%A3/" rel="tag">restFul接口</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/url%E5%9C%B0%E5%9D%80%E5%8F%98%E8%BF%81/" rel="tag">url地址变迁</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E2%80%9C%E7%9F%A5%E8%AF%86%E5%BA%93%E5%A4%87%E4%BB%BD/" rel="tag">“知识库备份&quot;</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AA%E6%80%A7%E5%8C%96%E5%BC%80%E5%8F%91/" rel="tag">个性化开发</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE/" rel="tag">主题配置</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B9%8C%E5%90%88%E4%B9%8B%E4%BC%97/" rel="tag">乌合之众</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B9%A0%E6%83%AF/" rel="tag">习惯</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%B2%E8%BA%AB%E7%BB%8F%E5%8E%86/" rel="tag">亲身经历</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%A8%E5%B1%80%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" rel="tag">全局异常处理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0/" rel="tag">前端学习</a><span class="tag-list-count">18</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/" rel="tag">博客搭建教程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99/" rel="tag">命名规则</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%93%B2%E5%AD%A6/" rel="tag">哲学</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%93%B2%E5%AD%A6%E8%AF%AD%E5%BD%95/" rel="tag">哲学语录</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%A0%E5%BC%8F%E5%88%86%E8%A7%A3/" rel="tag">因式分解</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%B9%B3%E5%8F%B0/" rel="tag">大数据分析平台</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%9D%E5%A1%94%E9%9D%A2%E6%9D%BF/" rel="tag">宝塔面板</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%82%E7%AD%89%E6%80%A7/" rel="tag">幂等性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%82%E6%AD%A5%E6%93%8D%E4%BD%9C/" rel="tag">异步操作</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E4%B9%A0%E6%83%AF/" rel="tag">微习惯</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" rel="tag">微服务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BF%83%E6%B5%81/" rel="tag">心流</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8B%AF%E6%95%91%E5%B0%8F%E7%99%BD%E7%B3%BB%E5%88%97/" rel="tag">拯救小白系列</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E7%AB%A0%E6%94%B6%E5%BD%95/" rel="tag">文章收录</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%97%A5%E5%B8%B8%E5%B0%8FBUG/" rel="tag">日常小BUG</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%97%E9%80%8F%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A/" rel="tag">渗透必知必会</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%88%AC%E8%99%AB%E6%95%B0%E6%8D%AE/" rel="tag">爬虫数据</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%8B%AC%E7%89%B9/" rel="tag">独特</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9D%A1%E7%9C%A0/" rel="tag">睡眠</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A3%81%E7%9B%98%E5%88%86%E5%8C%BA/" rel="tag">磁盘分区</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A7%81%E5%9F%9F/" rel="tag">私域</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E7%A8%8B%E7%9F%A5%E8%AF%86/" rel="tag">编程知识</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E5%AE%89/" rel="tag">网安</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E8%AF%BE/" rel="tag">网课</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E6%8E%A7/" rel="tag">自控</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E6%8E%A7%E5%8A%9B/" rel="tag">自控力</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%8B%A5%E4%BE%9D%E4%BF%AE%E6%94%B9/" rel="tag">若依修改</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%8B%A5%E4%BE%9D%E6%A1%86%E6%9E%B6/" rel="tag">若依框架</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%8B%A5%E4%BE%9D%E9%85%8D%E7%BD%AE/" rel="tag">若依配置</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A7%86%E9%A2%91%E6%A8%A1%E5%9D%97/" rel="tag">视频模块</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%87%8D%E7%BD%AE%E5%AF%86%E7%A0%81/" rel="tag">重置密码</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%AB%98%E6%95%88/" rel="tag">高效</a><span class="tag-list-count">5</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Boilerpipe/" style="font-size: 13px;">Boilerpipe</a> <a href="/tags/Docker/" style="font-size: 13px;">Docker</a> <a href="/tags/ES6/" style="font-size: 14px;">ES6</a> <a href="/tags/FastJson/" style="font-size: 13.13px;">FastJson</a> <a href="/tags/GitHub/" style="font-size: 13.13px;">GitHub</a> <a href="/tags/Grafana/" style="font-size: 13px;">Grafana</a> <a href="/tags/HTTP%E6%B6%88%E6%81%AF%E8%BD%AC%E6%8D%A2%E5%99%A8/" style="font-size: 13.13px;">HTTP消息转换器</a> <a href="/tags/JavaScript/" style="font-size: 13px;">JavaScript</a> <a href="/tags/Java%E5%AD%A6%E4%B9%A0/" style="font-size: 13px;">Java学习</a> <a href="/tags/Jenkins/" style="font-size: 13px;">Jenkins</a> <a href="/tags/Jenkins%E5%AD%A6%E4%B9%A0/" style="font-size: 13px;">Jenkins学习</a> <a href="/tags/K8s%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/" style="font-size: 13px;">K8s基础学习</a> <a href="/tags/Linux%E5%AD%A6%E4%B9%A0/" style="font-size: 13px;">Linux学习</a> <a href="/tags/Node-js/" style="font-size: 13.75px;">Node.js</a> <a href="/tags/Pure%E4%B8%BB%E9%A2%98/" style="font-size: 13px;">Pure主题</a> <a href="/tags/Rancher/" style="font-size: 13px;">Rancher</a> <a href="/tags/Scrapy%E7%88%AC%E8%99%AB/" style="font-size: 13.63px;">Scrapy爬虫</a> <a href="/tags/Stack-Overflow/" style="font-size: 13px;">Stack Overflow</a> <a href="/tags/Vue%E5%9F%BA%E7%A1%80/" style="font-size: 13.88px;">Vue基础</a> <a href="/tags/WebPack/" style="font-size: 13.25px;">WebPack</a> <a href="/tags/cAdvisor/" style="font-size: 13px;">cAdvisor</a> <a href="/tags/clash/" style="font-size: 13px;">clash</a> <a href="/tags/dolphinscheduler/" style="font-size: 13.13px;">dolphinscheduler</a> <a href="/tags/ffmpeg/" style="font-size: 13px;">ffmpeg</a> <a href="/tags/influxDB/" style="font-size: 13px;">influxDB</a> <a href="/tags/kali-linux/" style="font-size: 13px;">kali-linux</a> <a href="/tags/linux%E5%BF%98%E8%AE%B0%E5%AF%86%E7%A0%81/" style="font-size: 13px;">linux忘记密码</a> <a href="/tags/restFul%E6%8E%A5%E5%8F%A3/" style="font-size: 13px;">restFul接口</a> <a href="/tags/url%E5%9C%B0%E5%9D%80%E5%8F%98%E8%BF%81/" style="font-size: 13px;">url地址变迁</a> <a href="/tags/%E2%80%9C%E7%9F%A5%E8%AF%86%E5%BA%93%E5%A4%87%E4%BB%BD/" style="font-size: 13px;">“知识库备份"</a> <a href="/tags/%E4%B8%AA%E6%80%A7%E5%8C%96%E5%BC%80%E5%8F%91/" style="font-size: 13.5px;">个性化开发</a> <a href="/tags/%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE/" style="font-size: 13px;">主题配置</a> <a href="/tags/%E4%B9%8C%E5%90%88%E4%B9%8B%E4%BC%97/" style="font-size: 13px;">乌合之众</a> <a href="/tags/%E4%B9%A0%E6%83%AF/" style="font-size: 13px;">习惯</a> <a href="/tags/%E4%BA%B2%E8%BA%AB%E7%BB%8F%E5%8E%86/" style="font-size: 13px;">亲身经历</a> <a href="/tags/%E5%85%A8%E5%B1%80%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" style="font-size: 13px;">全局异常处理</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0/" style="font-size: 14px;">前端学习</a> <a href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/" style="font-size: 13px;">博客搭建教程</a> <a href="/tags/%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99/" style="font-size: 13px;">命名规则</a> <a href="/tags/%E5%93%B2%E5%AD%A6/" style="font-size: 13px;">哲学</a> <a href="/tags/%E5%93%B2%E5%AD%A6%E8%AF%AD%E5%BD%95/" style="font-size: 13px;">哲学语录</a> <a href="/tags/%E5%9B%A0%E5%BC%8F%E5%88%86%E8%A7%A3/" style="font-size: 13px;">因式分解</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%B9%B3%E5%8F%B0/" style="font-size: 13.13px;">大数据分析平台</a> <a href="/tags/%E5%AD%A6%E4%B9%A0/" style="font-size: 13.38px;">学习</a> <a href="/tags/%E5%AE%9D%E5%A1%94%E9%9D%A2%E6%9D%BF/" style="font-size: 13px;">宝塔面板</a> <a href="/tags/%E5%B9%82%E7%AD%89%E6%80%A7/" style="font-size: 13px;">幂等性</a> <a href="/tags/%E5%BC%82%E6%AD%A5%E6%93%8D%E4%BD%9C/" style="font-size: 13.13px;">异步操作</a> <a href="/tags/%E5%BE%AE%E4%B9%A0%E6%83%AF/" style="font-size: 13px;">微习惯</a> <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" style="font-size: 13px;">微服务</a> <a href="/tags/%E5%BF%83%E6%B5%81/" style="font-size: 13px;">心流</a> <a href="/tags/%E6%8B%AF%E6%95%91%E5%B0%8F%E7%99%BD%E7%B3%BB%E5%88%97/" style="font-size: 13.13px;">拯救小白系列</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 13px;">数学</a> <a href="/tags/%E6%96%87%E7%AB%A0%E6%94%B6%E5%BD%95/" style="font-size: 13.13px;">文章收录</a> <a href="/tags/%E6%97%A5%E5%B8%B8%E5%B0%8FBUG/" style="font-size: 13.13px;">日常小BUG</a> <a href="/tags/%E6%B8%97%E9%80%8F%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A/" style="font-size: 13px;">渗透必知必会</a> <a href="/tags/%E7%88%AC%E8%99%AB%E6%95%B0%E6%8D%AE/" style="font-size: 13px;">爬虫数据</a> <a href="/tags/%E7%8B%AC%E7%89%B9/" style="font-size: 13px;">独特</a> <a href="/tags/%E7%9D%A1%E7%9C%A0/" style="font-size: 13.13px;">睡眠</a> <a href="/tags/%E7%A3%81%E7%9B%98%E5%88%86%E5%8C%BA/" style="font-size: 13px;">磁盘分区</a> <a href="/tags/%E7%A7%81%E5%9F%9F/" style="font-size: 13px;">私域</a> <a href="/tags/%E7%BC%96%E7%A8%8B%E7%9F%A5%E8%AF%86/" style="font-size: 13px;">编程知识</a> <a href="/tags/%E7%BD%91%E5%AE%89/" style="font-size: 13.38px;">网安</a> <a href="/tags/%E7%BD%91%E8%AF%BE/" style="font-size: 13px;">网课</a> <a href="/tags/%E8%87%AA%E6%8E%A7/" style="font-size: 13px;">自控</a> <a href="/tags/%E8%87%AA%E6%8E%A7%E5%8A%9B/" style="font-size: 13px;">自控力</a> <a href="/tags/%E8%8B%A5%E4%BE%9D%E4%BF%AE%E6%94%B9/" style="font-size: 13.5px;">若依修改</a> <a href="/tags/%E8%8B%A5%E4%BE%9D%E6%A1%86%E6%9E%B6/" style="font-size: 13.5px;">若依框架</a> <a href="/tags/%E8%8B%A5%E4%BE%9D%E9%85%8D%E7%BD%AE/" style="font-size: 13.5px;">若依配置</a> <a href="/tags/%E8%A7%86%E9%A2%91%E6%A8%A1%E5%9D%97/" style="font-size: 13px;">视频模块</a> <a href="/tags/%E9%87%8D%E7%BD%AE%E5%AF%86%E7%A0%81/" style="font-size: 13px;">重置密码</a> <a href="/tags/%E9%AB%98%E6%95%88/" style="font-size: 13.5px;">高效</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/04/">四月 2024</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">三月 2024</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">十二月 2023</a><span class="archive-list-count">25</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">十一月 2023</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">八月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">七月 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">五月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">十二月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">八月 2022</a><span class="archive-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98-%E4%BB%BFB%E7%AB%99/">项目实战-仿B站</a>
+              </p>
+              <p class="item-title">
+                <a href="/2024/04/04/JSON%E4%BF%A1%E6%81%AF%E8%BD%AC%E6%8D%A2%E9%85%8D%E7%BD%AE%E4%B8%8E%E5%85%A8%E5%B1%80%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E5%9C%A8Spring-Boot%E4%B8%AD%E7%9A%84%E5%AE%9E%E7%8E%B0/" class="title">JSON信息转换配置与全局异常处理在Spring Boot中的实现</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2024-04-03T18:08:57.000Z" itemprop="datePublished">2024-04-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98-%E4%BB%BFB%E7%AB%99/">项目实战-仿B站</a>
+              </p>
+              <p class="item-title">
+                <a href="/2024/04/04/Spring-Boot%E7%8E%AF%E5%A2%83%E4%B8%AD%E9%9B%86%E6%88%90%E5%B9%B6%E9%85%8D%E7%BD%AEFastJson%E4%BD%9C%E4%B8%BAHTTP%E6%B6%88%E6%81%AF%E8%BD%AC%E6%8D%A2%E5%99%A8/" class="title">Spring Boot环境中集成并配置FastJson作为HTTP消息转换器</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2024-04-03T17:46:11.000Z" itemprop="datePublished">2024-04-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98-%E4%BB%BFB%E7%AB%99/">项目实战-仿B站</a>
+              </p>
+              <p class="item-title">
+                <a href="/2024/04/04/%E9%97%AE%E9%A2%98%E5%88%97%E8%A1%A8/" class="title">探究HTTP中的幂等性：POST与PUT的差异及其在RESTful接口设计中的应用</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2024-04-03T17:04:36.000Z" itemprop="datePublished">2024-04-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E8%8B%A5%E4%BE%9D%E6%A1%86%E6%9E%B6/">若依框架</a>
+              </p>
+              <p class="item-title">
+                <a href="/2024/04/01/%E8%8B%A5%E4%BE%9D%E8%BF%9B%E8%A1%8C%E6%89%B9%E9%87%8F%E6%B7%BB%E5%8A%A0%E6%93%8D%E4%BD%9C/" class="title">若依进行批量添加操作</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2024-04-01T03:46:19.000Z" itemprop="datePublished">2024-04-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2024/03/18/Hadoop%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%80%E9%94%AE%E8%84%9A%E6%9C%AC%E7%89%88%E6%9C%AC/" class="title">(no title)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2024-03-18T00:50:11.144Z" itemprop="datePublished">2024-03-18</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-Hadoop完全分布式一键脚本版本" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2024/03/18/Hadoop%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%80%E9%94%AE%E8%84%9A%E6%9C%AC%E7%89%88%E6%9C%AC/" class="article-date">
+	  <time datetime="2024-03-18T00:50:11.144Z" itemprop="datePublished">2024-03-18</time>
+	</a>
+</span>
+        
+        
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2024/03/18/Hadoop%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%80%E9%94%AE%E8%84%9A%E6%9C%AC%E7%89%88%E6%9C%AC/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 2.7k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 14(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <blockquote>
+<p>内容转载自：<a target="_blank" rel="noopener" href="https://blog.830sir.top/2024/03/16/linux-hadoop%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/">linux-hadoop完全分布式集群搭建 - Xavier的博客 | Xavier Blog (830sir.top)</a></p>
+<p>欢迎关注博主：<a target="_blank" rel="noopener" href="https://blog.830sir.top/">https://blog.830sir.top/</a></p>
+<p>“Yeah It’s on. ”</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget -O hadoop.txt https://fs-im-kefu.7moor-fs1.com/29397395/4d2c3f00-7d4c-11e5-af15-41bf63ae4ea0/1710727671494/hadoop.txt &amp;&amp; <span class="built_in">mv</span> hadoop.txt hadoop.sh &amp;&amp; <span class="built_in">chmod</span> +x hadoop.sh &amp;&amp; ./hadoop.sh</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h1 id="hadoop完全分布式集群搭建"><a class="markdownIt-Anchor" href="#hadoop完全分布式集群搭建"></a> hadoop完全分布式集群搭建</h1>
+<table>
+<thead>
+<tr>
+<th>操作系统</th>
+<th>IP</th>
+<th>角色</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>centos 7</td>
+<td>192.168.73.146</td>
+<td>master</td>
+</tr>
+<tr>
+<td>centos 7</td>
+<td>192.168.73.147</td>
+<td>node1</td>
+</tr>
+<tr>
+<td>centos 7</td>
+<td>192.168.73.148</td>
+<td>node2</td>
+</tr>
+</tbody>
+</table>
+<p>实验说明：本实验用到三台机器，两台从服务器，一台主服务器，<strong>只需要把三台机器配置好免密登录即可运行接下来的脚本</strong></p>
+<p>以下脚本将会为你更改主机名、安装jdk和hadoop及其初始化</p>
+<h2 id="一-从服务器两台"><a class="markdownIt-Anchor" href="#一-从服务器两台"></a> 一、从服务器(两台)</h2>
+<p>将jdk安装包上传至 <strong>/opt</strong>目录下</p>
+<h3 id="新建脚本"><a class="markdownIt-Anchor" href="#新建脚本"></a> 新建脚本</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi 	java.sh</span><br></pre></td></tr></table></figure>
+<h3 id="复制下面shell脚本到javash中"><a class="markdownIt-Anchor" href="#复制下面shell脚本到javash中"></a> 复制下面shell脚本到java.sh中</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查用户是否为root</span></span><br><span class="line"><span class="keyword">if</span> [ <span class="string">&quot;<span class="subst">$(id -u)</span>&quot;</span> != <span class="string">&quot;0&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;脚本运行中需要root权限，请提权后重试&quot;</span> 1&gt;&amp;2</span><br><span class="line">        <span class="built_in">return</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line">clear</span><br><span class="line"></span><br><span class="line"><span class="comment">#检测/opt目录下是否有jdk的安装包</span></span><br><span class="line">jdk_files=$(find /opt -maxdepth 1 -name <span class="string">&quot;*jdk*.tar.gz&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查变量是否为空</span></span><br><span class="line"><span class="keyword">if</span> [ -z <span class="string">&quot;<span class="variable">$jdk_files</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;未发现.tar.gz格式的jdk安装包!!!&quot;</span></span><br><span class="line">        <span class="comment"># 提示用户选择是否通过网络下载jdk</span></span><br><span class="line">        <span class="built_in">read</span> -p <span class="string">&quot;是否通过网络下载jdk？(y/n): &quot;</span> choice</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$choice</span>&quot;</span> == <span class="string">&quot;y&quot;</span> ] || [ <span class="string">&quot;<span class="variable">$choice</span>&quot;</span> == <span class="string">&quot;Y&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">            wget https://fs-im-kefu.7moor-fs1.com/29397395/4d2c3f00-7d4c-11e5-af15-41bf63ae4ea0/1710725059209/jdk-8u171-linux-x64.tar.gz -P /opt/</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            <span class="built_in">echo</span> <span class="string">&quot;请将jdk安装包放在/opt目录下再次运行脚本&quot;</span></span><br><span class="line">            <span class="built_in">exit</span> 1</span><br><span class="line">        <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;环境检查完毕&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;正在安装jdk...&quot;</span></span><br><span class="line"><span class="comment"># 查找已安装的Java包</span></span><br><span class="line">installed_java_pkgs=$(rpm -qa | grep -E <span class="string">&#x27;^java-|^jdk-&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果没有找到Java包,则跳过删除步骤</span></span><br><span class="line"><span class="keyword">if</span> [ -z <span class="string">&quot;<span class="variable">$installed_java_pkgs</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;没有发现已安装的Java包&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">        <span class="comment"># 逐个删除Java包</span></span><br><span class="line">        <span class="keyword">for</span> pkg <span class="keyword">in</span> <span class="variable">$installed_java_pkgs</span>; <span class="keyword">do</span></span><br><span class="line">                rpm -e --nodeps <span class="string">&quot;<span class="variable">$pkg</span>&quot;</span></span><br><span class="line">        <span class="keyword">done</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line">tar -zxvf /opt/jdk-8u171-linux-x64.tar.gz -C /usr/local/ &gt;&amp;/dev/null</span><br><span class="line"><span class="built_in">ln</span> -s /usr/local/jdk1.8.0_171 /usr/local/jdk</span><br><span class="line"></span><br><span class="line"><span class="built_in">touch</span> /opt/temp.txt</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;JAVA_HOME=/usr/local/jdk&#x27;</span> &gt;&gt;/opt/temp.txt</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;PATH=$JAVA_HOME/bin:$PATH&#x27;</span> &gt;&gt;/opt/temp.txt</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;CLASSPATH=$JAVA_HOME/jre/lib/ext:$JAVA_HOME/lib/tools.jar&#x27;</span> &gt;&gt;/opt/temp.txt</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;export PATH JAVA_HOME CLASSPATH&#x27;</span> &gt;&gt;/opt/temp.txt</span><br><span class="line">sed -i -e <span class="string">&#x27;$r /opt/temp.txt&#x27;</span> /etc/profile</span><br><span class="line"><span class="built_in">rm</span> -f /opt/temp.txt</span><br><span class="line"><span class="built_in">source</span> /etc/profile <span class="comment">#重载环境变量</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;jdk安装完成&quot;</span></span><br></pre></td></tr></table></figure>
+<p>运行脚本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> java.sh</span><br></pre></td></tr></table></figure>
+<h2 id="二-主服务器"><a class="markdownIt-Anchor" href="#二-主服务器"></a> 二、主服务器</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi hadoop.sh</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">clear</span><br><span class="line">sed -i <span class="string">&#x27;/^SELINUX=/s/enforcing/disabled/&#x27;</span> /etc/selinux/config</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;本脚本适用于centos 7系统&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;使用前请确保主机间已实现免密登录&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;本脚本运行过程中可为你个性化设置主机名,安装JDK,安装及初始化hadoop集群&quot;</span></span><br><span class="line"><span class="built_in">read</span> -p <span class="string">&quot;Do you want to continue? (yes/no): &quot;</span> choice</span><br><span class="line"></span><br><span class="line"><span class="keyword">case</span> <span class="string">&quot;<span class="variable">$choice</span>&quot;</span> <span class="keyword">in</span></span><br><span class="line"><span class="built_in">yes</span> | y | Y | YES)</span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;Continuing script execution...&quot;</span></span><br><span class="line">	;;</span><br><span class="line">no | n | N | NO)</span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;Exiting script...&quot;</span></span><br><span class="line">	<span class="built_in">return</span> 1</span><br><span class="line">	;;</span><br><span class="line">*)</span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;Invalid choice. Exiting script...&quot;</span></span><br><span class="line">	<span class="built_in">return</span> 1</span><br><span class="line">	;;</span><br><span class="line"><span class="keyword">esac</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查用户是否为root</span></span><br><span class="line"><span class="keyword">if</span> [ <span class="string">&quot;<span class="subst">$(id -u)</span>&quot;</span> != <span class="string">&quot;0&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;脚本运行中需要root权限，请提权后重试&quot;</span> 1&gt;&amp;2</span><br><span class="line">	<span class="built_in">return</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line">setenforce 0</span><br><span class="line">iptables -F</span><br><span class="line">systemctl stop firewalld</span><br><span class="line">systemctl <span class="built_in">disable</span> firewalld &gt;&amp;/dev/null</span><br><span class="line">systemctl stop NetworkManager</span><br><span class="line">systemctl <span class="built_in">disable</span> NetworkManager &gt;&amp;/dev/null</span><br><span class="line"><span class="comment">#获取本机ip</span></span><br><span class="line">ip=$(ip addr show ens33 | grep <span class="string">&#x27;inet &#x27;</span> | awk <span class="string">&#x27;&#123;print $2&#125;&#x27;</span> | <span class="built_in">cut</span> -d/ -f1)</span><br><span class="line">clear</span><br><span class="line"></span><br><span class="line"><span class="comment">#检测是否已安装Java</span></span><br><span class="line">rpm -qa | grep java &gt;&amp;/dev/null</span><br><span class="line">java_status=<span class="string">&quot;$?&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#检测/opt目录下是否有jdk的安装包</span></span><br><span class="line">jdk_files=$(find /opt -maxdepth 1 -name <span class="string">&quot;*jdk*.tar.gz&quot;</span>)</span><br><span class="line"><span class="comment">#检测/opt目录下是否有hadoop的安装包</span></span><br><span class="line">hadoop_files=$(find /opt -maxdepth 1 -name <span class="string">&quot;*hadoop*.tar.gz&quot;</span>)</span><br><span class="line"><span class="comment"># 如果没有找到JDK安装包，则下载</span></span><br><span class="line"><span class="keyword">if</span> [ -z <span class="string">&quot;<span class="variable">$jdk_files</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;未发现.tar.gz格式的jdk安装包，开始下载...&quot;</span></span><br><span class="line">    wget -P /opt https://fs-im-kefu.7moor-fs1.com/29397395/4d2c3f00-7d4c-11e5-af15-41bf63ae4ea0/1710725059209/jdk-8u171-linux-x64.tar.gz</span><br><span class="line">    jdk_files=$(find /opt -maxdepth 1 -name <span class="string">&quot;*jdk*.tar.gz&quot;</span>)</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果没有找到Hadoop安装包，则下载</span></span><br><span class="line"><span class="keyword">if</span> [ -z <span class="string">&quot;<span class="variable">$hadoop_files</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;未发现.tar.gz格式的hadoop安装包，开始下载...&quot;</span></span><br><span class="line">    wget -P /opt https://fs-im-kefu.7moor-fs1.com/29397395/4d2c3f00-7d4c-11e5-af15-41bf63ae4ea0/1710725863479/hadoop-3.3.4.tar.gz</span><br><span class="line">    hadoop_files=$(find /opt -maxdepth 1 -name <span class="string">&quot;*hadoop*.tar.gz&quot;</span>)</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;环境检查完毕&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$java_status</span> -eq 0 ]; <span class="keyword">then</span></span><br><span class="line">	<span class="keyword">while</span> <span class="literal">true</span>; <span class="keyword">do</span></span><br><span class="line">		<span class="comment"># 询问用户是否继续</span></span><br><span class="line">		<span class="built_in">echo</span> <span class="string">&quot;检查到已经安装了jdk，继续安装则会删除已有jdk环境？(yes/no)&quot;</span></span><br><span class="line">		<span class="built_in">read</span> answer</span><br><span class="line"></span><br><span class="line">		<span class="comment"># 如果用户输入 &quot;yes&quot;，则跳出循环</span></span><br><span class="line">		<span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$answer</span>&quot;</span> = <span class="string">&quot;yes&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">			<span class="built_in">break</span></span><br><span class="line">		<span class="comment"># 如果用户输入 &quot;no&quot;，则结束脚本</span></span><br><span class="line">		<span class="keyword">elif</span> [ <span class="string">&quot;<span class="variable">$answer</span>&quot;</span> = <span class="string">&quot;no&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">			<span class="built_in">echo</span> <span class="string">&quot;Exiting.&quot;</span></span><br><span class="line">			<span class="built_in">return</span> 1</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			<span class="comment"># 如果用户输入了其他内容，打印一条消息，然后继续循环</span></span><br><span class="line">			<span class="built_in">echo</span> <span class="string">&quot;Invalid input. Please enter &#x27;yes&#x27; or &#x27;no&#x27;.&quot;</span></span><br><span class="line">		<span class="keyword">fi</span></span><br><span class="line">	<span class="keyword">done</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;本机IP为 <span class="variable">$ip</span>&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;请为本机设置主机名:&quot;</span></span><br><span class="line"><span class="built_in">read</span> hostname</span><br><span class="line"><span class="keyword">if</span> [ -z <span class="string">&quot;<span class="variable">$hostname</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">	<span class="comment"># 如果用户没有输入，设置默认主机名为hadoop1</span></span><br><span class="line">	hostname=<span class="string">&quot;hadoop1&quot;</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;设置默认主机名为hadoop1&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">true</span>; <span class="keyword">do</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;请输入第一台从结点主机ip&quot;</span></span><br><span class="line">	<span class="built_in">read</span> node_one_ip</span><br><span class="line">	<span class="keyword">if</span> [ -z <span class="string">&quot;<span class="variable">$node_one_ip</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">		<span class="built_in">echo</span> -e <span class="string">&quot;\033[31m 注意 \033[0m&quot;</span></span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		<span class="built_in">break</span></span><br><span class="line">	<span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">true</span>; <span class="keyword">do</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;请输入第一台从结点主机名&quot;</span></span><br><span class="line">	<span class="built_in">read</span> node_one_name</span><br><span class="line">	<span class="keyword">if</span> [ -z <span class="string">&quot;<span class="variable">$node_one_name</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">		<span class="built_in">echo</span> -e <span class="string">&quot;\033[31m 注意 \033[0m&quot;</span></span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		<span class="built_in">break</span></span><br><span class="line">	<span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">true</span>; <span class="keyword">do</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;请输入第二台从结点主机ip&quot;</span></span><br><span class="line">	<span class="built_in">read</span> node_two_ip</span><br><span class="line">	<span class="keyword">if</span> [ -z <span class="string">&quot;<span class="variable">$node_two_ip</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">		<span class="built_in">echo</span> -e <span class="string">&quot;\033[31m 注意 \033[0m&quot;</span></span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		<span class="built_in">break</span></span><br><span class="line">	<span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">true</span>; <span class="keyword">do</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;请输入第二台从结点主机名&quot;</span></span><br><span class="line">	<span class="built_in">read</span> node_two_name</span><br><span class="line">	<span class="keyword">if</span> [ -z <span class="string">&quot;<span class="variable">$node_two_name</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">		<span class="built_in">echo</span> -e <span class="string">&quot;\033[31m 注意 \033[0m&quot;</span></span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		<span class="built_in">break</span></span><br><span class="line">	<span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;正在将ip和hostname添加至/etc/hosts&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$ip</span> <span class="variable">$hostname</span>&quot;</span> &gt;&gt;/etc/hosts</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$node_one_ip</span> <span class="variable">$node_one_name</span>&quot;</span> &gt;&gt;/etc/hosts</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$node_two_ip</span> <span class="variable">$node_two_name</span>&quot;</span> &gt;&gt;/etc/hosts</span><br><span class="line">systemctl restart network</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;主机名已修改为<span class="variable">$hostname</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;正在安装jdk...&quot;</span></span><br><span class="line">rpm -qa | grep java | xargs rpm -e &gt;&amp;/dev/null</span><br><span class="line">tar -zxvf /opt/jdk-8u171-linux-x64.tar.gz -C /usr/local/ &gt;&amp;/dev/null</span><br><span class="line"><span class="built_in">ln</span> -s /usr/local/jdk1.8.0_171 /usr/local/jdk</span><br><span class="line"></span><br><span class="line"><span class="built_in">touch</span> /opt/temp.txt</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;JAVA_HOME=/usr/local/jdk&#x27;</span> &gt;&gt;/opt/temp.txt</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;PATH=$JAVA_HOME/bin:$PATH&#x27;</span> &gt;&gt;/opt/temp.txt</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;CLASSPATH=$JAVA_HOME/jre/lib/ext:$JAVA_HOME/lib/tools.jar&#x27;</span> &gt;&gt;/opt/temp.txt</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;export PATH JAVA_HOME CLASSPATH&#x27;</span> &gt;&gt;/opt/temp.txt</span><br><span class="line">sed -i -e <span class="string">&#x27;$r /opt/temp.txt&#x27;</span> /etc/profile</span><br><span class="line"><span class="built_in">rm</span> -f /opt/temp.txt</span><br><span class="line"><span class="built_in">source</span> /etc/profile <span class="comment">#重载环境变量</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;jdk安装完成&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#安装hadoop</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;开始安装hadoop...&quot;</span></span><br><span class="line">tar -zxvf /opt/hadoop-3.3.4.tar.gz -C /usr/local/ &gt;&amp;/dev/null</span><br><span class="line"><span class="built_in">ln</span> -s /usr/local/hadoop-3.3.4 /usr/local/hadoop</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;export HADOOP_HOME=/usr/local/hadoop&#x27;</span> &gt;&gt;/opt/temp.txt</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin&#x27;</span> &gt;&gt;/opt/temp.txt</span><br><span class="line">sed -i -e <span class="string">&#x27;$r /opt/temp.txt&#x27;</span> /etc/profile</span><br><span class="line"><span class="built_in">rm</span> -f /opt/temp.txt</span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> /etc/profile <span class="comment">#重载环境变量</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#安装完成，开始修改配置文件</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;export JAVA_HOME=/usr/local/jdk          #这里要修改为自己jdk的路径&#x27;</span> &gt;&gt;/opt/temp.txt</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;export HDFS_NAMENODE_USER=root           #这行设置HDFS的NameNode用户为root&#x27;</span> &gt;&gt;/opt/temp.txt</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;export HDFS_DATANODE_USER=root           #这行设置HDFS的DataNode用户为root&#x27;</span> &gt;&gt;/opt/temp.txt</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;export HDFS_SECONDARYNAMENODE_USER=root  #这行设置HDFS的SecondaryNameNode用户为root&#x27;</span> &gt;&gt;/opt/temp.txt</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;export YARN_RESOURCEMANAGER_USER=root    #这行设置YARN的ResourceManager用户为root&#x27;</span> &gt;&gt;/opt/temp.txt</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;export YARN_NODEMANAGER_USER=root        #这行设置YARN的NodeManager用户为root&#x27;</span> &gt;&gt;/opt/temp.txt</span><br><span class="line">sed -i -e <span class="string">&#x27;$r /opt/temp.txt&#x27;</span> /usr/local/hadoop/etc/hadoop/hadoop-env.sh</span><br><span class="line"><span class="built_in">rm</span> -f /opt/temp.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># core-site.xml</span></span><br><span class="line">file_path=<span class="string">&quot;/usr/local/hadoop/etc/hadoop/core-site.xml&quot;</span></span><br><span class="line">temp_file=<span class="string">&quot;temp.xml&quot;</span></span><br><span class="line"><span class="built_in">cat</span> &gt;<span class="variable">$temp_file</span> &lt;&lt;<span class="string">EOL</span></span><br><span class="line"><span class="string">&lt;property&gt;</span></span><br><span class="line"><span class="string">&lt;name&gt;fs.defaultFS&lt;/name&gt;</span></span><br><span class="line"><span class="string">&lt;value&gt;hdfs://$hostname:9000&lt;/value&gt;</span></span><br><span class="line"><span class="string">&lt;/property&gt;</span></span><br><span class="line"><span class="string">&lt;property&gt;</span></span><br><span class="line"><span class="string">&lt;name&gt;hadoop.tmp.dir&lt;/name&gt;</span></span><br><span class="line"><span class="string">&lt;value&gt;/export/data/hadoop-wfb-3.3.0&lt;/value&gt;</span></span><br><span class="line"><span class="string">&lt;/property&gt;</span></span><br><span class="line"><span class="string">&lt;property&gt;</span></span><br><span class="line"><span class="string">&lt;name&gt;hadoop.http.staticuser.user&lt;/name&gt;</span></span><br><span class="line"><span class="string">&lt;value&gt;root&lt;/value&gt;</span></span><br><span class="line"><span class="string">&lt;/property&gt;</span></span><br><span class="line"><span class="string">&lt;property&gt;</span></span><br><span class="line"><span class="string">&lt;name&gt;hadoop.proxyuser.root.hosts&lt;/name&gt;</span></span><br><span class="line"><span class="string">&lt;value&gt;*&lt;/value&gt;</span></span><br><span class="line"><span class="string">&lt;/property&gt;</span></span><br><span class="line"><span class="string">&lt;property&gt;</span></span><br><span class="line"><span class="string">&lt;name&gt;hadoop.proxyuser.root.groups&lt;/name&gt;</span></span><br><span class="line"><span class="string">&lt;value&gt;*&lt;/value&gt;</span></span><br><span class="line"><span class="string">&lt;/property&gt;</span></span><br><span class="line"><span class="string">&lt;property&gt;</span></span><br><span class="line"><span class="string">&lt;name&gt;fs.trash.interval&lt;/name&gt;</span></span><br><span class="line"><span class="string">&lt;value&gt;1440&lt;/value&gt;</span></span><br><span class="line"><span class="string">&lt;/property&gt;</span></span><br><span class="line"><span class="string">EOL</span></span><br><span class="line">sudo sed -i <span class="string">&quot;/&lt;configuration&gt;/r <span class="variable">$temp_file</span>&quot;</span> <span class="variable">$file_path</span></span><br><span class="line"><span class="built_in">rm</span> -f <span class="variable">$temp_file</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#hdfs-site.xml</span></span><br><span class="line">file_path=<span class="string">&quot;/usr/local/hadoop/etc/hadoop/hdfs-site.xml&quot;</span></span><br><span class="line">temp_file=<span class="string">&quot;temp.xml&quot;</span></span><br><span class="line"><span class="built_in">cat</span> &gt;<span class="variable">$temp_file</span> &lt;&lt;<span class="string">EOL</span></span><br><span class="line"><span class="string">&lt;property&gt;</span></span><br><span class="line"><span class="string">&lt;name&gt;dfs.replication&lt;/name&gt;</span></span><br><span class="line"><span class="string">&lt;value&gt;2&lt;/value&gt;</span></span><br><span class="line"><span class="string">&lt;/property&gt;</span></span><br><span class="line"><span class="string">&lt;property&gt;</span></span><br><span class="line"><span class="string">&lt;name&gt;dfs.namenode.secondary.http-address&lt;/name&gt;</span></span><br><span class="line"><span class="string">&lt;value&gt;$node_one_ip:9868&lt;/value&gt;</span></span><br><span class="line"><span class="string">&lt;/property&gt;</span></span><br><span class="line"><span class="string">EOL</span></span><br><span class="line">sudo sed -i <span class="string">&quot;/&lt;configuration&gt;/r <span class="variable">$temp_file</span>&quot;</span> <span class="variable">$file_path</span></span><br><span class="line"><span class="built_in">rm</span> -f <span class="variable">$temp_file</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># mapred-site.xml</span></span><br><span class="line">file_path=<span class="string">&quot;/usr/local/hadoop/etc/hadoop/mapred-site.xml&quot;</span></span><br><span class="line"><span class="built_in">cat</span> &gt;<span class="variable">$temp_file</span> &lt;&lt;<span class="string">EOL</span></span><br><span class="line"><span class="string">&lt;property&gt;</span></span><br><span class="line"><span class="string">        &lt;name&gt;mapreduce.framework.name&lt;/name&gt;</span></span><br><span class="line"><span class="string">        &lt;value&gt;yarn&lt;/value&gt;</span></span><br><span class="line"><span class="string">&lt;/property&gt;</span></span><br><span class="line"><span class="string">&lt;property&gt;</span></span><br><span class="line"><span class="string">        &lt;name&gt;mapreduce.jobhistory.address&lt;/name&gt;</span></span><br><span class="line"><span class="string">        &lt;value&gt;$hostname:10020&lt;/value&gt;</span></span><br><span class="line"><span class="string">&lt;/property&gt;</span></span><br><span class="line"><span class="string">&lt;property&gt;</span></span><br><span class="line"><span class="string">        &lt;name&gt;mapreduce.jobhistory.webapp.address&lt;/name&gt;</span></span><br><span class="line"><span class="string">        &lt;value&gt;$hostname:19888&lt;/value&gt;</span></span><br><span class="line"><span class="string">&lt;/property&gt;</span></span><br><span class="line"><span class="string">&lt;property&gt;</span></span><br><span class="line"><span class="string">        &lt;name&gt;yarn.app.mapreduce.am.env&lt;/name&gt;</span></span><br><span class="line"><span class="string">        &lt;value&gt;HADOOP_MAPRED_HOME=$&#123;HADOOP_HOME&#125;&lt;/value&gt;</span></span><br><span class="line"><span class="string">&lt;/property&gt;</span></span><br><span class="line"><span class="string">&lt;property&gt;</span></span><br><span class="line"><span class="string">        &lt;name&gt;mapreduce.map.env&lt;/name&gt;</span></span><br><span class="line"><span class="string">        &lt;value&gt;HADOOP_MAPRED_HOME=$&#123;HADOOP_HOME&#125;&lt;/value&gt;</span></span><br><span class="line"><span class="string">&lt;/property&gt;</span></span><br><span class="line"><span class="string">&lt;property&gt;</span></span><br><span class="line"><span class="string">&lt;name&gt;mapreduce.reduce.eny&lt;/name&gt;</span></span><br><span class="line"><span class="string">&lt;value&gt;HADOOP_MAPRED_HOME=$&#123;HADOOP_HOME&#125;&lt;/value&gt;</span></span><br><span class="line"><span class="string">&lt;/property&gt;</span></span><br><span class="line"><span class="string">EOL</span></span><br><span class="line">sudo sed -i <span class="string">&quot;/&lt;configuration&gt;/r <span class="variable">$temp_file</span>&quot;</span> <span class="variable">$file_path</span></span><br><span class="line"><span class="built_in">rm</span> -f <span class="variable">$temp_file</span></span><br><span class="line"></span><br><span class="line">file_path=<span class="string">&quot;/usr/local/hadoop/etc/hadoop/yarn-site.xml&quot;</span></span><br><span class="line"><span class="built_in">cat</span> &gt;<span class="variable">$temp_file</span> &lt;&lt;<span class="string">EOL</span></span><br><span class="line"><span class="string">&lt;property&gt;</span></span><br><span class="line"><span class="string">&lt;name&gt;yarn.resourcemanager.hostname&lt;/name&gt;</span></span><br><span class="line"><span class="string">&lt;value&gt;$hostname&lt;/value&gt;</span></span><br><span class="line"><span class="string">&lt;/property&gt;</span></span><br><span class="line"><span class="string">&lt;property&gt;</span></span><br><span class="line"><span class="string">&lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;</span></span><br><span class="line"><span class="string">&lt;value&gt;mapreduce_shuffle&lt;/value&gt;</span></span><br><span class="line"><span class="string">&lt;/property&gt;</span></span><br><span class="line"><span class="string">&lt;property&gt;</span></span><br><span class="line"><span class="string">&lt;name&gt;yarn.nodemanager.pmem-check-enabled&lt;/name&gt;</span></span><br><span class="line"><span class="string">&lt;value&gt;false&lt;/value&gt;</span></span><br><span class="line"><span class="string">&lt;/property&gt;</span></span><br><span class="line"><span class="string">&lt;property&gt;</span></span><br><span class="line"><span class="string">&lt;name&gt;yarn.nodemanager.vmem-check-enabled&lt;/name&gt;</span></span><br><span class="line"><span class="string">&lt;value&gt;false&lt;/value&gt;</span></span><br><span class="line"><span class="string">&lt;/property&gt;</span></span><br><span class="line"><span class="string">&lt;property&gt;</span></span><br><span class="line"><span class="string">&lt;name&gt;yarn.1og-aggregation-enable&lt;/name&gt;</span></span><br><span class="line"><span class="string">&lt;value&gt;true&lt;/value&gt;</span></span><br><span class="line"><span class="string">&lt;/property&gt;</span></span><br><span class="line"><span class="string">&lt;property&gt;</span></span><br><span class="line"><span class="string">&lt;name&gt;yarn.log.server.url&lt;/name&gt;</span></span><br><span class="line"><span class="string">&lt;value&gt;http://$hostname:19888/jobhistory/logs&lt;/value&gt;</span></span><br><span class="line"><span class="string">&lt;/property&gt;</span></span><br><span class="line"><span class="string">&lt;property&gt;</span></span><br><span class="line"><span class="string">&lt;name&gt;yarn.log-aggregation.retain-seconds&lt;/name&gt;</span></span><br><span class="line"><span class="string">&lt;value&gt;604800&lt;/value&gt;</span></span><br><span class="line"><span class="string">&lt;/property&gt;</span></span><br><span class="line"><span class="string">EOL</span></span><br><span class="line">sudo sed -i <span class="string">&quot;/&lt;configuration&gt;/r <span class="variable">$temp_file</span>&quot;</span> <span class="variable">$file_path</span></span><br><span class="line"><span class="built_in">rm</span> -f <span class="variable">$temp_file</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 清空workers文件</span></span><br><span class="line">&gt; /usr/local/hadoop/etc/hadoop/workers</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$node_one_name</span>&quot;</span> &gt;&gt;/usr/local/hadoop/etc/hadoop/workers</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$node_two_name</span>&quot;</span> &gt;&gt;/usr/local/hadoop/etc/hadoop/workers</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$hostname</span>&quot;</span> &gt;&gt;/usr/local/hadoop/etc/hadoop/workers</span><br><span class="line"></span><br><span class="line">scp -r /usr/local/hadoop root@<span class="variable">$node_one_ip</span>:/usr/local/hadoop</span><br><span class="line">scp -r /etc/profile root@<span class="variable">$node_one_ip</span>:/etc/profile</span><br><span class="line">scp -r /etc/hosts root@<span class="variable">$node_one_ip</span>:/etc/hosts</span><br><span class="line">scp -r /usr/local/hadoop root@<span class="variable">$node_two_ip</span>:/usr/local/hadoop</span><br><span class="line">scp -r /etc/profile root@<span class="variable">$node_two_ip</span>:/etc/profile</span><br><span class="line">scp -r /etc/hosts root@<span class="variable">$node_two_ip</span>:/etc/hosts</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#初始化集群</span></span><br><span class="line">hdfs namenode -format</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加环境变量和别名到/etc/profile</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&#x27;# Hadoop service control aliases&#x27;</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&#x27;export HADOOP_HOME=/usr/local/hadoop&#x27;</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&#x27;alias hadoop_on=&quot;$HADOOP_HOME/sbin/start-dfs.sh; $HADOOP_HOME/sbin/start-yarn.sh&quot;&#x27;</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&#x27;alias hadoop_off=&quot;$HADOOP_HOME/sbin/stop-dfs.sh; $HADOOP_HOME/sbin/stop-yarn.sh&quot;&#x27;</span></span><br><span class="line">&#125; &gt;&gt; /etc/profile</span><br><span class="line"></span><br><span class="line"><span class="comment"># 让更改立即生效，不需要重启</span></span><br><span class="line"><span class="built_in">source</span> /etc/profile</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">&quot;\033[31m 集群初始化成功 \033[0m&quot;</span></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">&quot;\033[31m 请重启所有主机后继续\033[0m&quot;</span></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">&quot;\033[31m 主节点启动:start-dfs.sh  start-yarn.sh \033[0m&quot;</span></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">&quot;\033[31m 主节点启动或关闭:hadoop_on[hadoop_off] \033[0m&quot;</span></span><br></pre></td></tr></table></figure>
+<h3 id="运行脚本"><a class="markdownIt-Anchor" href="#运行脚本"></a> 运行脚本</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> hadoop.sh</span><br></pre></td></tr></table></figure>
+<p>按照提示输入主机名和从服务器的ip及主机名</p>
+<p>脚本执行完成后重启，在主节点使用<code>start-all.sh</code>命令，即可启动集群。</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://blog.ioimp.top/2024/03/18/Hadoop%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%80%E9%94%AE%E8%84%9A%E6%9C%AC%E7%89%88%E6%9C%AC/" title="" target="_blank" rel="external">http://blog.ioimp.top/2024/03/18/Hadoop完全分布式一键脚本版本/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/SFYYH" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/SFYYH" target="_blank"><span class="text-dark">山城冰荔枝</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2024/04/01/%E8%8B%A5%E4%BE%9D%E8%BF%9B%E8%A1%8C%E6%89%B9%E9%87%8F%E6%B7%BB%E5%8A%A0%E6%93%8D%E4%BD%9C/" title="若依进行批量添加操作"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2024/03/14/%E5%9B%A0%E5%BC%8F%E5%88%86%E8%A7%A3%E2%80%94%E2%80%94%E5%8D%81%E5%AD%97%E7%9B%B8%E4%B9%98%E6%B3%95/" title="因式分解——十字相乘法"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="" data-mobile-sites="qq"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/SFYYH" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/SFYYH" target="_blank"> colincora </a>base on <a href="https://sfyyh.github.io/" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+
+
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.js"></script>
+  <script>
+  //利用 FancyBox 实现点击图片放大
+  $(document).ready(function() {
+    $('article img').not('[hidden]').not('.panel-body img').each(function() {
+      var $image = $(this);
+      var imageCaption = $image.attr('alt');
+      var $imageWrapLink = $image.parent('a');
+      if ($imageWrapLink.length < 1) {
+        var src = this.getAttribute('src');
+        var idx = src.lastIndexOf('?');
+        if (idx != -1) {
+          src = src.substring(0, idx);
+        }
+        $imageWrapLink = $image.wrap('<a href="' + src + '"></a>').parent('a');
+      }
+      $imageWrapLink.attr('data-fancybox', 'images');
+      if (imageCaption) {
+        $imageWrapLink.attr('data-caption', imageCaption);
+      }
+    });
+    $().fancybox({
+      selector: '[data-fancybox="images"]',
+      hash: false,
+      loop: false,
+    });
+  });
+  </script>
+
+
+
+
+
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      background-color: #eee;
+      background-image: linear-gradient(#fcfcfc, #eee);
+      border: 1px solid #d5d5d5;
+      border-radius: 3px;
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      right: 4px;
+      top: 8px;
+      z-index: 2;
+    }
+
+    .highlight-wrap:hover .copy-btn,
+        .highlight-wrap .copy-btn:focus {
+      opacity: 1
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  
+  <script>
+    addLoadEvent(()=>{
+      $('.highlight').each(function (i, e) {
+        var $wrap = $('<div>').addClass('highlight-wrap')
+        $(e).after($wrap)
+        $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function (e) {
+          var code = $(this).parent().find(".code")[0].innerText
+          
+              code += "\n/**\n* 感谢您复制代码，使用代码请注明引用出处\n* kangaroo @ https://www.kangaroohy.com\n*/"
+          
+          var ta = document.createElement('textarea')
+          document.body.appendChild(ta)
+          ta.style.position = 'absolute'
+          ta.style.top = '0px'
+          ta.style.left = '0px'
+          ta.value = code
+          ta.select()
+          ta.focus()
+          var result = document.execCommand('copy')
+          document.body.removeChild(ta)
+          
+            if(result)$(this).text('复制成功')
+            else $(this).text('复制失败')
+          
+          $(this).blur()
+        })).on('mouseleave', function (e) {
+          var $b = $(this).find('.copy-btn')
+          setTimeout(function () {
+            $b.text('复制')
+          }, 300)
+        }).append(e)
+      })
+    })
+  </script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300,"hOffset":400,"vOffset":-38},"mobile":{"show":true},"react":"opacity:1","dialog":{"enable":true,"script":{"every idle 10s":"text1","tap face":"text2","tap body":"text3"}},"log":false});</script></body>
+</html>

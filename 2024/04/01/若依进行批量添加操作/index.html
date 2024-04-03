@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>若依进行批量添加操作 | 山城冰荔枝</title>
+  <meta name="description" content="前端表单  操作弹窗 1234567891011121314151617181920&lt;!-- 添加评委详情弹窗 --&gt;&lt;el-dialog :title&#x3D;&quot;judgedetails&quot; :visible.sync&#x3D;&quot;judgedetailsVisible&quot; width&#x3D;&quot;600px&quot; append-to-body&gt;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="若依进行批量添加操作">
+<meta property="og:url" content="http://blog.ioimp.top/2024/04/01/%E8%8B%A5%E4%BE%9D%E8%BF%9B%E8%A1%8C%E6%89%B9%E9%87%8F%E6%B7%BB%E5%8A%A0%E6%93%8D%E4%BD%9C/index.html">
+<meta property="og:site_name" content="山城冰荔枝">
+<meta property="og:description" content="前端表单  操作弹窗 1234567891011121314151617181920&lt;!-- 添加评委详情弹窗 --&gt;&lt;el-dialog :title&#x3D;&quot;judgedetails&quot; :visible.sync&#x3D;&quot;judgedetailsVisible&quot; width&#x3D;&quot;600px&quot; append-to-body&gt;">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-04-01T03:46:19.000Z">
+<meta property="article:modified_time" content="2024-04-01T03:58:21.339Z">
+<meta property="article:author" content="山城冰荔枝">
+<meta property="article:tag" content="若依框架">
+<meta property="article:tag" content="若依修改">
+<meta property="article:tag" content="若依配置">
+<meta property="article:tag" content="个性化开发">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://blog.ioimp.top/2024/04/01/%E8%8B%A5%E4%BE%9D%E8%BF%9B%E8%A1%8C%E6%89%B9%E9%87%8F%E6%B7%BB%E5%8A%A0%E6%93%8D%E4%BD%9C/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="山城冰荔枝" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.jpeg" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+    <link href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.css" rel="stylesheet">
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/SFYYH" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">山城冰荔枝</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> BeiJing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-yyp">
+          <a href="/yyps">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">易优评项目进度</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/SFYYH" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>跑起来会有风!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E5%AD%A6%E4%B9%A0/">Java学习</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Jenkins/">Jenkins</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/K8s/">K8s</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ubuntu/">Ubuntu</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/proxy/">proxy</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><span class="category-list-count">18</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">博客搭建</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/">实用技巧</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%80%E5%8F%91%E5%A5%87%E9%81%87%E8%AE%B0/">开发奇遇记</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%88%91%E7%9A%84%E4%B9%A6%E7%B1%8D/">我的书籍</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E6%9D%82%E7%83%A9/">数据杂烩</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E7%B1%BB%E5%AD%A6%E4%B9%A0/">杂类学习</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%A8%A1%E5%9D%97%E5%AE%89%E8%A3%85/">模块安装</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%88%AC%E8%99%AB%E5%BC%80%E5%8F%91/">爬虫开发</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%96%91%E9%9A%BE%E8%A7%A3%E7%AD%94/">疑难解答</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA/">网站搭建</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">网络安全</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%80%83%E7%A0%94%E6%95%B0%E5%AD%A6/">考研数学</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%8B%A5%E4%BE%9D%E6%A1%86%E6%9E%B6/">若依框架</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94%E6%9D%82%E8%B0%88/">随笔杂谈</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98-%E4%BB%BFB%E7%AB%99/">项目实战-仿B站</a><span class="category-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Boilerpipe/" rel="tag">Boilerpipe</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ES6/" rel="tag">ES6</a><span class="tag-list-count">18</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FastJson/" rel="tag">FastJson</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GitHub/" rel="tag">GitHub</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Grafana/" rel="tag">Grafana</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E6%B6%88%E6%81%AF%E8%BD%AC%E6%8D%A2%E5%99%A8/" rel="tag">HTTP消息转换器</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java%E5%AD%A6%E4%B9%A0/" rel="tag">Java学习</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins/" rel="tag">Jenkins</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins%E5%AD%A6%E4%B9%A0/" rel="tag">Jenkins学习</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/K8s%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/" rel="tag">K8s基础学习</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux%E5%AD%A6%E4%B9%A0/" rel="tag">Linux学习</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/" rel="tag">Node.js</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pure%E4%B8%BB%E9%A2%98/" rel="tag">Pure主题</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Rancher/" rel="tag">Rancher</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scrapy%E7%88%AC%E8%99%AB/" rel="tag">Scrapy爬虫</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Stack-Overflow/" rel="tag">Stack Overflow</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue%E5%9F%BA%E7%A1%80/" rel="tag">Vue基础</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebPack/" rel="tag">WebPack</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cAdvisor/" rel="tag">cAdvisor</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/clash/" rel="tag">clash</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dolphinscheduler/" rel="tag">dolphinscheduler</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ffmpeg/" rel="tag">ffmpeg</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/influxDB/" rel="tag">influxDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kali-linux/" rel="tag">kali-linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux%E5%BF%98%E8%AE%B0%E5%AF%86%E7%A0%81/" rel="tag">linux忘记密码</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/restFul%E6%8E%A5%E5%8F%A3/" rel="tag">restFul接口</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/url%E5%9C%B0%E5%9D%80%E5%8F%98%E8%BF%81/" rel="tag">url地址变迁</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E2%80%9C%E7%9F%A5%E8%AF%86%E5%BA%93%E5%A4%87%E4%BB%BD/" rel="tag">“知识库备份&quot;</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AA%E6%80%A7%E5%8C%96%E5%BC%80%E5%8F%91/" rel="tag">个性化开发</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE/" rel="tag">主题配置</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B9%8C%E5%90%88%E4%B9%8B%E4%BC%97/" rel="tag">乌合之众</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B9%A0%E6%83%AF/" rel="tag">习惯</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%B2%E8%BA%AB%E7%BB%8F%E5%8E%86/" rel="tag">亲身经历</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%A8%E5%B1%80%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" rel="tag">全局异常处理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0/" rel="tag">前端学习</a><span class="tag-list-count">18</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/" rel="tag">博客搭建教程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99/" rel="tag">命名规则</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%93%B2%E5%AD%A6/" rel="tag">哲学</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%93%B2%E5%AD%A6%E8%AF%AD%E5%BD%95/" rel="tag">哲学语录</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%A0%E5%BC%8F%E5%88%86%E8%A7%A3/" rel="tag">因式分解</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%B9%B3%E5%8F%B0/" rel="tag">大数据分析平台</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%9D%E5%A1%94%E9%9D%A2%E6%9D%BF/" rel="tag">宝塔面板</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%82%E7%AD%89%E6%80%A7/" rel="tag">幂等性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%82%E6%AD%A5%E6%93%8D%E4%BD%9C/" rel="tag">异步操作</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E4%B9%A0%E6%83%AF/" rel="tag">微习惯</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" rel="tag">微服务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BF%83%E6%B5%81/" rel="tag">心流</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8B%AF%E6%95%91%E5%B0%8F%E7%99%BD%E7%B3%BB%E5%88%97/" rel="tag">拯救小白系列</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E7%AB%A0%E6%94%B6%E5%BD%95/" rel="tag">文章收录</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%97%A5%E5%B8%B8%E5%B0%8FBUG/" rel="tag">日常小BUG</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%97%E9%80%8F%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A/" rel="tag">渗透必知必会</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%88%AC%E8%99%AB%E6%95%B0%E6%8D%AE/" rel="tag">爬虫数据</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%8B%AC%E7%89%B9/" rel="tag">独特</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9D%A1%E7%9C%A0/" rel="tag">睡眠</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A3%81%E7%9B%98%E5%88%86%E5%8C%BA/" rel="tag">磁盘分区</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A7%81%E5%9F%9F/" rel="tag">私域</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E7%A8%8B%E7%9F%A5%E8%AF%86/" rel="tag">编程知识</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E5%AE%89/" rel="tag">网安</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E8%AF%BE/" rel="tag">网课</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E6%8E%A7/" rel="tag">自控</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E6%8E%A7%E5%8A%9B/" rel="tag">自控力</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%8B%A5%E4%BE%9D%E4%BF%AE%E6%94%B9/" rel="tag">若依修改</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%8B%A5%E4%BE%9D%E6%A1%86%E6%9E%B6/" rel="tag">若依框架</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%8B%A5%E4%BE%9D%E9%85%8D%E7%BD%AE/" rel="tag">若依配置</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A7%86%E9%A2%91%E6%A8%A1%E5%9D%97/" rel="tag">视频模块</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%87%8D%E7%BD%AE%E5%AF%86%E7%A0%81/" rel="tag">重置密码</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%AB%98%E6%95%88/" rel="tag">高效</a><span class="tag-list-count">5</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Boilerpipe/" style="font-size: 13px;">Boilerpipe</a> <a href="/tags/Docker/" style="font-size: 13px;">Docker</a> <a href="/tags/ES6/" style="font-size: 14px;">ES6</a> <a href="/tags/FastJson/" style="font-size: 13.13px;">FastJson</a> <a href="/tags/GitHub/" style="font-size: 13.13px;">GitHub</a> <a href="/tags/Grafana/" style="font-size: 13px;">Grafana</a> <a href="/tags/HTTP%E6%B6%88%E6%81%AF%E8%BD%AC%E6%8D%A2%E5%99%A8/" style="font-size: 13.13px;">HTTP消息转换器</a> <a href="/tags/JavaScript/" style="font-size: 13px;">JavaScript</a> <a href="/tags/Java%E5%AD%A6%E4%B9%A0/" style="font-size: 13px;">Java学习</a> <a href="/tags/Jenkins/" style="font-size: 13px;">Jenkins</a> <a href="/tags/Jenkins%E5%AD%A6%E4%B9%A0/" style="font-size: 13px;">Jenkins学习</a> <a href="/tags/K8s%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/" style="font-size: 13px;">K8s基础学习</a> <a href="/tags/Linux%E5%AD%A6%E4%B9%A0/" style="font-size: 13px;">Linux学习</a> <a href="/tags/Node-js/" style="font-size: 13.75px;">Node.js</a> <a href="/tags/Pure%E4%B8%BB%E9%A2%98/" style="font-size: 13px;">Pure主题</a> <a href="/tags/Rancher/" style="font-size: 13px;">Rancher</a> <a href="/tags/Scrapy%E7%88%AC%E8%99%AB/" style="font-size: 13.63px;">Scrapy爬虫</a> <a href="/tags/Stack-Overflow/" style="font-size: 13px;">Stack Overflow</a> <a href="/tags/Vue%E5%9F%BA%E7%A1%80/" style="font-size: 13.88px;">Vue基础</a> <a href="/tags/WebPack/" style="font-size: 13.25px;">WebPack</a> <a href="/tags/cAdvisor/" style="font-size: 13px;">cAdvisor</a> <a href="/tags/clash/" style="font-size: 13px;">clash</a> <a href="/tags/dolphinscheduler/" style="font-size: 13.13px;">dolphinscheduler</a> <a href="/tags/ffmpeg/" style="font-size: 13px;">ffmpeg</a> <a href="/tags/influxDB/" style="font-size: 13px;">influxDB</a> <a href="/tags/kali-linux/" style="font-size: 13px;">kali-linux</a> <a href="/tags/linux%E5%BF%98%E8%AE%B0%E5%AF%86%E7%A0%81/" style="font-size: 13px;">linux忘记密码</a> <a href="/tags/restFul%E6%8E%A5%E5%8F%A3/" style="font-size: 13px;">restFul接口</a> <a href="/tags/url%E5%9C%B0%E5%9D%80%E5%8F%98%E8%BF%81/" style="font-size: 13px;">url地址变迁</a> <a href="/tags/%E2%80%9C%E7%9F%A5%E8%AF%86%E5%BA%93%E5%A4%87%E4%BB%BD/" style="font-size: 13px;">“知识库备份"</a> <a href="/tags/%E4%B8%AA%E6%80%A7%E5%8C%96%E5%BC%80%E5%8F%91/" style="font-size: 13.5px;">个性化开发</a> <a href="/tags/%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE/" style="font-size: 13px;">主题配置</a> <a href="/tags/%E4%B9%8C%E5%90%88%E4%B9%8B%E4%BC%97/" style="font-size: 13px;">乌合之众</a> <a href="/tags/%E4%B9%A0%E6%83%AF/" style="font-size: 13px;">习惯</a> <a href="/tags/%E4%BA%B2%E8%BA%AB%E7%BB%8F%E5%8E%86/" style="font-size: 13px;">亲身经历</a> <a href="/tags/%E5%85%A8%E5%B1%80%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" style="font-size: 13px;">全局异常处理</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0/" style="font-size: 14px;">前端学习</a> <a href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/" style="font-size: 13px;">博客搭建教程</a> <a href="/tags/%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99/" style="font-size: 13px;">命名规则</a> <a href="/tags/%E5%93%B2%E5%AD%A6/" style="font-size: 13px;">哲学</a> <a href="/tags/%E5%93%B2%E5%AD%A6%E8%AF%AD%E5%BD%95/" style="font-size: 13px;">哲学语录</a> <a href="/tags/%E5%9B%A0%E5%BC%8F%E5%88%86%E8%A7%A3/" style="font-size: 13px;">因式分解</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%B9%B3%E5%8F%B0/" style="font-size: 13.13px;">大数据分析平台</a> <a href="/tags/%E5%AD%A6%E4%B9%A0/" style="font-size: 13.38px;">学习</a> <a href="/tags/%E5%AE%9D%E5%A1%94%E9%9D%A2%E6%9D%BF/" style="font-size: 13px;">宝塔面板</a> <a href="/tags/%E5%B9%82%E7%AD%89%E6%80%A7/" style="font-size: 13px;">幂等性</a> <a href="/tags/%E5%BC%82%E6%AD%A5%E6%93%8D%E4%BD%9C/" style="font-size: 13.13px;">异步操作</a> <a href="/tags/%E5%BE%AE%E4%B9%A0%E6%83%AF/" style="font-size: 13px;">微习惯</a> <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" style="font-size: 13px;">微服务</a> <a href="/tags/%E5%BF%83%E6%B5%81/" style="font-size: 13px;">心流</a> <a href="/tags/%E6%8B%AF%E6%95%91%E5%B0%8F%E7%99%BD%E7%B3%BB%E5%88%97/" style="font-size: 13.13px;">拯救小白系列</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 13px;">数学</a> <a href="/tags/%E6%96%87%E7%AB%A0%E6%94%B6%E5%BD%95/" style="font-size: 13.13px;">文章收录</a> <a href="/tags/%E6%97%A5%E5%B8%B8%E5%B0%8FBUG/" style="font-size: 13.13px;">日常小BUG</a> <a href="/tags/%E6%B8%97%E9%80%8F%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A/" style="font-size: 13px;">渗透必知必会</a> <a href="/tags/%E7%88%AC%E8%99%AB%E6%95%B0%E6%8D%AE/" style="font-size: 13px;">爬虫数据</a> <a href="/tags/%E7%8B%AC%E7%89%B9/" style="font-size: 13px;">独特</a> <a href="/tags/%E7%9D%A1%E7%9C%A0/" style="font-size: 13.13px;">睡眠</a> <a href="/tags/%E7%A3%81%E7%9B%98%E5%88%86%E5%8C%BA/" style="font-size: 13px;">磁盘分区</a> <a href="/tags/%E7%A7%81%E5%9F%9F/" style="font-size: 13px;">私域</a> <a href="/tags/%E7%BC%96%E7%A8%8B%E7%9F%A5%E8%AF%86/" style="font-size: 13px;">编程知识</a> <a href="/tags/%E7%BD%91%E5%AE%89/" style="font-size: 13.38px;">网安</a> <a href="/tags/%E7%BD%91%E8%AF%BE/" style="font-size: 13px;">网课</a> <a href="/tags/%E8%87%AA%E6%8E%A7/" style="font-size: 13px;">自控</a> <a href="/tags/%E8%87%AA%E6%8E%A7%E5%8A%9B/" style="font-size: 13px;">自控力</a> <a href="/tags/%E8%8B%A5%E4%BE%9D%E4%BF%AE%E6%94%B9/" style="font-size: 13.5px;">若依修改</a> <a href="/tags/%E8%8B%A5%E4%BE%9D%E6%A1%86%E6%9E%B6/" style="font-size: 13.5px;">若依框架</a> <a href="/tags/%E8%8B%A5%E4%BE%9D%E9%85%8D%E7%BD%AE/" style="font-size: 13.5px;">若依配置</a> <a href="/tags/%E8%A7%86%E9%A2%91%E6%A8%A1%E5%9D%97/" style="font-size: 13px;">视频模块</a> <a href="/tags/%E9%87%8D%E7%BD%AE%E5%AF%86%E7%A0%81/" style="font-size: 13px;">重置密码</a> <a href="/tags/%E9%AB%98%E6%95%88/" style="font-size: 13.5px;">高效</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/04/">四月 2024</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">三月 2024</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">十二月 2023</a><span class="archive-list-count">25</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">十一月 2023</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">八月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">七月 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">五月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">十二月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">八月 2022</a><span class="archive-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98-%E4%BB%BFB%E7%AB%99/">项目实战-仿B站</a>
+              </p>
+              <p class="item-title">
+                <a href="/2024/04/04/JSON%E4%BF%A1%E6%81%AF%E8%BD%AC%E6%8D%A2%E9%85%8D%E7%BD%AE%E4%B8%8E%E5%85%A8%E5%B1%80%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E5%9C%A8Spring-Boot%E4%B8%AD%E7%9A%84%E5%AE%9E%E7%8E%B0/" class="title">JSON信息转换配置与全局异常处理在Spring Boot中的实现</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2024-04-03T18:08:57.000Z" itemprop="datePublished">2024-04-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98-%E4%BB%BFB%E7%AB%99/">项目实战-仿B站</a>
+              </p>
+              <p class="item-title">
+                <a href="/2024/04/04/Spring-Boot%E7%8E%AF%E5%A2%83%E4%B8%AD%E9%9B%86%E6%88%90%E5%B9%B6%E9%85%8D%E7%BD%AEFastJson%E4%BD%9C%E4%B8%BAHTTP%E6%B6%88%E6%81%AF%E8%BD%AC%E6%8D%A2%E5%99%A8/" class="title">Spring Boot环境中集成并配置FastJson作为HTTP消息转换器</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2024-04-03T17:46:11.000Z" itemprop="datePublished">2024-04-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98-%E4%BB%BFB%E7%AB%99/">项目实战-仿B站</a>
+              </p>
+              <p class="item-title">
+                <a href="/2024/04/04/%E9%97%AE%E9%A2%98%E5%88%97%E8%A1%A8/" class="title">探究HTTP中的幂等性：POST与PUT的差异及其在RESTful接口设计中的应用</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2024-04-03T17:04:36.000Z" itemprop="datePublished">2024-04-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E8%8B%A5%E4%BE%9D%E6%A1%86%E6%9E%B6/">若依框架</a>
+              </p>
+              <p class="item-title">
+                <a href="/2024/04/01/%E8%8B%A5%E4%BE%9D%E8%BF%9B%E8%A1%8C%E6%89%B9%E9%87%8F%E6%B7%BB%E5%8A%A0%E6%93%8D%E4%BD%9C/" class="title">若依进行批量添加操作</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2024-04-01T03:46:19.000Z" itemprop="datePublished">2024-04-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2024/03/18/Hadoop%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%80%E9%94%AE%E8%84%9A%E6%9C%AC%E7%89%88%E6%9C%AC/" class="title">(no title)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2024-03-18T00:50:11.144Z" itemprop="datePublished">2024-03-18</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%AB%AF%E8%A1%A8%E5%8D%95"><span class="toc-number">1.</span> <span class="toc-text"> 前端表单</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E5%BC%B9%E7%AA%97"><span class="toc-number">1.1.</span> <span class="toc-text"> 操作弹窗</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%90%E4%BA%A4%E5%87%BD%E6%95%B0"><span class="toc-number">1.2.</span> <span class="toc-text"> 提交函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E7%AB%AF%E8%BF%90%E8%A1%8C%E5%90%8E%E6%88%AA%E5%9B%BE"><span class="toc-number">1.3.</span> <span class="toc-text"> 前端运行后截图</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E7%AB%AF%E4%BB%A3%E7%A0%81"><span class="toc-number">2.</span> <span class="toc-text"> 后端代码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E5%BA%94xml"><span class="toc-number">2.1.</span> <span class="toc-text"> 对应xml</span></a></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-若依进行批量添加操作" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      若依进行批量添加操作
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2024/04/01/%E8%8B%A5%E4%BE%9D%E8%BF%9B%E8%A1%8C%E6%89%B9%E9%87%8F%E6%B7%BB%E5%8A%A0%E6%93%8D%E4%BD%9C/" class="article-date">
+	  <time datetime="2024-04-01T03:46:19.000Z" itemprop="datePublished">2024-04-01</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/%E8%8B%A5%E4%BE%9D%E6%A1%86%E6%9E%B6/">若依框架</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/%E4%B8%AA%E6%80%A7%E5%8C%96%E5%BC%80%E5%8F%91/" rel="tag">个性化开发</a>, <a class="article-tag-link-link" href="/tags/%E8%8B%A5%E4%BE%9D%E4%BF%AE%E6%94%B9/" rel="tag">若依修改</a>, <a class="article-tag-link-link" href="/tags/%E8%8B%A5%E4%BE%9D%E6%A1%86%E6%9E%B6/" rel="tag">若依框架</a>, <a class="article-tag-link-link" href="/tags/%E8%8B%A5%E4%BE%9D%E9%85%8D%E7%BD%AE/" rel="tag">若依配置</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2024/04/01/%E8%8B%A5%E4%BE%9D%E8%BF%9B%E8%A1%8C%E6%89%B9%E9%87%8F%E6%B7%BB%E5%8A%A0%E6%93%8D%E4%BD%9C/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 510(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 2(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h2 id="前端表单"><a class="markdownIt-Anchor" href="#前端表单"></a> 前端表单</h2>
+<h3 id="操作弹窗"><a class="markdownIt-Anchor" href="#操作弹窗"></a> 操作弹窗</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 添加评委详情弹窗 --&gt;</span><br><span class="line">&lt;el-dialog :title=&quot;judgedetails&quot; :visible.sync=&quot;judgedetailsVisible&quot; width=&quot;600px&quot; append-to-body&gt;</span><br><span class="line">        &lt;el-row :gutter=&quot;15&quot;&gt;</span><br><span class="line">          &lt;el-form ref=&quot;judgeform&quot; :model=&quot;formData&quot; :rules=&quot;rules&quot; size=&quot;medium&quot; label-width=&quot;100px&quot;&gt;</span><br><span class="line">            &lt;el-col :span=&quot;12&quot;&gt;</span><br><span class="line">              &lt;el-form-item label=&quot;评委老师&quot; prop=&quot;userIds&quot;&gt;</span><br><span class="line">                &lt;el-select v-model=&quot;judgeform.userIds&quot; placeholder=&quot;请选择评委老师&quot; multiple filterable clearable</span><br><span class="line">                  :style=&quot;&#123;width: &#x27;100%&#x27;&#125;&quot;&gt;</span><br><span class="line">                  &lt;el-option v-for=&quot;(item, index) in judgeList&quot; :key=&quot;index&quot; :label=&quot;item.nickName&quot;</span><br><span class="line">                    :value=&quot;item.userId&quot; :disabled=&quot;item.disabled&quot;&gt;&lt;/el-option&gt;</span><br><span class="line">                &lt;/el-select&gt;</span><br><span class="line">              &lt;/el-form-item&gt;</span><br><span class="line">            &lt;/el-col&gt;</span><br><span class="line">          &lt;/el-form&gt;</span><br><span class="line">        &lt;/el-row&gt;</span><br><span class="line">        &lt;div slot=&quot;footer&quot;&gt;</span><br><span class="line">          &lt;el-button @click=&quot;closeAddJudgeDetails&quot;&gt;取消&lt;/el-button&gt;</span><br><span class="line">          &lt;el-button type=&quot;primary&quot; @click=&quot;submitjudgeFrom&quot;&gt;确定&lt;/el-button&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">      &lt;/el-dialog&gt;</span><br></pre></td></tr></table></figure>
+<p>存入userIds里的是带有&quot;,&quot;间隔分开的一个字符串</p>
+<h3 id="提交函数"><a class="markdownIt-Anchor" href="#提交函数"></a> 提交函数</h3>
+<blockquote>
+<p>先做判断judgeform.userIds是否为字符串，<strong>userIds进行字符串到Long[]转换</strong>，并传入<strong>addJgdetails2</strong>接口函数中</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">  <span class="title function_">submitjudgeFrom</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">$refs</span>[<span class="string">&quot;judgeform&quot;</span>].<span class="title function_">validate</span>(<span class="function"><span class="params">valid</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (valid) &#123;</span><br><span class="line">          <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="variable language_">this</span>.<span class="property">judgeform</span>.<span class="property">userIds</span> === <span class="string">&#x27;string&#x27;</span>) &#123;</span><br><span class="line">  <span class="comment">// If judgeform.userIds is a string, proceed with the conversion</span></span><br><span class="line">  <span class="keyword">const</span> userIdString = <span class="variable language_">this</span>.<span class="property">judgeform</span>.<span class="property">userIds</span>;</span><br><span class="line">  <span class="keyword">const</span> userIdArray = userIdString.<span class="title function_">split</span>(<span class="string">&#x27;,&#x27;</span>);</span><br><span class="line">  <span class="keyword">const</span> longUserIdArray = userIdArray.<span class="title function_">map</span>(<span class="function"><span class="params">userId</span> =&gt;</span> <span class="built_in">parseInt</span>(userId, <span class="number">10</span>));</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">judgeform</span>.<span class="property">userIds</span> = longUserIdArray;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&#x27;Unexpected type for judgeform.userIds. Expected a string, but received:&#x27;</span>, <span class="variable language_">this</span>.<span class="property">judgeform</span>.<span class="property">userIds</span>);</span><br><span class="line">&#125;</span><br><span class="line">            <span class="title function_">addJgdetails2</span>(<span class="variable language_">this</span>.<span class="property">judgeform</span>).<span class="title function_">then</span>(<span class="function"><span class="params">response</span> =&gt;</span> &#123;</span><br><span class="line">              <span class="variable language_">this</span>.<span class="property">$modal</span>.<span class="title function_">msgSuccess</span>(<span class="string">&quot;评委添加成功！&quot;</span>);</span><br><span class="line">              <span class="variable language_">this</span>.<span class="property">open</span> = <span class="literal">false</span>;</span><br><span class="line">              <span class="variable language_">this</span>.<span class="title function_">getList</span>();</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;);</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
+<h3 id="前端运行后截图"><a class="markdownIt-Anchor" href="#前端运行后截图"></a> 前端运行后截图</h3>
+<p><img src="data:image/png;base64,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" alt="" /></p>
+<h2 id="后端代码"><a class="markdownIt-Anchor" href="#后端代码"></a> 后端代码</h2>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 新增评委详情</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@PreAuthorize(&quot;@ss.hasPermi(&#x27;judge_groupdetails:jgdetails:add&#x27;)&quot;)</span></span><br><span class="line"><span class="meta">@Log(title = &quot;评委详情&quot;, businessType = BusinessType.INSERT)</span></span><br><span class="line"><span class="meta">@PostMapping(&quot;/addjudge&quot;)</span></span><br><span class="line"><span class="keyword">public</span> AjaxResult <span class="title function_">add</span><span class="params">(<span class="meta">@RequestBody</span> JudgesGroup judgesGroup)</span></span><br><span class="line">&#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;judgesGroup:&quot;</span>+judgesGroup);</span><br><span class="line">    <span class="keyword">return</span> toAjax(judgeGroupDetailsService.batchInsertJudgeUserMapping(judgesGroup));</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="对应xml"><a class="markdownIt-Anchor" href="#对应xml"></a> 对应xml</h3>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--    批量插入--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">insert</span> <span class="attr">id</span>=<span class="string">&quot;batchInsertJudgeUserMapping&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;JudgesGroup&quot;</span>&gt;</span></span><br><span class="line">    INSERT INTO judges_group (group_id, user_id) VALUES</span><br><span class="line">    <span class="tag">&lt;<span class="name">foreach</span> <span class="attr">item</span>=<span class="string">&quot;userId&quot;</span> <span class="attr">index</span>=<span class="string">&quot;index&quot;</span> <span class="attr">collection</span>=<span class="string">&quot;userIds&quot;</span> <span class="attr">separator</span>=<span class="string">&quot;,&quot;</span>&gt;</span></span><br><span class="line">         (#&#123;groupId&#125;, #&#123;userId&#125;)</span><br><span class="line">    <span class="tag">&lt;/<span class="name">foreach</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">insert</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://blog.ioimp.top/2024/04/01/%E8%8B%A5%E4%BE%9D%E8%BF%9B%E8%A1%8C%E6%89%B9%E9%87%8F%E6%B7%BB%E5%8A%A0%E6%93%8D%E4%BD%9C/" title="若依进行批量添加操作" target="_blank" rel="external">http://blog.ioimp.top/2024/04/01/若依进行批量添加操作/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/SFYYH" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/SFYYH" target="_blank"><span class="text-dark">山城冰荔枝</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2024/04/04/%E9%97%AE%E9%A2%98%E5%88%97%E8%A1%A8/" title="探究HTTP中的幂等性：POST与PUT的差异及其在RESTful接口设计中的应用"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2024/03/18/Hadoop%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%80%E9%94%AE%E8%84%9A%E6%9C%AC%E7%89%88%E6%9C%AC/" title="(no title)"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="" data-mobile-sites="qq"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/SFYYH" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/SFYYH" target="_blank"> colincora </a>base on <a href="https://sfyyh.github.io/" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+
+
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.js"></script>
+  <script>
+  //利用 FancyBox 实现点击图片放大
+  $(document).ready(function() {
+    $('article img').not('[hidden]').not('.panel-body img').each(function() {
+      var $image = $(this);
+      var imageCaption = $image.attr('alt');
+      var $imageWrapLink = $image.parent('a');
+      if ($imageWrapLink.length < 1) {
+        var src = this.getAttribute('src');
+        var idx = src.lastIndexOf('?');
+        if (idx != -1) {
+          src = src.substring(0, idx);
+        }
+        $imageWrapLink = $image.wrap('<a href="' + src + '"></a>').parent('a');
+      }
+      $imageWrapLink.attr('data-fancybox', 'images');
+      if (imageCaption) {
+        $imageWrapLink.attr('data-caption', imageCaption);
+      }
+    });
+    $().fancybox({
+      selector: '[data-fancybox="images"]',
+      hash: false,
+      loop: false,
+    });
+  });
+  </script>
+
+
+
+
+
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      background-color: #eee;
+      background-image: linear-gradient(#fcfcfc, #eee);
+      border: 1px solid #d5d5d5;
+      border-radius: 3px;
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      right: 4px;
+      top: 8px;
+      z-index: 2;
+    }
+
+    .highlight-wrap:hover .copy-btn,
+        .highlight-wrap .copy-btn:focus {
+      opacity: 1
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  
+  <script>
+    addLoadEvent(()=>{
+      $('.highlight').each(function (i, e) {
+        var $wrap = $('<div>').addClass('highlight-wrap')
+        $(e).after($wrap)
+        $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function (e) {
+          var code = $(this).parent().find(".code")[0].innerText
+          
+              code += "\n/**\n* 感谢您复制代码，使用代码请注明引用出处\n* kangaroo @ https://www.kangaroohy.com\n*/"
+          
+          var ta = document.createElement('textarea')
+          document.body.appendChild(ta)
+          ta.style.position = 'absolute'
+          ta.style.top = '0px'
+          ta.style.left = '0px'
+          ta.value = code
+          ta.select()
+          ta.focus()
+          var result = document.execCommand('copy')
+          document.body.removeChild(ta)
+          
+            if(result)$(this).text('复制成功')
+            else $(this).text('复制失败')
+          
+          $(this).blur()
+        })).on('mouseleave', function (e) {
+          var $b = $(this).find('.copy-btn')
+          setTimeout(function () {
+            $b.text('复制')
+          }, 300)
+        }).append(e)
+      })
+    })
+  </script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300,"hOffset":400,"vOffset":-38},"mobile":{"show":true},"react":"opacity:1","dialog":{"enable":true,"script":{"every idle 10s":"text1","tap face":"text2","tap body":"text3"}},"log":false});</script></body>
+</html>
