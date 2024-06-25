@@ -1,0 +1,882 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><title>Linux自有服务和软件包 | 卿云</title><meta name="keywords" content="Linux,Linux命令"><meta name="author" content="Flaw"><meta name="copyright" content="Flaw"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f9fe"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-touch-fullscreen" content="yes"><meta name="apple-mobile-web-app-title" content="Linux自有服务和软件包"><meta name="application-name" content="Linux自有服务和软件包"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="#f7f9fe"><meta property="og:type" content="article"><meta property="og:title" content="Linux自有服务和软件包"><meta property="og:url" content="http://sfyyh.github.io/2024/06/25/Linux%E8%87%AA%E6%9C%89%E6%9C%8D%E5%8A%A1%E5%92%8C%E8%BD%AF%E4%BB%B6%E5%8C%85/index.html"><meta property="og:site_name" content="卿云"><meta property="og:description" content="自有服务，即不需要用户独立去安装的软件的服务，而是当系统安装好之后就可以直接使用的服务（内置） 学习目标1、了解systemctl命令用途 2、掌握使用systemctl开启，关闭，重启服务 3、了解常见自有服务ntpd,firewalld,crond的作用 4、掌握ntpdate时间同步原理与实现"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/21-05-13-9cdc45b70b1d804c9facf80821f4dc29-081d0e.png"><meta property="article:author" content="Flaw"><meta property="article:tag"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/21-05-13-9cdc45b70b1d804c9facf80821f4dc29-081d0e.png"><meta name="description" content="自有服务，即不需要用户独立去安装的软件的服务，而是当系统安装好之后就可以直接使用的服务（内置） 学习目标1、了解systemctl命令用途 2、掌握使用systemctl开启，关闭，重启服务 3、了解常见自有服务ntpd,firewalld,crond的作用 4、掌握ntpdate时间同步原理与实现"><link rel="shortcut icon" href="/favicon.ico"><link rel="canonical" href="http://sfyyh.github.io/2024/06/25/Linux%E8%87%AA%E6%9C%89%E6%9C%8D%E5%8A%A1%E5%92%8C%E8%BD%AF%E4%BB%B6%E5%8C%85/"><link rel="preconnect" href="//cdn.cbd.int"/><meta name="google-site-verification" content="xxx"/><meta name="baidu-site-verification" content="code-xxx"/><meta name="msvalidate.01" content="xxx"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/swiper/swiper.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  linkPageTop: undefined,
+  peoplecanvas: undefined,
+  postHeadAiDescription: {"enable":true,"gptName":"AnZhiYu","mode":"local","switchBtn":false,"btnLink":"https://afdian.net/item/886a79d4db6711eda42a52540025c377","randomNum":3,"basicWordCount":1000,"key":"xxxx","Referer":"https://xx.xx/"},
+  diytitle: {"enable":true,"leaveTitle":"w(ﾟДﾟ)w 不要走！再看看嘛！","backTitle":"♪(^∇^*)欢迎肥来！"},
+  LA51: undefined,
+  greetingBox: undefined,
+  twikooEnvId: '',
+  commentBarrageConfig:undefined,
+  root: '/',
+  preloader: {"source":3},
+  friends_vue_info: undefined,
+  navMusic: true,
+  mainTone: undefined,
+  authorStatus: {"skills":["🤖️ 数码科技爱好者","🔍 分享与热心帮助","🏠 智能家居小能手","🔨 设计开发一条龙","🤝 专修交互与设计","🏃 脚踏实地行动派","🧱 团队小组发动机","💢 壮汉人狠话不多"]},
+  algolia: {"appId":"LCING6Z89I","apiKey":"aaad301b93e4fcad31834c7191ae2cd5","indexName":"hexo_blog","hits":{"per_page":6},"languages":{"input_placeholder":"输入关键词后按下回车查找","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简","rightMenuMsgToTraditionalChinese":"转为繁体","rightMenuMsgToSimplifiedChinese":"转为简体"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":330},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    simplehomepage: true,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"copy":true,"copyrightEbable":false,"limitCount":50,"languages":{"author":"作者: Flaw","link":"链接: ","source":"来源: 卿云","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。","copySuccess":"复制成功，复制和转载请标注本文地址"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#425AEF","bgDark":"#1f1f1f","position":"top-center"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.min.js',
+      css: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  shortcutKey: undefined,
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  configTitle: '卿云',
+  title: 'Linux自有服务和软件包',
+  postAI: '',
+  pageFillDescription: '学习目标, 一、自有服务概述, 二、systemctl管理服务命令, 1、显示服务, 2、查看启动和停止服务, 3、服务持久化, 三、常用自有服务（ntpfirewalldcrond), 1、ntp时间同步服务, 1）NTP同步服务器原理, 2）到哪里去找NTP服务器, 3）时间同步操作, 2、firewalld防火墙, 1)什么是防火墙, 2)传统Linux防火墙, 3、firewalld防火墙的概念, 1）区域, 2）运行模式和永久模式, 4、firewalld防火墙的配置, 1）查看开启和停止firewalld服务, 2) 管理firewall配置, ①查看默认使用的区域, ②查看所有可用区域, ③列出当前使用区域配置, ④列出所有区域的配置, ⑤添加允许通过的服务或端口, ⑥去掉允许通过的服务或端口, ⑦永久模式参数permanent, ⑧重新加载配置reload, 5、计划任务crontab, 1)计划任务的作用, 2)查看计划任务, 3)编辑计划任务（重点）, 4)几个小案例, 5)扩展, ① crontab 权限问题, ② 查看计划任务文件保存路径, ③ 查看计划任务日志信息, 四、Linux软件包, 1、软件包概述, 1）源码包, 2）二进制包, 2、如何获取rpm包, 3、从光盘获取, 3.1 虚拟机中加载光盘, 3.2 使用  lsblk（list block devices）或者df -T 查看块状设备的信息, 3.3 进入x2Frunx2Fmediax2Frootx2FCentOS 7 x86_64x2FPackages目录, 4、查询某个软件安装情况, 5、卸载某个软件, 6、安装某个软件, 7、更新某个软件, 8、rpm扩展, 8.1依赖关系, 8.2 查看文件所属的包名（实用）, 8.3查询软件安装完成后生成了哪些文件, 9、扩展：光盘的挂载和解挂自有服务即不需要用户独立去安装的软件的服务而是当系统安装好之后就可以直接使用的服务内置学习目标了解命令用途掌握使用开启关闭重启服务了解常见自有服务的作用掌握时间同步原理与实现掌握防火墙的相关操作添加和删除简单规则开启关闭防火墙了解源码包和二进制包的区别掌握包的卸载安装以及更新操作了解计划任务的作用掌握计划任务的编辑一自有服务概述服务是一些特定的进程自有服务就是系统开机后就自动运行的一些进程一旦客户发出请求这些进程就自动为他们提供服务系统中把这些自动运行的进程称为服务举例当我们使用客户端软件连接的时候我们的服务器为什么会对连接做出响应是因为服务开机就自动运行了所谓自有服务简单来说可以理解为系统开机自动运行的服务程序我们如何管理这些自有服务呢二管理服务命令在之前通过和两个命令来管理服务负责启动停止服务显示服务状态指定服务是否开机启动从开始统一使用来管理服务同时具有和命令的功能显示服务命令作用管理服务语法选项选项列出所有服务包含启动的和没启动的列出所有启动的服务用法一不加具体服务名示例代码含义列出所有服务包括已运行的和没有运行的空格可以翻页退出用法二不加具体服务名示例代码含义列出已运行的服务空格可以翻页退出查看启动和停止服务命令作用管理服务语法选项服务名选项检查指定服务的运行状况启动指定服务停止指定服务重启指定服务重新加载指定服务的配置文件并非所有服务都支持通常使用用法三选项服务名示例代码含义查看服务的状态表示当前服务是运行状态用法四选项服务名示例代码含义停止服务表示服务当前是停止状态用法五选项服务名示例代码含义启动服务用法六选项服务名示例代码含义重启服务含义重新加载服务配置文件服务持久化所谓服务持久化就是服务在开机的时候是否自动启动命令作用管理服务语法选项服务名选项指定服务开机自动启动取消服务开机自动启动用法七选项服务名示例代码含义取消服务开机启动用法八选项服务名示例代码含义指定服务开机启动参数总结参数含义列出所有服务列出所有启动的服务启动指定服务停止指定服务检查指定服务的运行状况重启指定服务重新加载指定服务的配置文件并非所有服务都支持通常使用指定服务开机自动启动取消服务开机自动启动三常用自有服务服务名含义用于同步计算机的系统时间的服务防火墙服务计划任务服务时间同步服务是网络时间协议它是用来同步网络中各个计算机的时间的协议工作场景公司开发了一个电商网站由于访问量很大网站后端由台服务器组成集群台负责接收订单台负责安排发货接收订单的服务器需要记录用户下订单的具体时间把数据传给负责发货的服务器由于台服务器时间各不相同记录的时间经常不一致甚至会出现下单时间是明天发货时间是昨天的情况同步服务器原理标准时间是哪里来的现在的标准时间是由原子钟报时的国际标准时间世界协调时所以获得的时间来源可以是原子钟天文台卫星也可以从上获取在中定义了时间按照服务器的等级传播层的总数限制在以内工作中通常我们会直接使用各个组织提供的现成的服务器到哪里去找服务器授时网站时间同步操作同步服务器时间方式有个一次性同步手动同步通过服务自动同步手动同步用法一时间服务器示例代码含义从服务器同步标准网络时间到服务器服务器由阿里云提供可以从网站获取注意从网络同步时间要确保自己的服务器可以访问互联网错误信息含义服务器不可用这里的服务器是指网络上的时间服务器不可用不代表是对方服务器有问题也有可能是你自己的服务器网络不通无法连接到网络上的时间服务器自动同步用法二启动服务并配置为开机启动示例代码含义启动服务并配置为开机启动服务启动后系统会自动同步网络时间注意从网络同步时间要确保自己的服务器可以访问互联网问题启动服务后是不是时间就自动同步了启动后就自动同步了问题需不需要让服务开机自动运行需要服务配置文件位置防火墙什么是防火墙防火墙防范一些网络攻击有软件防火墙硬件防火墙之分防火墙选择让正常请求通过从而保证网络安全性防火墙传统防火墙防火墙的概念区域中防火墙叫做中默认使用的防火墙是增加了区域的概念所谓区域是指预先准备了几套防火墙策略的集合类似于策略的模板用户可以根据需求选择区域常见区域及相应策略规则区域默认策略允许所有数据包拒绝流入的流量除非与流出的流量相关允许服务通过等同于拒绝流入的流量除非与流出的流量相关允许服务通过拒绝流入的流量除非与流出的流量相关允许服务通过拒绝流入的流量除非与流出的流量相关允许服务通过拒绝流入的流量除非与流出的流量相关允许服务通过拒绝流入的流量除非与流出的流量相关非法流量采取拒绝操作拒绝流入的流量除非与流出的流量相关非法流量采取丢弃操作运行模式和永久模式运行模式此模式下配置的防火墙策略立即生效但是不写入配置文件永久模式此模式下配置的防火墙策略写入配置文件但是需要重新加载才能生效默认采用运行模式防火墙的配置查看开启和停止服务命令作用管理服务语法选项选项检查指定服务的运行状况启动指定服务停止指定服务重启指定服务重新加载指定服务的配置文件并非所有服务都支持通常使用使用来管理的服务具体命令前面已经讲过只是服务名换成了这里不再赘述管理配置命令作用管理具体配置语法参数选项参数选项常用选项查看默认使用的区域用法一选项示例代码含义查看默认使用区域当前默认使用区域为查看所有可用区域用法二选项示例代码含义查看所有可用区域列出当前使用区域配置用法三选项示例代码含义查看所有可用区域列出所有区域的配置用法四选项示例代码含义查看所有可用区域添加允许通过的服务或端口用法五选项示例代码含义在区域添加允许协议的端口通过的规则含义在区域添加允许服务通过的规则必须在去掉允许通过的服务或端口用法五选项示例代码含义在区域去掉允许协议的端口通过的规则含义在区域去掉允许服务通过的规则永久模式参数用法七选项示例代码含义在区域使用参数永久添加允许端口通过的规则重新加载配置用法七选项示例代码含义重新加载配置计划任务计划任务的作用作用操作系统不可能小时都有人在操作有些时候想在指定的时间点去执行任务例如每天凌晨点去重新启动阿帕奇此时不可能真有人每天夜里点去执行命令这就可以交给计划任务程序去执行操作了查看计划任务语法选项常用选项列出指定用户的计划任务列表编辑指定用户的计划任务列表简单来说计划任务就是一个文件指定的用户名如果不指定则表示当前用户删除指定用户的计划任务列表示例代码列出当前用户的计划任务列表上述的提示代表用户没有计划任务需要去做编辑计划任务重点进入计划任务编辑文件打开计划任务编辑文件后可以在此文件中编写我们自定义的计划任务计划任务的规则语法格式以行为单位一行则为一个计划分时日月周需要执行的命令例如代表每天时分执行指令取值范围常识分时日月周和表示星期天四个符号表示取值范围中的每一个数字做连续区间表达式的要想表示则可以写成表示每多少个例如想每分钟一次则可以在分的位置写表示多个取值比如想在点点点执行则可以在时的位置写特别补充在系统中有些命令不能直接在计划任务中使用使用后其也不会生效如命令如果想让其生效必须使用完整路径问题如何查询一个命令的真实路径在哪个位置答使用命令名称几个小案例问题每月日的重启服务问题每周六周日的重启服务问题每天至之间每隔分钟重启服务问题每隔两天的上午点到点的第和第分钟执行一次重启分时日月周命令或服务问题问题问题问题案例每分钟往家目录中的中输一个为了看到效果使用追加输出输出使用命令语法输出的内容在末行模式下输入保存并退出使用查看动态变化注意在计划任务中默认最小单位就是分不能再小了如果需要做到秒级别则需要配合研发相关代码扩展权限问题是任何用户都可以创建的计划任务但是超级管理员可以通过配置来设置某些用户不允许设置计划任务黑名单配置文件位于里面写用户名一行只能写一个保存退出切换到普通用户执行命令如下图所示白名单还有一个配置文件本身不存在自己创建注意白名单优先级高于黑名单如果一个用户同时存在两个名单文件中则会被默认允许创建计划任务查看计划任务文件保存路径问题计划任务文件具体保存在哪里呢答用户名文件中如果使用用户编辑计划任务则用户文件名为查看计划任务日志信息问题在实际应用中我们如何查看定时任务运行情况答通过计划任务日志日志文件位于四软件包软件包概述这是什么下也有很多可以安装的软件而这些软件的安装包可细分为两种分别是源码包和二进制包源码包源码包就是一大堆源代码程序是由程序员按照特定的格式和语法编写出来的计算机只能识别机器语言也就是二进制语言所以源码包安装之前需要编译编译过程耗时较长大多数用户不懂开发编译过程中可能会有各种错误用户无力解决为了解决使用源码包安装的问题软件包的安装出现了使用二进制包的安装方式二进制包二进制包也就是源码包经过成功编译之后产生的包二进制包是下默认的软件安装包目前主要有以下大主流的二进制包管理系统包管理系统功能强大安装升级査询和卸载非常简单方便因此很多发行版都默认使用此机制作为软件安装的管理方式例如等包管理系统由所开发的包管理机制通过包就可以进行软件包管理主要应用在和中是软件包管理工具的缩写作用的作用类似于豌豆荚华为应用市场主要作用是对服务器上的软件包进行对应管理操作管理分为查询卸载安装更新如何获取包要想装软件和下一样先得找到安装包软件包的获得方式去官网去下载不介意老版本的话可以从光盘或者镜像文件中读取从光盘获取虚拟机中加载光盘使用或者查看块状设备的信息名称设备大小类型挂载点此界面类似于下的磁盘管理界面进入目录查询某个软件安装情况语法软件名称选项查询全部示例代码查询浏览器的安装情况已安装示例代码查询软件的安装情况未安装卸载某个软件卸载某个软件语法软件的名称建议写完整的名称通过查询案例卸载火狐浏览器首先查询软件的完整名称卸载完成后单击浏览器图标运行结果如下图所示安装某个软件命令作用管理软件包语法软件包完整路径名称选项安装显示进度条表示以形式显示进度条示例代码将刚刚卸载的火狐浏览器重新安装在光盘中用法软件包名称示例代码进入光盘目录里面存放了很多的安装包查看目录下包含的安装包使用命令安装软件包查询是否安装完成安装完成后打开浏览器更新某个软件语法完整的安装包路径选项升级表示显示进度条表示以形式显示进度条这里我会提供给大家的高版本的安装包这个包是用来升级的用法软件包名称示例代码查询当前的版本查看目录下我们刚刚拷到虚机上的安装包的名称使用命令安装版本的软件包查询升级后的版本扩展依赖关系一个软件必须先有其他软件才能运行例如之前启动过程中提示的缺少称之为依赖安装前必须先安装这种情况就称之为有依赖关系的可以更新成功下面我们尝试更新到的版本用法软件包名称使用命令安装版本的软件包错误提示提示安装版本的需要依赖的版本的的版本这就是我们说的依赖关系为了解决依赖关系的问题有另外一个管理工具叫做后面我们会讲到查看文件所属的包名实用语法需要查询的文件路径选项查询文件所属包示例代码查询属于哪个软件包查询软件安装完成后生成了哪些文件语法需要查询的软件包名称特别说明软件安装完成后一共生成了以下几类文件配置文件类目录程序文件本身二进制文件命令目录文档手册或目录扩展光盘的挂载和解挂解挂操作命令语法当前设备的挂载点路径例如挂载光盘首先新建一个挂载点然后使用命令进行挂在挂载点可以理解为就是一个空目录命令语法设备文件原始地址目录要挂载的位置路径盘符设备原始地址地址统一都在下然后根据大小确定具体值拼凑在一起组成原始地址例如当前用法设备挂载点示例代码新建一个目录作为挂载点将光驱设备挂载到这个挂载点可以看到已经成功挂载',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-06-25 21:05:36',
+  postMainColor: '',
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#18171d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f9fe')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.2.0"></head><body data-type="anzhiyu"><div id="web_bg"></div><div id="an_music_bg"></div><div id="loading-box" onclick="document.getElementById(&quot;loading-box&quot;).classList.add(&quot;loaded&quot;)"><div class="loading-bg"><img class="loading-img nolazyload" alt="加载头像" src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/23/03-13-21-%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240623031309-4c1443.jpg"/><div class="loading-image-dot"></div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.getElementById('loading-box').classList.add("loaded");
+  },
+  initLoading: () => {
+    document.getElementById('loading-box').classList.remove("loaded")
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+setTimeout(function(){preloader.endLoading();},10000)
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.10/progress_bar/progress_bar.css"/><script async="async" src="https://cdn.cbd.int/pace-js@1.2.4/pace.min.js" data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}"></script><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><div id="nav-group"><span id="blog_name"><div class="back-home-button"><i class="anzhiyufont anzhiyu-icon-grip-vertical"></i><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" href="https://sfyyh.github.io/" title="博客"><img class="back-menu-item-icon" src="/img/favicon.ico" alt="博客"/><span class="back-menu-item-text">博客</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://chat.qingyunzc.cc" title="卿云AI"><img class="back-menu-item-icon" src="https://image.anheyu.com/favicon.ico" alt="卿云AI"/><span class="back-menu-item-text">卿云AI</span></a></div></div></div></div><a id="site-name" href="/" accesskey="h"><div class="title">卿云</div><i class="anzhiyufont anzhiyu-icon-house-chimney"></i></a></span><div class="mask-name-container"><div id="name-container"><a id="page-name" href="javascript:anzhiyu.scrollToDest(0, 500)">PAGE_NAME</a></div></div><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 隧道</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 友链</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/link/"><i class="anzhiyufont anzhiyu-icon-link faa-tada" style="font-size: 0.9em;"></i><span> 友人帐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/comments/"><i class="anzhiyufont anzhiyu-icon-envelope faa-tada" style="font-size: 0.9em;"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/album/"><i class="anzhiyufont anzhiyu-icon-images faa-tada" style="font-size: 0.9em;"></i><span> 相册集</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/air-conditioner/"><i class="anzhiyufont anzhiyu-icon-fan faa-tada" style="font-size: 0.9em;"></i><span> 小空调</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/essay/"><i class="anzhiyufont anzhiyu-icon-lightbulb faa-tada" style="font-size: 0.9em;"></i><span> 闲言碎语</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/equipment/"><i class="anzhiyufont anzhiyu-icon-dice-d20 faa-tada" style="font-size: 0.9em;"></i><span> 我的装备</span></a></li></ul></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/music/?id=6799820199&amp;server=netease"><span> 音乐馆</span></a></div></div></div><div id="nav-right"><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机前往一个文章" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-dice"></i></a></div><div class="nav-button" id="search-button"><a class="site-page social-icon search" href="javascript:void(0);" title="搜索🔍" accesskey="s"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span> 搜索</span></a></div><input id="center-console" type="checkbox"/><label class="widget" for="center-console" title="中控台" onclick="anzhiyu.switchConsole();"><i class="left"></i><i class="widget center"></i><i class="widget right"></i></label><div id="console"><div class="console-card-group-reward"><ul class="reward-all console-card"><li class="reward-item"><a href="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/23/03-08-09-%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240623030747-010bf4.jpg" target="_blank"><img class="post-qr-code-img" alt="微信" src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/23/03-08-09-%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240623030747-010bf4.jpg"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/23/03-08-09-%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240623030743-4e58a3.jpg" target="_blank"><img class="post-qr-code-img" alt="支付宝" src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/23/03-08-09-%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240623030743-4e58a3.jpg"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div><div class="console-card-group"><div class="console-card-group-left"><div class="console-card" id="card-newest-comments"><div class="card-content"><div class="author-content-item-tips">互动</div><span class="author-content-item-title"> 最新评论</span></div><div class="aside-list"><span>正在加载中...</span></div></div></div><div class="console-card-group-right"><div class="console-card tags"><div class="card-content"><div class="author-content-item-tips">兴趣点</div><span class="author-content-item-title">寻找你感兴趣的领域</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/Docker/" style="font-size: 1.05rem;">Docker<sup>1</sup></a><a href="/tags/Docker%E5%AE%89%E8%A3%85/" style="font-size: 1.05rem;">Docker安装<sup>1</sup></a><a href="/tags/LNMP/" style="font-size: 1.05rem;">LNMP<sup>2</sup></a><a href="/tags/Linux/" style="font-size: 1.05rem;">Linux<sup>2</sup></a><a href="/tags/Linux%E5%91%BD%E4%BB%A4/" style="font-size: 1.05rem;">Linux命令<sup>2</sup></a><a href="/tags/Linux%E8%BF%90%E7%BB%B4/" style="font-size: 1.05rem;">Linux运维<sup>1</sup></a><a href="/tags/MYSQL/" style="font-size: 1.05rem;">MYSQL<sup>3</sup></a><a href="/tags/Socket/" style="font-size: 1.05rem;">Socket<sup>1</sup></a><a href="/tags/mysql/" style="font-size: 1.05rem;">mysql<sup>3</sup></a><a href="/tags/%E5%A5%97%E6%8E%A5%E5%AD%97/" style="font-size: 1.05rem;">套接字<sup>1</sup></a><a href="/tags/%E8%BF%90%E7%BB%B4/" style="font-size: 1.05rem;">运维<sup>5</sup></a><a href="/tags/%E8%BF%9B%E7%A8%8B%E6%A3%80%E6%B5%8B%E4%B8%8E%E6%8E%A7%E5%88%B6/" style="font-size: 1.05rem;">进程检测与控制<sup>1</sup></a></div></div><hr/></div></div><div class="console-card history"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-box-archiv"></i><span>文章</span></div><div class="card-archives"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/06/"><span class="card-archive-list-date">六月 2024</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">9</span><span>篇</span></div></a></li></ul></div><hr/></div></div></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" title="显示模式切换" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-moon"></i></a></div><div class="console-btn-item" id="consoleHideAside" onclick="anzhiyu.hideAsideBtn()" title="边栏显示控制"><a class="asideSwitch"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></a></div><div class="console-btn-item" id="consoleMusic" onclick="anzhiyu.musicToggle()" title="音乐开关"><a class="music-switch"><i class="anzhiyufont anzhiyu-icon-music"></i></a></div></div><div class="console-mask" onclick="anzhiyu.hideConsole()" href="javascript:void(0);"></div></div><div class="nav-button" id="nav-totop"><a class="totopbtn" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i><span id="percent" onclick="anzhiyu.scrollToDest(0,500)">0</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" title="切换"><i class="anzhiyufont anzhiyu-icon-bars"></i></a></div></div></div></nav><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original">原创</a><span class="post-meta-categories"><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/Linux/" itemprop="url">Linux</a></span><span class="article-meta tags"><a class="article-meta__tags" href="/tags/Linux/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>Linux</span></a><a class="article-meta__tags" href="/tags/Linux%E5%91%BD%E4%BB%A4/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>Linux命令</span></a></span></div></div><h1 class="post-title" itemprop="name headline">Linux自有服务和软件包</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" itemprop="dateCreated datePublished" datetime="2024-06-25T13:02:13.000Z" title="发表于 2024-06-25 21:02:13">2024-06-25</time><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-history post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" itemprop="dateCreated datePublished" datetime="2024-06-25T13:05:36.838Z" title="更新于 2024-06-25 21:05:36">2024-06-25</time></span></div><div class="meta-secondline"><span class="post-meta-separator">       </span><span class="post-meta-position" title="作者IP属地为北京"><i class="anzhiyufont anzhiyu-icon-location-dot"></i>北京</span></div></div></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section><div id="post-top-cover"><img class="nolazyload" id="post-top-bg" src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/21-05-13-9cdc45b70b1d804c9facf80821f4dc29-081d0e.png"></div></header><main id="blog-container"><div class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container" itemscope itemtype="http://sfyyh.github.io/2024/06/25/Linux%E8%87%AA%E6%9C%89%E6%9C%8D%E5%8A%A1%E5%92%8C%E8%BD%AF%E4%BB%B6%E5%8C%85/"><header><a class="post-meta-categories" href="/categories/Linux/" itemprop="url">Linux</a><a href="/tags/Linux/" tabindex="-1" itemprop="url">Linux</a><a href="/tags/Linux%E5%91%BD%E4%BB%A4/" tabindex="-1" itemprop="url">Linux命令</a><h1 id="CrawlerTitle" itemprop="name headline">Linux自有服务和软件包</h1><span itemprop="author" itemscope itemtype="http://schema.org/Person">Flaw</span><time itemprop="dateCreated datePublished" datetime="2024-06-25T13:02:13.000Z" title="发表于 2024-06-25 21:02:13">2024-06-25</time><time itemprop="dateCreated datePublished" datetime="2024-06-25T13:05:36.838Z" title="更新于 2024-06-25 21:05:36">2024-06-25</time></header><p>自有服务，即不需要用户独立去安装的软件的服务，而是当系统安装好之后就可以直接使用的服务（内置）</p>
+<h1 id="学习目标"><a href="#学习目标" class="headerlink" title="学习目标"></a>学习目标</h1><p>1、了解systemctl命令用途</p>
+<p>2、掌握使用systemctl开启，关闭，重启服务</p>
+<p>3、了解常见自有服务ntpd,firewalld,crond的作用</p>
+<p>4、掌握ntpdate时间同步原理与实现</p>
+<p>5、掌握防火墙的相关操作（添加和删除简单规则，开启，关闭防火墙）</p>
+<p>6、了解源码包和二进制包的区别</p>
+<p>7、掌握rpm包的卸载、安装以及更新操作</p>
+<p>8、了解计划任务的作用</p>
+<p>9、掌握计划任务的编辑</p>
+<h1 id="一、自有服务概述"><a href="#一、自有服务概述" class="headerlink" title="一、自有服务概述"></a>一、自有服务概述</h1><p>​        服务是一些特定的进程，自有服务就是系统开机后就自动运行的一些进程，一旦客户发出请求，这些进程就自动为他们提供服务，windows系统中，把这些自动运行的进程，称为”服务”<br>​        举例：当我们使用SSH客户端软件连接linux的时候，我们的服务器为什么会对连接做出响应？是因为SSH服务开机就自动运行了。</p>
+<p>​        所谓自有服务，简单来说，可以理解为Linux系统开机自动运行的服务（程序）。</p>
+<p>​        我们如何管理这些自有服务呢？</p>
+<h1 id="二、systemctl管理服务命令"><a href="#二、systemctl管理服务命令" class="headerlink" title="二、systemctl管理服务命令"></a>二、systemctl管理服务命令</h1><p>​        在Centos7之前，通过service 和 chkconfig两个命令来管理服务</p>
+<p>service: 负责启动，停止服务，显示服务状态</p>
+<p>chkconfig: 指定服务是否开机启动</p>
+<p>​        从Centos7开始，统一使用systemctl来管理服务， systemctl同时具有service和chkconfig命令的功能。</p>
+<h2 id="1、显示服务"><a href="#1、显示服务" class="headerlink" title="1、显示服务"></a>1、显示服务</h2><p>命令：systemctl</p>
+<p>作用：管理服务</p>
+<p>语法：#systemctl   [选项]</p>
+<p>选项：list-units –type service –all：列出所有服务（包含启动的和没启动的）</p>
+<p>​           list-units –type service：列出所有启动的服务</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">用法一：systemctl list<span class="literal">-units</span> <span class="literal">--type</span> service <span class="literal">--all</span> 不加具体服务名</span><br><span class="line">示例代码：</span><br><span class="line"><span class="comment">#systemctl list-units --type service --all</span></span><br><span class="line">含义：列出所有服务，包括已运行的和没有运行的</span><br><span class="line">空格可以翻页，q退出</span><br></pre></td></tr></table></figure>
+
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/21-00-55-systemctl01-d4045c.jpg" style="width:960px" />
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">用法二：systemctl list<span class="literal">-units</span> <span class="literal">--type</span> service 不加具体服务名</span><br><span class="line">示例代码：</span><br><span class="line"><span class="comment">#systemctl list-units --type service</span></span><br><span class="line">含义：列出已运行的服务</span><br><span class="line">空格可以翻页，q退出</span><br></pre></td></tr></table></figure>
+
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/21-00-53-systemctl02-efb1ac.jpg" style="width:960px" />
+
+
+
+<h2 id="2、查看启动和停止服务"><a href="#2、查看启动和停止服务" class="headerlink" title="2、查看启动和停止服务"></a>2、查看启动和停止服务</h2><p>命令：systemctl</p>
+<p>作用：管理服务</p>
+<p>语法：#systemctl   [选项]  服务名</p>
+<p>选项： status：检查指定服务的运行状况</p>
+<p>​            start：启动指定服务</p>
+<p>​	    stop：停止指定服务</p>
+<p>​	    restart：重启指定服务</p>
+<p>​	    reload：重新加载指定服务的配置文件（并非所有服务都支持reload，通常使用restart)</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">用法三：systemctl 选项 服务名</span><br><span class="line">示例代码：</span><br><span class="line"><span class="comment">#systemctl status crond</span></span><br><span class="line">含义：查看crond服务的状态</span><br></pre></td></tr></table></figure>
+
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/21-00-51-systemctl03-fbe81f.jpg" style="width:960px" />
+
+<p>Active:active(running) 表示当前crond服务是运行状态。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">用法四：systemctl 选项 服务名</span><br><span class="line">示例代码：</span><br><span class="line"><span class="comment">#systemctl stop crond</span></span><br><span class="line">含义：停止crond服务</span><br></pre></td></tr></table></figure>
+
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/21-00-50-systemctl04-66d04d.jpg" style="width:960px" />
+
+<p>Inactive,表示crond服务当前是停止状态</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">用法五：systemctl 选项 服务名</span><br><span class="line">示例代码：</span><br><span class="line"><span class="comment">#systemctl start crond</span></span><br><span class="line">含义：启动crond服务</span><br></pre></td></tr></table></figure>
+
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/21-00-47-systemctl05-0ca4fb.jpg" style="width:960px" />
+
+
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">用法六：systemctl 选项 服务名</span><br><span class="line">示例代码：</span><br><span class="line"><span class="comment">#systemctl restart crond</span></span><br><span class="line">含义：重启crond服务</span><br><span class="line"></span><br><span class="line"><span class="comment">#systemctl reload crond</span></span><br><span class="line">含义：重新加载crond服务配置文件</span><br></pre></td></tr></table></figure>
+
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/21-00-46-systemctl06-d53d18.jpg" style="width:960px" />
+
+
+
+<h2 id="3、服务持久化"><a href="#3、服务持久化" class="headerlink" title="3、服务持久化"></a>3、服务持久化</h2><p>​        所谓服务持久化，就是服务在开机的时候，是否自动启动。</p>
+<p>命令：systemctl</p>
+<p>作用：管理服务</p>
+<p>语法：#systemctl   [选项]  服务名</p>
+<p>选项： enable：指定服务开机自动启动</p>
+<p>​            disable：取消服务开机自动启动</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">用法七：systemctl 选项 服务名</span><br><span class="line">示例代码：</span><br><span class="line"><span class="comment">#systemctl disable crond</span></span><br><span class="line">含义：取消crond服务开机启动</span><br></pre></td></tr></table></figure>
+
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/21-00-44-systemctl07-c17911.jpg" style="width:960px" />
+
+
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">用法八：systemctl 选项 服务名</span><br><span class="line">示例代码：</span><br><span class="line"><span class="comment">#systemctl disable crond</span></span><br><span class="line">含义：指定crond服务开机启动</span><br></pre></td></tr></table></figure>
+
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/21-00-42-systemctl08-1f7a7b.jpg" style="width:960px" />
+
+
+
+<p>systemctl参数总结</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>list-units –type service   –all</td>
+<td>列出所有服务</td>
+</tr>
+<tr>
+<td>list-units –type service</td>
+<td>列出所有启动的服务</td>
+</tr>
+<tr>
+<td>start</td>
+<td>启动指定服务</td>
+</tr>
+<tr>
+<td>stop</td>
+<td>停止指定服务</td>
+</tr>
+<tr>
+<td>status</td>
+<td>检查指定服务的运行状况</td>
+</tr>
+<tr>
+<td>restart</td>
+<td>重启指定服务</td>
+</tr>
+<tr>
+<td>reload</td>
+<td>重新加载指定服务的配置文件（并非所有服务都支持reload，通常使用restart)</td>
+</tr>
+<tr>
+<td>enable</td>
+<td>指定服务开机自动启动</td>
+</tr>
+<tr>
+<td>disable</td>
+<td>取消服务开机自动启动</td>
+</tr>
+</tbody></table>
+<h1 id="三、常用自有服务（ntp-firewalld-crond"><a href="#三、常用自有服务（ntp-firewalld-crond" class="headerlink" title="三、常用自有服务（ntp,firewalld,crond)"></a>三、常用自有服务（ntp,firewalld,crond)</h1><table>
+<thead>
+<tr>
+<th>服务名</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ntpd</td>
+<td>用于同步计算机的系统时间的服务</td>
+</tr>
+<tr>
+<td>firewalld</td>
+<td>防火墙服务</td>
+</tr>
+<tr>
+<td>crond</td>
+<td>计划任务服务</td>
+</tr>
+</tbody></table>
+<h2 id="1、ntp时间同步服务"><a href="#1、ntp时间同步服务" class="headerlink" title="1、ntp时间同步服务"></a>1、ntp时间同步服务</h2><p>​        NTP是网络时间协议(Network Time Protocol)，它是用来同步网络中各个计算机的时间的协议。</p>
+<p> 工作场景：</p>
+<p>​        公司开发了一个电商网站，由于访问量很大，网站后端由100台服务器组成集群。50台负责接收订单，50台负责安排发货，接收订单的服务器需要记录用户下订单的具体时间，把数据传给负责发货的服务器，由于100台服务器时间各不相同，记录的时间经常不一致，甚至会出现下单时间是明天，发货时间是昨天的情况。</p>
+<h3 id="1）NTP同步服务器原理"><a href="#1）NTP同步服务器原理" class="headerlink" title="1）NTP同步服务器原理"></a>1）NTP同步服务器原理</h3><p>​        标准时间是哪里来的？</p>
+<p>​        现在的标准时间是由原子钟报时的国际标准时间UTC（Universal Time Coordinated，世界协调时)，所以NTP获得UTC的时间来源可以是原子钟、天文台、卫星，也可以从Internet上获取。</p>
+<p>​        在NTP中，定义了时间按照服务器的等级传播，<strong>Stratum层的总数限制在15以内</strong></p>
+<p>​        工作中，&#x3D;&#x3D;通常我们会直接使用各个组织提供的，现成的NTP服务器&#x3D;&#x3D;</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/21-00-40-ntp02-519dad.jpg" style="width:960px" />
+
+
+
+<h3 id="2）到哪里去找NTP服务器"><a href="#2）到哪里去找NTP服务器" class="headerlink" title="2）到哪里去找NTP服务器"></a>2）到哪里去找NTP服务器</h3><p>​        NTP授时网站：<a target="_blank" rel="noopener" href="http://www.ntp.org.cn/pool.php">http://www.ntp.org.cn/pool.php</a></p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/21-00-38-image-20190109151845806-7018325-9ddbe1.png" style="width:960px" />
+
+
+
+<h3 id="3）时间同步操作"><a href="#3）时间同步操作" class="headerlink" title="3）时间同步操作"></a>3）时间同步操作</h3><p>同步服务器时间方式有2 个：一次性同步手动同步、通过服务自动同步。</p>
+<p>手动同步</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">用法一：ntpdate 时间服务器IP</span><br><span class="line">示例代码：</span><br><span class="line"><span class="comment">#ntpdate 120.25.108.11</span></span><br><span class="line">含义：从服务器<span class="number">120.25</span>.<span class="number">108.11</span>同步标准网络时间到服务器（<span class="number">120.25</span>.<span class="number">108.11</span>服务器由阿里云提供，可以从http://www.ntp.org.cn/pool.php网站获取）</span><br><span class="line">注意：从网络同步时间，要确保自己的服务器可以访问互联网</span><br></pre></td></tr></table></figure>
+
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/21-00-36-ntp03-5edaef.jpg" style="width:960px" />
+
+<p>错误信息：no servers can be used</p>
+<p>含义：服务器不可用，这里的服务器是指网络上的时间服务器，不可用，不代表是对方服务器有问题，也有可能是你自己的服务器网络不通，无法连接到网络上的时间服务器。</p>
+<p>自动同步</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">用法二：启动ntpd服务，并配置为开机启动</span><br><span class="line">示例代码：</span><br><span class="line"><span class="comment">#systemctl start ntpd</span></span><br><span class="line"><span class="comment">#systemctl enable ntpd</span></span><br><span class="line">含义：启动ntpd服务，并配置为开机启动，服务启动后，系统会自动同步网络时间</span><br><span class="line">注意：从网络同步时间，要确保自己的服务器可以访问互联网</span><br></pre></td></tr></table></figure>
+
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/21-00-34-ntp05-db09ae.jpg" style="width:960px" />
+
+<p>问题1：启动ntpd服务后，是不是时间就自动同步了？</p>
+<p>启动后就自动同步了</p>
+<p>问题2：需不需要让ntpd服务，开机自动运行？</p>
+<p>需要</p>
+<p>ntpd服务配置文件位置  &#x2F;etc&#x2F;ntp.conf</p>
+<h2 id="2、firewalld防火墙"><a href="#2、firewalld防火墙" class="headerlink" title="2、firewalld防火墙"></a>2、firewalld防火墙</h2><h3 id="1-什么是防火墙"><a href="#1-什么是防火墙" class="headerlink" title="1)什么是防火墙"></a>1)什么是防火墙</h3><p>防火墙：防范一些网络攻击。有软件防火墙、硬件防火墙之分。</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/21-00-33-image-20190109152927209-7018967-b21a26.png" style="width:960px" />
+
+
+
+<blockquote>
+<p>防火墙选择让正常请求通过，从而保证网络安全性。</p>
+</blockquote>
+<p>Windows防火墙：</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/21-00-32-image-20190109152909128-7018949-70d7e3.png" style="width:960px" />
+
+
+
+<h3 id="2-传统Linux防火墙"><a href="#2-传统Linux防火墙" class="headerlink" title="2)传统Linux防火墙"></a>2)传统Linux防火墙</h3><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/21-00-30-iptables02-f21c48.png" style="width:960px" />
+
+
+
+
+
+<h2 id="3、firewalld防火墙的概念"><a href="#3、firewalld防火墙的概念" class="headerlink" title="3、firewalld防火墙的概念"></a>3、firewalld防火墙的概念</h2><h3 id="1）区域"><a href="#1）区域" class="headerlink" title="1）区域"></a>1）区域</h3><p>CentOS6x中防火墙叫做iptables</p>
+<p>CentOS7.x 中默认使用的防火墙是firewalld</p>
+<p>​        firewalld增加了区域的概念，所谓区域是指，firewalld<strong>预先准备了几套防火墙策略的集合</strong>，类似于<strong>策略的模板</strong>，用户可以根据需求选择区域。</p>
+<p>常见区域及相应策略规则</p>
+<table>
+<thead>
+<tr>
+<th>区域</th>
+<th>默认策略</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>trusted</td>
+<td>允许所有数据包</td>
+</tr>
+<tr>
+<td>home</td>
+<td>拒绝流入的流量，除非与流出的流量相关，允许ssh,mdns,ippclient,amba-client,dhcpv6-client服务通过</td>
+</tr>
+<tr>
+<td>internal</td>
+<td>等同于home</td>
+</tr>
+<tr>
+<td>work</td>
+<td>拒绝流入的流量，除非与流出的流量相关，允许ssh,ipp-client,dhcpv6-client服务通过</td>
+</tr>
+<tr>
+<td>public</td>
+<td>拒绝流入的流量，除非与流出的流量相关，允许ssh,dhcpv6-client服务通过</td>
+</tr>
+<tr>
+<td>external</td>
+<td>拒绝流入的流量，除非与流出的流量相关，允许ssh服务通过</td>
+</tr>
+<tr>
+<td>dmz</td>
+<td>拒绝流入的流量，除非与流出的流量相关，允许ssh服务通过</td>
+</tr>
+<tr>
+<td>block</td>
+<td>拒绝流入的流量，除非与流出的流量相关，非法流量采取拒绝操作</td>
+</tr>
+<tr>
+<td>drop</td>
+<td>拒绝流入的流量，除非与流出的流量相关，非法流量采取丢弃操作</td>
+</tr>
+</tbody></table>
+<h3 id="2）运行模式和永久模式"><a href="#2）运行模式和永久模式" class="headerlink" title="2）运行模式和永久模式"></a>2）运行模式和永久模式</h3><p>运行模式：此模式下，配置的防火墙策略立即生效，但是不写入配置文件</p>
+<p>永久模式：此模式下，配置的防火墙策略写入配置文件，但是需要reload重新加载才能生效。</p>
+<p>&#x3D;&#x3D;firewalld默认采用运行模式&#x3D;&#x3D;</p>
+<h2 id="4、firewalld防火墙的配置"><a href="#4、firewalld防火墙的配置" class="headerlink" title="4、firewalld防火墙的配置"></a>4、firewalld防火墙的配置</h2><h3 id="1）查看，开启和停止firewalld服务"><a href="#1）查看，开启和停止firewalld服务" class="headerlink" title="1）查看，开启和停止firewalld服务"></a>1）查看，开启和停止firewalld服务</h3><p>命令：systemctl</p>
+<p>作用：管理服务</p>
+<p>语法：#systemctl   [选项]  firewalld</p>
+<p>选项： status：检查指定服务的运行状况</p>
+<p>​            start：启动指定服务</p>
+<p>​	    stop：停止指定服务</p>
+<p>​	    restart：重启指定服务</p>
+<p>​	    reload：重新加载指定服务的配置文件（并非所有服务都支持reload，通常使用restart)</p>
+<p>​        <strong>使用systemctl来管理firewalld的服务，具体命令前面已经讲过，只是服务名换成了firewalld，这里不再赘述</strong></p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/21-00-28-firewall02-387c8e.jpg" style="width:960px" />
+
+
+
+<h3 id="2-管理firewall配置"><a href="#2-管理firewall配置" class="headerlink" title="2) 管理firewall配置"></a>2) 管理firewall配置</h3><p>命令：firewall-cmd</p>
+<p>作用：管理firewall具体配置</p>
+<p>语法：#firewall-cmd  [参数选项1] ….[参数选项n]</p>
+<p>常用选项：  </p>
+<h3 id="①查看默认使用的区域"><a href="#①查看默认使用的区域" class="headerlink" title="①查看默认使用的区域"></a>①查看默认使用的区域</h3><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">用法一：firewall<span class="literal">-cmd</span> 选项</span><br><span class="line">示例代码：</span><br><span class="line"><span class="comment">#firewall-cmd --get-default-zone</span></span><br><span class="line">含义：查看默认使用区域，当前默认使用区域为public</span><br></pre></td></tr></table></figure>
+
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/21-00-22-firewall03-2702c2.jpg" style="width:960px" />
+
+<h3 id="②查看所有可用区域"><a href="#②查看所有可用区域" class="headerlink" title="②查看所有可用区域"></a>②查看所有可用区域</h3><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">用法二：firewall<span class="literal">-cmd</span> 选项</span><br><span class="line">示例代码：</span><br><span class="line"><span class="comment">#firewall-cmd --get-zones</span></span><br><span class="line">含义：查看所有可用区域</span><br></pre></td></tr></table></figure>
+
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/21-00-21-firewall05-19586a.jpg" style="width:960px" />
+
+
+
+<h3 id="③列出当前使用区域配置"><a href="#③列出当前使用区域配置" class="headerlink" title="③列出当前使用区域配置"></a>③列出当前使用区域配置</h3><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">用法三：firewall<span class="literal">-cmd</span> 选项</span><br><span class="line">示例代码：</span><br><span class="line"><span class="comment">#firewall-cmd --list-all</span></span><br><span class="line">含义：查看所有可用区域</span><br></pre></td></tr></table></figure>
+
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/21-00-18-firewall06-efd571.jpg" style="width:960px" />
+
+
+
+<h3 id="④列出所有区域的配置"><a href="#④列出所有区域的配置" class="headerlink" title="④列出所有区域的配置"></a>④列出所有区域的配置</h3><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">用法四：firewall<span class="literal">-cmd</span> 选项</span><br><span class="line">示例代码：</span><br><span class="line"><span class="comment">#firewall-cmd --list-all-zones</span></span><br><span class="line">含义：查看所有可用区域</span><br></pre></td></tr></table></figure>
+
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/21-00-17-firewall04-0903a9.jpg" style="width:960px" />
+
+
+
+<h3 id="⑤添加允许通过的服务或端口"><a href="#⑤添加允许通过的服务或端口" class="headerlink" title="⑤添加允许通过的服务或端口"></a>⑤添加允许通过的服务或端口</h3><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">用法五：firewall<span class="literal">-cmd</span> 选项</span><br><span class="line">示例代码：</span><br><span class="line"><span class="comment">#firewall-cmd --zone=public --add-port=1024/tcp</span></span><br><span class="line">含义:在public区域，添加允许tcp协议的<span class="number">1024</span>端口通过的规则</span><br><span class="line"></span><br><span class="line"><span class="comment">#firewall-cmd --zone=public --add-service=ftp</span></span><br><span class="line">含义:在public区域，添加允许ftp服务通过的规则 =&gt; 必须在/usr/lib/firewalld/services</span><br></pre></td></tr></table></figure>
+
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/21-00-09-firewall07-770e39.jpg" style="width:960px" />
+
+
+
+<h3 id="⑥去掉允许通过的服务或端口"><a href="#⑥去掉允许通过的服务或端口" class="headerlink" title="⑥去掉允许通过的服务或端口"></a>⑥去掉允许通过的服务或端口</h3><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">用法五：firewall<span class="literal">-cmd</span> 选项</span><br><span class="line">示例代码：</span><br><span class="line"><span class="comment">#firewall-cmd --zone=public --remove-port=1024/tcp</span></span><br><span class="line">含义:在public区域，去掉允许tcp协议的<span class="number">1024</span>端口通过的规则</span><br><span class="line"></span><br><span class="line"><span class="comment">#firewall-cmd --zone=public --remove-service=ftp</span></span><br><span class="line">含义:在public区域，去掉允许ftp服务通过的规则</span><br></pre></td></tr></table></figure>
+
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/21-00-07-firewall08-4df1ee.jpg" style="width:960px" />
+
+
+
+<h3 id="⑦永久模式参数permanent"><a href="#⑦永久模式参数permanent" class="headerlink" title="⑦永久模式参数permanent"></a>⑦永久模式参数permanent</h3><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">用法七：firewall<span class="literal">-cmd</span> 选项</span><br><span class="line">示例代码：</span><br><span class="line"><span class="comment"># firewall-cmd --zone=public --add-port=1024/tcp --permanent</span></span><br><span class="line">含义:在public区域，使用permanent参数，永久添加允许<span class="number">1024</span>端口通过的规则</span><br></pre></td></tr></table></figure>
+
+<h3 id="⑧重新加载配置reload"><a href="#⑧重新加载配置reload" class="headerlink" title="⑧重新加载配置reload"></a>⑧重新加载配置reload</h3><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">用法七：firewall<span class="literal">-cmd</span> 选项</span><br><span class="line">示例代码：</span><br><span class="line"><span class="comment">#firewall-cmd --reload</span></span><br><span class="line">含义:重新加载配置</span><br></pre></td></tr></table></figure>
+
+
+
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/21-00-04-firewall09-2bd2c7.jpg" style="width:960px" />
+
+
+
+<h2 id="5、计划任务crontab"><a href="#5、计划任务crontab" class="headerlink" title="5、计划任务crontab"></a>5、计划任务crontab</h2><h3 id="1-计划任务的作用"><a href="#1-计划任务的作用" class="headerlink" title="1)计划任务的作用"></a>1)计划任务的作用</h3><p>作用：操作系统不可能24 小时都有人在操作，有些时候想在指定的时间点去执行任务（例如：每天凌晨 2 点去重新启动httpd&#x3D;&gt;阿帕奇），此时不可能真有人每天夜里 2 点去执行命令，这就可以交给计划任务程序去执行操作了。</p>
+<h3 id="2-查看计划任务"><a href="#2-查看计划任务" class="headerlink" title="2)查看计划任务"></a>2)查看计划任务</h3><p>&#x3D;&#x3D;语法：# crontab   选项&#x3D;&#x3D;</p>
+<p>常用选项：</p>
+<p>&#x3D;&#x3D;-l：list，列出指定用户的计划任务列表&#x3D;&#x3D;</p>
+<p>&#x3D;&#x3D;-e：edit，编辑指定用户的计划任务列表，简单来说，计划任务就是一个文件&#x3D;&#x3D;</p>
+<p>-u：user，指定的用户名，如果不指定，则表示当前用户</p>
+<p>-r：remove，删除指定用户的计划任务列表</p>
+<p>示例代码：列出当前用户的计划任务列表</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/21-01-11-image-20190115114136260-7523696-3526f3.png" alt="image-20190115114136260"></p>
+<p>上述的提示，代表 root 用户没有计划任务需要去做。</p>
+<h3 id="3-编辑计划任务（重点）"><a href="#3-编辑计划任务（重点）" class="headerlink" title="3)编辑计划任务（重点）"></a>3)编辑计划任务（重点）</h3><p>进入计划任务编辑文件</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/21-00-01-image-20190115114609118-7523969-0ceae8.png" alt="image-20190115114609118"></p>
+<p>打开计划任务编辑文件后，可以在此文件中编写我们自定义的计划任务：</p>
+<p>计划任务的规则语法格式，以行为单位，一行则为一个计划：</p>
+<p>&#x3D;&#x3D;分      时      日      月      周      需要执行的命令&#x3D;&#x3D;</p>
+<p>例如：0 0 * * * reboot，代表每天0时0分执行reboot指令。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">取值范围（常识）：</span><br><span class="line">分：<span class="number">0</span>~<span class="number">59</span></span><br><span class="line">时：<span class="number">0</span>~<span class="number">23</span></span><br><span class="line">日：<span class="number">1</span>~<span class="number">31</span></span><br><span class="line">月：<span class="number">1</span>~<span class="number">12</span></span><br><span class="line">周：<span class="number">0</span>~<span class="number">7</span>，<span class="number">0</span> 和 <span class="number">7</span> 表示星期天</span><br><span class="line"></span><br><span class="line">四个符号：</span><br><span class="line">*：表示取值范围中的每一个数字</span><br><span class="line">-：做连续区间表达式的，要想表示<span class="number">1</span>~<span class="number">7</span>，则可以写成：<span class="number">1</span><span class="literal">-7</span></span><br><span class="line">/：表示每多少个，例如：想每 <span class="number">10</span> 分钟一次，则可以在分的位置写：*/<span class="number">10</span></span><br><span class="line">,：表示多个取值，比如想在 <span class="number">1</span> 点，<span class="number">2</span> 点 <span class="number">6</span> 点执行，则可以在时的位置写：<span class="number">1</span>,<span class="number">2</span>,<span class="number">6</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>特别补充：在Linux系统中，有些命令不能直接在计划任务中使用，使用后，其也不会生效。如useradd命令。如果想让其生效必须使用完整路径。</p>
+</blockquote>
+<p>问题：如何查询一个命令的真实路径在哪个位置？</p>
+<blockquote>
+<p>答：使用whereis  命令名称</p>
+</blockquote>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/20-59-59-1554258277505-c4a2c0.png" alt="1554258277505"></p>
+<h3 id="4-几个小案例"><a href="#4-几个小案例" class="headerlink" title="4)几个小案例"></a>4)几个小案例</h3><p>问题1：每月1、10、22 日的4:45 重启network 服务</p>
+<p>问题2：每周六、周日的1:10 重启network 服务</p>
+<p>问题3：每天18:00 至23:00 之间每隔30 分钟重启network 服务</p>
+<p>问题4：每隔两天的上午8 点到11 点的第3 和第15 分钟执行一次重启</p>
+<p>分时日月周  命令或服务</p>
+<p>问题1：45  4  1,10,22   *   *   service   network   restart</p>
+<p>问题2：10  1  *  *  6,7  service   network   restart</p>
+<p>问题3：*&#x2F;30  18-23   *   *   *   service network restart</p>
+<p>问题4：3,15   8-11  *&#x2F;2   *   *   reboot</p>
+<p>案例：每1 分钟往 root 家目录中的 readme.txt 中输一个1，为了看到效果使用追加输出【输出使用echo 命令，语法：# echo 输出的内容】</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/20-59-53-image-20190115120136784-7524896-d9dc60.png" alt="image-20190115120136784"></p>
+<p>在末行模式下输入<code>:wq</code>保存并退出，使用tail -f查看readme.txt动态变化</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/20-59-51-image-20190115120402179-7525042-f58df6.png" alt="image-20190115120402179"></p>
+<blockquote>
+<p>注意：在计划任务中，默认最小单位就是分，不能再小了。如果需要做到秒级别则需要配合研发相关代码。</p>
+</blockquote>
+<h3 id="5-扩展"><a href="#5-扩展" class="headerlink" title="5)扩展"></a>5)扩展</h3><h4 id="①-crontab-权限问题"><a href="#①-crontab-权限问题" class="headerlink" title="① crontab 权限问题"></a>① crontab 权限问题</h4><p>crontab是任何用户都可以创建的计划任务，但是超级管理员可以通过配置来设置某些用户不允许设置计划任务 。</p>
+<p>&#x3D;&#x3D;黑名单&#x3D;&#x3D;配置文件位于：<code>/etc/cron.deny</code> 里面写用户名，一行只能写一个</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/20-59-49-image-20190115120847967-7525328-83db11.png" alt="image-20190115120847967"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/20-59-48-image-20190115121037269-7525437-ca2ccd.png" alt="image-20190115121037269"></p>
+<p>保存退出，切换到cndws普通用户，执行crontab命令，如下图所示：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/20-59-46-image-20190115121134052-7525494-39a32f.png" alt="image-20190115121134052"></p>
+<p>&#x3D;&#x3D;白名单&#x3D;&#x3D;还有一个配置文件</p>
+<p>&#x2F;etc&#x2F;cron.allow （本身不存在，自己创建）</p>
+<blockquote>
+<p>注意：白名单优先级高于黑名单，如果一个用户同时存在两个名单文件中，则会被默认允许创建计划任务。</p>
+</blockquote>
+<h4 id="②-查看计划任务文件保存路径"><a href="#②-查看计划任务文件保存路径" class="headerlink" title="② 查看计划任务文件保存路径"></a>② 查看计划任务文件保存路径</h4><p>问题：计划任务文件具体保存在哪里呢？</p>
+<p>答：<code>/var/spool/cron/用户名文件中</code>，如果使用root用户编辑计划任务，则用户文件名为root</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/20-59-41-image-20190115135145162-7531505-225758.png" alt="image-20190115135145162"></p>
+<h4 id="③-查看计划任务日志信息"><a href="#③-查看计划任务日志信息" class="headerlink" title="③ 查看计划任务日志信息"></a>③ 查看计划任务日志信息</h4><p>问题：在实际应用中，我们如何查看定时任务运行情况？</p>
+<p>答：通过计划任务日志，日志文件位于<code>/var/log/cron</code></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/20-59-39-image-20190115141951856-7533191-597e01.png" alt="image-20190115141951856"></p>
+<h1 id="四、Linux软件包"><a href="#四、Linux软件包" class="headerlink" title="四、Linux软件包"></a>四、Linux软件包</h1><h2 id="1、软件包概述"><a href="#1、软件包概述" class="headerlink" title="1、软件包概述"></a>1、软件包概述</h2><p>​        这是什么？</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/20-59-37-rjb01-2868c1.jpg" style="width:960px" />
+
+<p>​        Linux下也有很多可以安装的软件，而这些软件的安装包可细分为两种，分别是<strong>源码包</strong>和<strong>二进制包</strong>。</p>
+<h3 id="1）源码包"><a href="#1）源码包" class="headerlink" title="1）源码包"></a>1）源码包</h3><p>​        源码包就是一大堆源代码程序，是由程序员按照特定的格式和语法编写出来的。计算机只能识别机器语言，也就是二进制语言，所以源码包安装之前需要编译。</p>
+<p>​        编译过程耗时较长<br>​        大多数用户不懂开发，编译过程中可能会有各种错误，用户无力解决。</p>
+<p>​        为了解决使用源码包安装的问题，Linux 软件包的安装出现了使用二进制包的安装方式。</p>
+<h3 id="2）二进制包"><a href="#2）二进制包" class="headerlink" title="2）二进制包"></a>2）二进制包</h3><p>​        二进制包，也就是源码包经过成功编译之后产生的包。</p>
+<p>​        二进制包是 Linux 下默认的软件安装包，目前主要有以下 2 大主流的二进制包管理系统：</p>
+<ul>
+<li>&#x3D;&#x3D;RPM 包&#x3D;&#x3D;管理系统：功能强大，安装、升级、査询和卸载非常简单方便，因此很多 Linux 发行版都默认使用此机制作为软件安装的管理方式，例如 Fedora、&#x3D;&#x3D;CentOS&#x3D;&#x3D;、SuSE 等。</li>
+<li>DPKG 包管理系统：由 Debian Linux 所开发的包管理机制，通过 DPKG 包，Debian Linux 就可以进行软件包管理，主要应用在 Debian 和 Ubuntu 中。</li>
+</ul>
+<p>​        <strong>RPM</strong>是RedHat Package Manager（RedHat软件包管理工具）的缩写</p>
+<p>​        作用：rpm 的作用类似于豌豆荚，华为应用市场，App Store，主要作用是对linux 服务器上的软件包进行对应管理操作，管理分为：查询、卸载、安装&#x2F;更新。</p>
+<h2 id="2、如何获取rpm包"><a href="#2、如何获取rpm包" class="headerlink" title="2、如何获取rpm包"></a>2、如何获取rpm包</h2><blockquote>
+<p>要想装软件，和windows 下一样，先得找到安装包：xxx.rpm</p>
+</blockquote>
+<p>软件包的获得方式：</p>
+<p>a. 去官网去下载（<a target="_blank" rel="noopener" href="http://rpm.pbone.net);/">http://rpm.pbone.net）；</a></p>
+<p>b. 不介意老版本的话，可以从光盘（或者镜像文件）中读取；</p>
+<h2 id="3、从光盘获取"><a href="#3、从光盘获取" class="headerlink" title="3、从光盘获取"></a>3、从光盘获取</h2><h4 id="3-1-虚拟机中加载光盘"><a href="#3-1-虚拟机中加载光盘" class="headerlink" title="3.1 虚拟机中加载光盘"></a>3.1 虚拟机中加载光盘</h4><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/20-59-35-rpm01-ff354d.png" style="width:960px" />
+
+
+
+<h4 id="3-2-使用-lsblk（list-block-devices）或者df-T-查看块状设备的信息"><a href="#3-2-使用-lsblk（list-block-devices）或者df-T-查看块状设备的信息" class="headerlink" title="3.2 使用 # lsblk（list block devices）或者df -T 查看块状设备的信息"></a>3.2 使用 # lsblk（list block devices）或者df -T 查看块状设备的信息</h4><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/20-59-34-rpm02-c37f73.jpg" style="width:960px" />
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Name：名称</span><br><span class="line">Size：设备大小</span><br><span class="line"><span class="built_in">Type</span>：类型</span><br><span class="line">MountPoint：挂载点</span><br><span class="line">此界面类似于Windows 下的磁盘管理界面：</span><br></pre></td></tr></table></figure>
+
+
+
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/20-59-32-image-20190109170027122-7024427-61ea58.png" style="width:960px" />
+
+
+
+<h4 id="3-3-进入-run-media-root-CentOS-7-x86-64-Packages目录"><a href="#3-3-进入-run-media-root-CentOS-7-x86-64-Packages目录" class="headerlink" title="3.3 进入&#x2F;run&#x2F;media&#x2F;root&#x2F;CentOS 7 x86_64&#x2F;Packages目录"></a>3.3 进入&#x2F;run&#x2F;media&#x2F;root&#x2F;CentOS 7 x86_64&#x2F;Packages目录</h4><p>#&#x2F;run&#x2F;media&#x2F;root&#x2F;CentOS 7 x86_64&#x2F;Packages</p>
+<p>#ls</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/20-59-31-rpm03-25c066.png" style="width:960px" />
+
+
+
+
+
+<h2 id="4、查询某个软件安装情况"><a href="#4、查询某个软件安装情况" class="headerlink" title="4、查询某个软件安装情况"></a>4、查询某个软件安装情况</h2><p>语法：# rpm -qa | grep 软件名称</p>
+<p>选项：</p>
+<p>-q：查询，query</p>
+<p>-a：全部，all</p>
+<p>示例代码：查询firefox浏览器的安装情况，已安装</p>
+<p>#rpm -qa |grep firefox</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/20-59-29-rpm03-1a1374.jpg" style="width:960px" />
+
+
+
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/20-59-28-rpm04-ec5abc.jpg" style="width:960px" />
+
+
+
+<p>示例代码：查询qq软件的安装情况，未安装</p>
+<p>#rpm -qa |grep qq</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/20-59-26-rpm05-be623b.jpg" style="width:960px" />
+
+
+
+<h2 id="5、卸载某个软件"><a href="#5、卸载某个软件" class="headerlink" title="5、卸载某个软件"></a>5、卸载某个软件</h2><p>卸载某个软件</p>
+<p>语法：# rpm -e 软件的名称（建议写完整的名称，通过-qa 查询）</p>
+<p>案例：卸载火狐浏览器</p>
+<p>#rpm -qa |grep firefox      首先查询firefox软件的完整名称<br>firefox-45.7.0-2.el6.centos.x86_64</p>
+<p>#rpm -e firefox-45.7.0-2.el6.centos.x86_64</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/20-59-24-rpm06-16753c.jpg" style="width:960px" />
+
+<p>卸载完成后，单击firefox浏览器图标，运行结果如下图所示：</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/20-59-20-rpm07-755499.jpg" style="width:960px" />
+
+
+
+<h2 id="6、安装某个软件"><a href="#6、安装某个软件" class="headerlink" title="6、安装某个软件"></a>6、安装某个软件</h2><p>命令：rpm</p>
+<p>作用：管理rpm软件包</p>
+<p>语法：# rpm -ivh 软件包完整路径名称</p>
+<p>选项：</p>
+<p>-i：install，安装</p>
+<p>-v：显示进度条</p>
+<p>-h：表示以”#”形式显示进度条</p>
+<p>示例代码：将刚刚卸载的firefox火狐浏览器重新安装（在DVD光盘1中）</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">用法：rpm <span class="literal">-ivh</span> 软件包名称</span><br><span class="line">示例代码：</span><br><span class="line"><span class="comment">#cd /run/media/root/CentOS\ 7\ x86_64/Packages/</span></span><br><span class="line">进入光盘Packages目录，里面存放了很多rpm的安装包</span><br><span class="line"></span><br><span class="line"><span class="comment">#ll |grep firefox</span></span><br><span class="line">查看Packages目录下，包含firefox的安装包</span><br><span class="line"></span><br><span class="line"><span class="comment">#rpm -ivh firefox-60.2.2-1.el7.centos.x86_64.rpm</span></span><br><span class="line">使用rpm命令，安装firefox软件包</span><br><span class="line"></span><br><span class="line"><span class="comment">#rpm -qa |grep firefox</span></span><br><span class="line">查询是否安装完成</span><br></pre></td></tr></table></figure>
+
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/20-59-17-rpm08-d28faa.jpg" style="width:960px" />
+
+
+
+<p>安装完成后，打开firefox浏览器</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/20-59-15-rpm04-64e935.jpg" style="width:960px" />
+
+
+
+<h2 id="7、更新某个软件"><a href="#7、更新某个软件" class="headerlink" title="7、更新某个软件"></a>7、更新某个软件</h2><p>语法：# rpm -Uvh 完整的安装包路径</p>
+<p>选项：</p>
+<p>-U：upgrade，升级</p>
+<p>-v：表示显示进度条</p>
+<p>-h：表示以#形式显示进度条</p>
+<p>这里我会提供给大家firefox的高版本的安装包</p>
+<p>firefox-60.8.0-1.el7.centos.x86_64.rpm    这个包是用来升级的</p>
+<p>firefox-68.4.1-1.el7.centos.x86_64.rpm</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">用法：rpm <span class="literal">-Uvh</span> 软件包名称</span><br><span class="line">示例代码：</span><br><span class="line"><span class="comment">#rpm -qa |grep firefox</span></span><br><span class="line">查询当前firefox的版本</span><br><span class="line"></span><br><span class="line"><span class="comment">#ll</span></span><br><span class="line">查看root目录下，我们刚刚拷到虚机上的RPM安装包的名称</span><br><span class="line"></span><br><span class="line"><span class="comment">#rpm -Uvh firefox-60.8.0-1.el7.centos.x86_64.rpm</span></span><br><span class="line">使用rpm命令，安装<span class="number">60.8</span>.<span class="number">0</span>版本的软件包</span><br><span class="line"></span><br><span class="line"><span class="comment">#rpm -qa |grep firefox</span></span><br><span class="line">查询升级后的firefox版本</span><br></pre></td></tr></table></figure>
+
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/20-59-12-rpm09-4b2554.jpg" style="width:960px" />
+
+
+
+<h2 id="8、rpm扩展"><a href="#8、rpm扩展" class="headerlink" title="8、rpm扩展"></a>8、rpm扩展</h2><h4 id="8-1依赖关系"><a href="#8-1依赖关系" class="headerlink" title="8.1依赖关系"></a>8.1依赖关系</h4><p>一个软件必须先有其他软件才能运行，例如之前xmind启动过程中提示的缺少DLL，称之为依赖</p>
+<p>WAMP（Windows + Apache + MySQL + PHP）安装前必须先安装VC++ 2014 x86_64，这种情况就称之为有依赖关系。</p>
+<p>60.8.0的firefox可以更新成功</p>
+<p>下面我们尝试更新到68.4.1的版本</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">用法：rpm <span class="literal">-Uvh</span> 软件包名称</span><br><span class="line"></span><br><span class="line"><span class="comment">#rpm -Uvh firefox-68.4.1-1.el7.centos.x86_64.rpm</span></span><br><span class="line">使用rpm命令，安装<span class="number">68.4</span>.<span class="number">1</span>版本的软件包</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/20-59-10-rpm10-9d0ecc.jpg" style="width:960px" />
+
+<p>错误提示：</p>
+<p>error：Failed dependencies:</p>
+<p>提示安装68版本的firefox需要依赖nspr4.21的版本，nss的3.44的版本，这就是我们说的&#x3D;&#x3D;依赖关系&#x3D;&#x3D;。</p>
+<p>为了解决依赖关系的问题，有另外一个管理工具叫做&#x3D;&#x3D;yum&#x3D;&#x3D;，后面我们会讲到</p>
+<h4 id="8-2-查看文件所属的包名（实用）"><a href="#8-2-查看文件所属的包名（实用）" class="headerlink" title="8.2 查看文件所属的包名（实用）"></a>8.2 查看文件所属的包名（实用）</h4><p>语法：# rpm -qf 需要查询的文件路径</p>
+<p>选项：</p>
+<p>-f：查询文件所属包</p>
+<p>示例代码：查询&#x2F;etc&#x2F;ntp.conf 属于哪个软件包？</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/20-59-09-rpm11-24189c.jpg" style="width:960px" />
+
+
+
+<h4 id="8-3查询软件安装完成后，生成了哪些文件"><a href="#8-3查询软件安装完成后，生成了哪些文件" class="headerlink" title="8.3查询软件安装完成后，生成了哪些文件"></a>8.3查询软件安装完成后，生成了哪些文件</h4><p>语法：# rpm  -ql   需要查询的软件包名称</p>
+<p>#rpm -ql firefox</p>
+<p>#rpm -ql openssh</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/20-59-06-rpm12-1a0092.jpg" style="width:960px" />
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">特别说明：软件安装完成后，一共生成了以下几类文件</span><br><span class="line">配置文件类：/etc目录</span><br><span class="line">程序文件本身，二进制文件命令：/usr/sbin目录</span><br><span class="line">文档手册：/usr/share/doc或<span class="built_in">man</span>目录</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="9、扩展：光盘的挂载和解挂"><a href="#9、扩展：光盘的挂载和解挂" class="headerlink" title="9、扩展：光盘的挂载和解挂"></a>9、扩展：光盘的挂载和解挂</h2><p>① 解挂操作</p>
+<p>命令：umount</p>
+<p>语法：# umount 当前设备的挂载点（路径）</p>
+<p>例如：</p>
+<p>#umount &#x2F;run&#x2F;media&#x2F;root&#x2F;CentOS\ 7\ x86_64&#x2F;</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/20-59-04-mount01-760e3f.jpg" style="width:960px" />
+
+
+
+<p>② 挂载光盘</p>
+<p>首先新建一个挂载点，然后使用mount命令进行挂在，挂载点可以理解为就是一个空目录</p>
+<p>命令：mount</p>
+<p>语法：# mount  设备文件原始地址（&#x2F;dev目录）  要挂载的位置路径（盘符）</p>
+<p>设备原始地址：地址统一都在&#x2F;dev 下，然后根据大小确定具体name 值，拼凑在一起组成原</p>
+<p>始地址，例如当前：”&#x2F;dev&#x2F;sr0”</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">用法：<span class="built_in">mount</span> 设备 挂载点</span><br><span class="line">示例代码：</span><br><span class="line"><span class="comment">#mkdir /mnt/dvd</span></span><br><span class="line">新建一个目录作为挂载点</span><br><span class="line"></span><br><span class="line"><span class="comment">#mount /dev/sr0 /mnt/dvd</span></span><br><span class="line">将光驱设备/dev/sr0 挂载到 /mnt/dvd这个挂载点</span><br><span class="line"></span><br><span class="line"><span class="comment">#df -T</span></span><br><span class="line">可以看到已经成功挂载</span><br></pre></td></tr></table></figure>
+
+
+
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/20-59-00-mount02-00c013.jpg" style="width:960px" />
+
+
+
+
+
+
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/21-05-13-9cdc45b70b1d804c9facf80821f4dc29-081d0e.png" alt="9cdc45b70b1d804c9facf80821f4dc29"></p>
+</article><div class="post-copyright"><div class="copyright-cc-box"><i class="anzhiyufont anzhiyu-icon-copyright"></i></div><div class="post-copyright__author_box"><a class="post-copyright__author_img" href="/" title="头像"><img class="post-copyright__author_img_back" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/23/03-13-21-%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240623031309-4c1443.jpg" title="头像" alt="头像"><img class="post-copyright__author_img_front" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/23/03-13-21-%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240623031309-4c1443.jpg" title="头像" alt="头像"></a><div class="post-copyright__author_name">Flaw</div><div class="post-copyright__author_desc"></div></div><div class="post-copyright__post__info"><a class="post-copyright__original" title="该文章为原创文章，注意版权协议" href="http://sfyyh.github.io/2024/06/25/Linux%E8%87%AA%E6%9C%89%E6%9C%8D%E5%8A%A1%E5%92%8C%E8%BD%AF%E4%BB%B6%E5%8C%85/">原创</a><a class="post-copyright-title"><span onclick="rm.copyPageUrl('http://sfyyh.github.io/2024/06/25/Linux%E8%87%AA%E6%9C%89%E6%9C%8D%E5%8A%A1%E5%92%8C%E8%BD%AF%E4%BB%B6%E5%8C%85/')">Linux自有服务和软件包</span></a></div><div class="post-tools" id="post-tools"><div class="post-tools-left"><div class="rewardLeftButton"><div class="post-reward" onclick="anzhiyu.addRewardMask()"><div class="reward-button button--animated" title="赞赏作者"><i class="anzhiyufont anzhiyu-icon-hand-heart-fill"></i>打赏作者</div><div class="reward-main"><div class="reward-all"><span class="reward-title">感谢你赐予我前进的力量</span><ul class="reward-group"><li class="reward-item"><a href="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/23/03-08-09-%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240623030747-010bf4.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/23/03-08-09-%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240623030747-010bf4.jpg" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/23/03-08-09-%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240623030743-4e58a3.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/23/03-08-09-%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240623030743-4e58a3.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul><a class="reward-main-btn" href="/about/#about-reward" target="_blank"><div class="reward-text">赞赏者名单</div><div class="reward-dec">因为你们的支持让我意识到写文章的价值🙏</div></a></div></div></div><div id="quit-box" onclick="anzhiyu.removeRewardMask()" style="display: none"></div></div><div class="shareRight"><div class="share-link mobile"><div class="share-qrcode"><div class="share-button" title="使用手机访问这篇文章"><i class="anzhiyufont anzhiyu-icon-qrcode"></i></div><div class="share-main"><div class="share-main-all"><div id="qrcode" title="http://sfyyh.github.io/2024/06/25/Linux%E8%87%AA%E6%9C%89%E6%9C%8D%E5%8A%A1%E5%92%8C%E8%BD%AF%E4%BB%B6%E5%8C%85/"></div><div class="reward-dec">使用手机访问这篇文章</div></div></div></div></div><div class="share-link weibo"><a class="share-button" target="_blank" href="https://service.weibo.com/share/share.php?title=Linux自有服务和软件包&amp;url=http://sfyyh.github.io/2024/06/25/Linux%E8%87%AA%E6%9C%89%E6%9C%8D%E5%8A%A1%E5%92%8C%E8%BD%AF%E4%BB%B6%E5%8C%85/&amp;pic=https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/21-05-13-9cdc45b70b1d804c9facf80821f4dc29-081d0e.png" rel="external nofollow noreferrer noopener"><i class="anzhiyufont anzhiyu-icon-weibo"></i></a></div><script>function copyCurrentPageUrl() {
+  var currentPageUrl = window.location.href;
+  var input = document.createElement("input");
+  input.setAttribute("value", currentPageUrl);
+  document.body.appendChild(input);
+  input.select();
+  input.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+  document.body.removeChild(input);
+}</script><div class="share-link copyurl"><div class="share-button" id="post-share-url" title="复制链接" onclick="copyCurrentPageUrl()"><i class="anzhiyufont anzhiyu-icon-link"></i></div></div></div></div></div><div class="post-copyright__notice"><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://sfyyh.github.io" target="_blank">卿云</a>！</span></div></div><div class="post-tools-right"><div class="tag_share"><div class="post-meta__box"><div class="post-meta__box__tag-list"><a class="post-meta__box__tags" href="/tags/Linux/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>Linux<span class="tagsPageCount">2</span></a><a class="post-meta__box__tags" href="/tags/Linux%E5%91%BD%E4%BB%A4/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>Linux命令<span class="tagsPageCount">2</span></a></div></div></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/23/16-33-10-%E4%B8%8B%E8%BD%BD-0eab7a.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"/><script src="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer="defer"></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/06/25/Docker/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/08-58-01-1-3-8839ca.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Docker</div></div></a></div><div class="next-post pull-right"><a href="/2024/06/25/Linux%E8%BF%9B%E7%A8%8B%E6%A3%80%E6%B5%8B%E4%B8%8E%E7%A9%BA%E5%80%BC/"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/21-05-13-9cdc45b70b1d804c9facf80821f4dc29-081d0e.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Linux进程检测与控制</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="anzhiyufont anzhiyu-icon-thumbs-up fa-fw" style="font-size: 1.5rem; margin-right: 4px"></i><span>喜欢这篇文章的人也看了</span></div><div class="relatedPosts-list"><div><a href="/2024/06/25/Linux%E8%BF%9B%E7%A8%8B%E6%A3%80%E6%B5%8B%E4%B8%8E%E7%A9%BA%E5%80%BC/" title="Linux进程检测与控制"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/21-05-13-9cdc45b70b1d804c9facf80821f4dc29-081d0e.png" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2024-06-25</div><div class="title">Linux进程检测与控制</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-content"><div class="author-info__sayhi" id="author-info__sayhi" onclick="anzhiyu.changeSayHelloText()"></div><div class="author-info-avatar"><img class="avatar-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/23/03-13-21-%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240623031309-4c1443.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-status"><img class="g-status" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2023/08/24/64e6ce9c507bb.png" alt="status"/></div></div><div class="author-info__description"><div style="line-height:1.38;margin:0.6rem 0;text-align:justify;color:rgba(255, 255, 255, 0.8);">这有关于<b style="color:#fff">产品、设计、开发</b>相关的问题和看法，还有<b style="color:#fff">文章翻译</b>和<b style="color:#fff">分享</b>。</div><div style="line-height:1.38;margin:0.6rem 0;text-align:justify;color:rgba(255, 255, 255, 0.8);">相信你可以在这里找到对你有用的<b style="color:#fff">知识</b>和<b style="color:#fff">教程</b>。</div></div><div class="author-info__bottom-group"><a class="author-info__bottom-group-left" href="/about"><h1 class="author-info__name">Flaw</h1><div class="author-info__desc"></div></a><div class="card-info-social-icons is-center"><a class="social-icon faa-parent animated-hover" href="https://github.com/SFYYH" target="_blank" title="Github"><i class="anzhiyufont anzhiyu-icon-github"></i></a></div></div></div></div><div class="card-widget anzhiyu-right-widget" id="card-wechat" onclick="null"><div id="flip-wrapper"><div id="flip-content"><div class="face" style="background: url(https://img02.anheyu.com/adminuploads/1/2022/09/11/631ddb7c9b250.png) center center / 100% no-repeat"></div><div class="back face" style="background: url(https://img02.anheyu.com/adminuploads/1/2022/09/11/631ddb7c9b250.png) center center / 100% no-repeat"></div></div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bars"></i><span>文章目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E7%9B%AE%E6%A0%87"><span class="toc-number">1.</span> <span class="toc-text">学习目标</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E8%87%AA%E6%9C%89%E6%9C%8D%E5%8A%A1%E6%A6%82%E8%BF%B0"><span class="toc-number">2.</span> <span class="toc-text">一、自有服务概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E3%80%81systemctl%E7%AE%A1%E7%90%86%E6%9C%8D%E5%8A%A1%E5%91%BD%E4%BB%A4"><span class="toc-number">3.</span> <span class="toc-text">二、systemctl管理服务命令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81%E6%98%BE%E7%A4%BA%E6%9C%8D%E5%8A%A1"><span class="toc-number">3.1.</span> <span class="toc-text">1、显示服务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81%E6%9F%A5%E7%9C%8B%E5%90%AF%E5%8A%A8%E5%92%8C%E5%81%9C%E6%AD%A2%E6%9C%8D%E5%8A%A1"><span class="toc-number">3.2.</span> <span class="toc-text">2、查看启动和停止服务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81%E6%9C%8D%E5%8A%A1%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-number">3.3.</span> <span class="toc-text">3、服务持久化</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%B8%B8%E7%94%A8%E8%87%AA%E6%9C%89%E6%9C%8D%E5%8A%A1%EF%BC%88ntp-firewalld-crond"><span class="toc-number">4.</span> <span class="toc-text">三、常用自有服务（ntp,firewalld,crond)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81ntp%E6%97%B6%E9%97%B4%E5%90%8C%E6%AD%A5%E6%9C%8D%E5%8A%A1"><span class="toc-number">4.1.</span> <span class="toc-text">1、ntp时间同步服务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%EF%BC%89NTP%E5%90%8C%E6%AD%A5%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%8E%9F%E7%90%86"><span class="toc-number">4.1.1.</span> <span class="toc-text">1）NTP同步服务器原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%EF%BC%89%E5%88%B0%E5%93%AA%E9%87%8C%E5%8E%BB%E6%89%BENTP%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-number">4.1.2.</span> <span class="toc-text">2）到哪里去找NTP服务器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%EF%BC%89%E6%97%B6%E9%97%B4%E5%90%8C%E6%AD%A5%E6%93%8D%E4%BD%9C"><span class="toc-number">4.1.3.</span> <span class="toc-text">3）时间同步操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81firewalld%E9%98%B2%E7%81%AB%E5%A2%99"><span class="toc-number">4.2.</span> <span class="toc-text">2、firewalld防火墙</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AF%E9%98%B2%E7%81%AB%E5%A2%99"><span class="toc-number">4.2.1.</span> <span class="toc-text">1)什么是防火墙</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BC%A0%E7%BB%9FLinux%E9%98%B2%E7%81%AB%E5%A2%99"><span class="toc-number">4.2.2.</span> <span class="toc-text">2)传统Linux防火墙</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81firewalld%E9%98%B2%E7%81%AB%E5%A2%99%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="toc-number">4.3.</span> <span class="toc-text">3、firewalld防火墙的概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%EF%BC%89%E5%8C%BA%E5%9F%9F"><span class="toc-number">4.3.1.</span> <span class="toc-text">1）区域</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%EF%BC%89%E8%BF%90%E8%A1%8C%E6%A8%A1%E5%BC%8F%E5%92%8C%E6%B0%B8%E4%B9%85%E6%A8%A1%E5%BC%8F"><span class="toc-number">4.3.2.</span> <span class="toc-text">2）运行模式和永久模式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4%E3%80%81firewalld%E9%98%B2%E7%81%AB%E5%A2%99%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="toc-number">4.4.</span> <span class="toc-text">4、firewalld防火墙的配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%EF%BC%89%E6%9F%A5%E7%9C%8B%EF%BC%8C%E5%BC%80%E5%90%AF%E5%92%8C%E5%81%9C%E6%AD%A2firewalld%E6%9C%8D%E5%8A%A1"><span class="toc-number">4.4.1.</span> <span class="toc-text">1）查看，开启和停止firewalld服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%AE%A1%E7%90%86firewall%E9%85%8D%E7%BD%AE"><span class="toc-number">4.4.2.</span> <span class="toc-text">2) 管理firewall配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%91%A0%E6%9F%A5%E7%9C%8B%E9%BB%98%E8%AE%A4%E4%BD%BF%E7%94%A8%E7%9A%84%E5%8C%BA%E5%9F%9F"><span class="toc-number">4.4.3.</span> <span class="toc-text">①查看默认使用的区域</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%91%A1%E6%9F%A5%E7%9C%8B%E6%89%80%E6%9C%89%E5%8F%AF%E7%94%A8%E5%8C%BA%E5%9F%9F"><span class="toc-number">4.4.4.</span> <span class="toc-text">②查看所有可用区域</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%91%A2%E5%88%97%E5%87%BA%E5%BD%93%E5%89%8D%E4%BD%BF%E7%94%A8%E5%8C%BA%E5%9F%9F%E9%85%8D%E7%BD%AE"><span class="toc-number">4.4.5.</span> <span class="toc-text">③列出当前使用区域配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%91%A3%E5%88%97%E5%87%BA%E6%89%80%E6%9C%89%E5%8C%BA%E5%9F%9F%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="toc-number">4.4.6.</span> <span class="toc-text">④列出所有区域的配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%91%A4%E6%B7%BB%E5%8A%A0%E5%85%81%E8%AE%B8%E9%80%9A%E8%BF%87%E7%9A%84%E6%9C%8D%E5%8A%A1%E6%88%96%E7%AB%AF%E5%8F%A3"><span class="toc-number">4.4.7.</span> <span class="toc-text">⑤添加允许通过的服务或端口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%91%A5%E5%8E%BB%E6%8E%89%E5%85%81%E8%AE%B8%E9%80%9A%E8%BF%87%E7%9A%84%E6%9C%8D%E5%8A%A1%E6%88%96%E7%AB%AF%E5%8F%A3"><span class="toc-number">4.4.8.</span> <span class="toc-text">⑥去掉允许通过的服务或端口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%91%A6%E6%B0%B8%E4%B9%85%E6%A8%A1%E5%BC%8F%E5%8F%82%E6%95%B0permanent"><span class="toc-number">4.4.9.</span> <span class="toc-text">⑦永久模式参数permanent</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%91%A7%E9%87%8D%E6%96%B0%E5%8A%A0%E8%BD%BD%E9%85%8D%E7%BD%AEreload"><span class="toc-number">4.4.10.</span> <span class="toc-text">⑧重新加载配置reload</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5%E3%80%81%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1crontab"><span class="toc-number">4.5.</span> <span class="toc-text">5、计划任务crontab</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">4.5.1.</span> <span class="toc-text">1)计划任务的作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%9F%A5%E7%9C%8B%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1"><span class="toc-number">4.5.2.</span> <span class="toc-text">2)查看计划任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%BC%96%E8%BE%91%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1%EF%BC%88%E9%87%8D%E7%82%B9%EF%BC%89"><span class="toc-number">4.5.3.</span> <span class="toc-text">3)编辑计划任务（重点）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%87%A0%E4%B8%AA%E5%B0%8F%E6%A1%88%E4%BE%8B"><span class="toc-number">4.5.4.</span> <span class="toc-text">4)几个小案例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E6%89%A9%E5%B1%95"><span class="toc-number">4.5.5.</span> <span class="toc-text">5)扩展</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E2%91%A0-crontab-%E6%9D%83%E9%99%90%E9%97%AE%E9%A2%98"><span class="toc-number">4.5.5.1.</span> <span class="toc-text">① crontab 权限问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E2%91%A1-%E6%9F%A5%E7%9C%8B%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1%E6%96%87%E4%BB%B6%E4%BF%9D%E5%AD%98%E8%B7%AF%E5%BE%84"><span class="toc-number">4.5.5.2.</span> <span class="toc-text">② 查看计划任务文件保存路径</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E2%91%A2-%E6%9F%A5%E7%9C%8B%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1%E6%97%A5%E5%BF%97%E4%BF%A1%E6%81%AF"><span class="toc-number">4.5.5.3.</span> <span class="toc-text">③ 查看计划任务日志信息</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%9B%E3%80%81Linux%E8%BD%AF%E4%BB%B6%E5%8C%85"><span class="toc-number">5.</span> <span class="toc-text">四、Linux软件包</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81%E8%BD%AF%E4%BB%B6%E5%8C%85%E6%A6%82%E8%BF%B0"><span class="toc-number">5.1.</span> <span class="toc-text">1、软件包概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%EF%BC%89%E6%BA%90%E7%A0%81%E5%8C%85"><span class="toc-number">5.1.1.</span> <span class="toc-text">1）源码包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%EF%BC%89%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%8C%85"><span class="toc-number">5.1.2.</span> <span class="toc-text">2）二进制包</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81%E5%A6%82%E4%BD%95%E8%8E%B7%E5%8F%96rpm%E5%8C%85"><span class="toc-number">5.2.</span> <span class="toc-text">2、如何获取rpm包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81%E4%BB%8E%E5%85%89%E7%9B%98%E8%8E%B7%E5%8F%96"><span class="toc-number">5.3.</span> <span class="toc-text">3、从光盘获取</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%AD%E5%8A%A0%E8%BD%BD%E5%85%89%E7%9B%98"><span class="toc-number">5.3.0.1.</span> <span class="toc-text">3.1 虚拟机中加载光盘</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-%E4%BD%BF%E7%94%A8-lsblk%EF%BC%88list-block-devices%EF%BC%89%E6%88%96%E8%80%85df-T-%E6%9F%A5%E7%9C%8B%E5%9D%97%E7%8A%B6%E8%AE%BE%E5%A4%87%E7%9A%84%E4%BF%A1%E6%81%AF"><span class="toc-number">5.3.0.2.</span> <span class="toc-text">3.2 使用 # lsblk（list block devices）或者df -T 查看块状设备的信息</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-%E8%BF%9B%E5%85%A5-run-media-root-CentOS-7-x86-64-Packages%E7%9B%AE%E5%BD%95"><span class="toc-number">5.3.0.3.</span> <span class="toc-text">3.3 进入&#x2F;run&#x2F;media&#x2F;root&#x2F;CentOS 7 x86_64&#x2F;Packages目录</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4%E3%80%81%E6%9F%A5%E8%AF%A2%E6%9F%90%E4%B8%AA%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E6%83%85%E5%86%B5"><span class="toc-number">5.4.</span> <span class="toc-text">4、查询某个软件安装情况</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5%E3%80%81%E5%8D%B8%E8%BD%BD%E6%9F%90%E4%B8%AA%E8%BD%AF%E4%BB%B6"><span class="toc-number">5.5.</span> <span class="toc-text">5、卸载某个软件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6%E3%80%81%E5%AE%89%E8%A3%85%E6%9F%90%E4%B8%AA%E8%BD%AF%E4%BB%B6"><span class="toc-number">5.6.</span> <span class="toc-text">6、安装某个软件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7%E3%80%81%E6%9B%B4%E6%96%B0%E6%9F%90%E4%B8%AA%E8%BD%AF%E4%BB%B6"><span class="toc-number">5.7.</span> <span class="toc-text">7、更新某个软件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8%E3%80%81rpm%E6%89%A9%E5%B1%95"><span class="toc-number">5.8.</span> <span class="toc-text">8、rpm扩展</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#8-1%E4%BE%9D%E8%B5%96%E5%85%B3%E7%B3%BB"><span class="toc-number">5.8.0.1.</span> <span class="toc-text">8.1依赖关系</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-2-%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E6%89%80%E5%B1%9E%E7%9A%84%E5%8C%85%E5%90%8D%EF%BC%88%E5%AE%9E%E7%94%A8%EF%BC%89"><span class="toc-number">5.8.0.2.</span> <span class="toc-text">8.2 查看文件所属的包名（实用）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-3%E6%9F%A5%E8%AF%A2%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E5%AE%8C%E6%88%90%E5%90%8E%EF%BC%8C%E7%94%9F%E6%88%90%E4%BA%86%E5%93%AA%E4%BA%9B%E6%96%87%E4%BB%B6"><span class="toc-number">5.8.0.3.</span> <span class="toc-text">8.3查询软件安装完成后，生成了哪些文件</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9%E3%80%81%E6%89%A9%E5%B1%95%EF%BC%9A%E5%85%89%E7%9B%98%E7%9A%84%E6%8C%82%E8%BD%BD%E5%92%8C%E8%A7%A3%E6%8C%82"><span class="toc-number">5.9.</span> <span class="toc-text">9、扩展：光盘的挂载和解挂</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-history"></i><span>最近发布</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/06/25/Mysql%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D/" title="Mysql数据库的备份与恢复"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/23/16-33-10-%E4%B8%8B%E8%BD%BD-0eab7a.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Mysql数据库的备份与恢复"/></a><div class="content"><a class="title" href="/2024/06/25/Mysql%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D/" title="Mysql数据库的备份与恢复">Mysql数据库的备份与恢复</a><time datetime="2024-06-25T13:27:14.000Z" title="发表于 2024-06-25 21:27:14">2024-06-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/06/25/Mysql%E4%B8%BB%E4%BB%8E%E6%9E%B6%E6%9E%84/" title="Mysql主从架构"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/23/16-33-10-%E4%B8%8B%E8%BD%BD-0eab7a.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Mysql主从架构"/></a><div class="content"><a class="title" href="/2024/06/25/Mysql%E4%B8%BB%E4%BB%8E%E6%9E%B6%E6%9E%84/" title="Mysql主从架构">Mysql主从架构</a><time datetime="2024-06-25T13:18:04.000Z" title="发表于 2024-06-25 21:18:04">2024-06-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/06/25/Linux%E8%BF%9B%E7%A8%8B%E6%A3%80%E6%B5%8B%E4%B8%8E%E7%A9%BA%E5%80%BC/" title="Linux进程检测与控制"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/21-05-13-9cdc45b70b1d804c9facf80821f4dc29-081d0e.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Linux进程检测与控制"/></a><div class="content"><a class="title" href="/2024/06/25/Linux%E8%BF%9B%E7%A8%8B%E6%A3%80%E6%B5%8B%E4%B8%8E%E7%A9%BA%E5%80%BC/" title="Linux进程检测与控制">Linux进程检测与控制</a><time datetime="2024-06-25T13:09:55.000Z" title="发表于 2024-06-25 21:09:55">2024-06-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/06/25/Linux%E8%87%AA%E6%9C%89%E6%9C%8D%E5%8A%A1%E5%92%8C%E8%BD%AF%E4%BB%B6%E5%8C%85/" title="Linux自有服务和软件包"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/21-05-13-9cdc45b70b1d804c9facf80821f4dc29-081d0e.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Linux自有服务和软件包"/></a><div class="content"><a class="title" href="/2024/06/25/Linux%E8%87%AA%E6%9C%89%E6%9C%8D%E5%8A%A1%E5%92%8C%E8%BD%AF%E4%BB%B6%E5%8C%85/" title="Linux自有服务和软件包">Linux自有服务和软件包</a><time datetime="2024-06-25T13:02:13.000Z" title="发表于 2024-06-25 21:02:13">2024-06-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/06/25/Docker/" title="Docker"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/25/08-58-01-1-3-8839ca.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Docker"/></a><div class="content"><a class="title" href="/2024/06/25/Docker/" title="Docker">Docker</a><time datetime="2024-06-25T00:59:17.000Z" title="发表于 2024-06-25 08:59:17">2024-06-25</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"></div><div id="footer-bar"><div class="footer-bar-links"><div class="footer-bar-left"><div id="footer-bar-tips"><div class="copyright">&copy;2020 - 2024 By <a class="footer-bar-link" href="/" title="Flaw" target="_blank">Flaw</a></div></div><div id="footer-type-tips"></div></div><div class="footer-bar-right"><a class="footer-bar-link" target="_blank" rel="noopener" href="https://github.com/SFYYH" title="主题">主题</a></div></div></div></footer></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="sidebar-site-data site-data is-center"><a href="/archives/" title="archive"><div class="headline">文章</div><div class="length-num">9</div></a><a href="/tags/" title="tag"><div class="headline">标签</div><div class="length-num">12</div></a><a href="/categories/" title="category"><div class="headline">分类</div><div class="length-num">3</div></a></div><span class="sidebar-menu-item-title">功能</span><div class="sidebar-menu-item"><a class="darkmode_switchbutton menu-child" href="javascript:void(0);" title="显示模式"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span>显示模式</span></a></div><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" href="https://sfyyh.github.io/" title="博客"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/favicon.ico" alt="博客"/><span class="back-menu-item-text">博客</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://chat.qingyunzc.cc" title="卿云AI"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.anheyu.com/favicon.ico" alt="卿云AI"/><span class="back-menu-item-text">卿云AI</span></a></div></div></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 隧道</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 友链</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/link/"><i class="anzhiyufont anzhiyu-icon-link faa-tada" style="font-size: 0.9em;"></i><span> 友人帐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/comments/"><i class="anzhiyufont anzhiyu-icon-envelope faa-tada" style="font-size: 0.9em;"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/album/"><i class="anzhiyufont anzhiyu-icon-images faa-tada" style="font-size: 0.9em;"></i><span> 相册集</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/air-conditioner/"><i class="anzhiyufont anzhiyu-icon-fan faa-tada" style="font-size: 0.9em;"></i><span> 小空调</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/essay/"><i class="anzhiyufont anzhiyu-icon-lightbulb faa-tada" style="font-size: 0.9em;"></i><span> 闲言碎语</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/equipment/"><i class="anzhiyufont anzhiyu-icon-dice-d20 faa-tada" style="font-size: 0.9em;"></i><span> 我的装备</span></a></li></ul></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/music/?id=6799820199&amp;server=netease"><span> 音乐馆</span></a></div></div><span class="sidebar-menu-item-title">标签</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/Docker/" style="font-size: 0.88rem;">Docker<sup>1</sup></a><a href="/tags/Docker%E5%AE%89%E8%A3%85/" style="font-size: 0.88rem;">Docker安装<sup>1</sup></a><a href="/tags/LNMP/" style="font-size: 0.88rem;">LNMP<sup>2</sup></a><a href="/tags/Linux/" style="font-size: 0.88rem;">Linux<sup>2</sup></a><a href="/tags/Linux%E5%91%BD%E4%BB%A4/" style="font-size: 0.88rem;">Linux命令<sup>2</sup></a><a href="/tags/Linux%E8%BF%90%E7%BB%B4/" style="font-size: 0.88rem;">Linux运维<sup>1</sup></a><a href="/tags/MYSQL/" style="font-size: 0.88rem;">MYSQL<sup>3</sup></a><a href="/tags/Socket/" style="font-size: 0.88rem;">Socket<sup>1</sup></a><a href="/tags/mysql/" style="font-size: 0.88rem;">mysql<sup>3</sup></a><a href="/tags/%E5%A5%97%E6%8E%A5%E5%AD%97/" style="font-size: 0.88rem;">套接字<sup>1</sup></a><a href="/tags/%E8%BF%90%E7%BB%B4/" style="font-size: 0.88rem;">运维<sup>5</sup></a><a href="/tags/%E8%BF%9B%E7%A8%8B%E6%A3%80%E6%B5%8B%E4%B8%8E%E6%8E%A7%E5%88%B6/" style="font-size: 0.88rem;">进程检测与控制<sup>1</sup></a></div></div><hr/></div></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="anzhiyufont anzhiyu-icon-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="anzhiyufont anzhiyu-icon-gear"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="anzhiyufont anzhiyu-icon-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></button></div></div><div id="nav-music"><a id="nav-music-hoverTips" onclick="anzhiyu.musicToggle()" accesskey="m">播放音乐</a><div id="console-music-bg"></div><meting-js id="6799820199" server="netease" type="playlist" mutex="true" preload="none" theme="var(--anzhiyu-main)" data-lrctype="0" order="random" volume="0.7"></meting-js></div><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="anzhiyufont anzhiyu-icon-xmark"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div></div><div id="rightMenu"><div class="rightMenu-group rightMenu-small"><div class="rightMenu-item" id="menu-backward"><i class="anzhiyufont anzhiyu-icon-arrow-left"></i></div><div class="rightMenu-item" id="menu-forward"><i class="anzhiyufont anzhiyu-icon-arrow-right"></i></div><div class="rightMenu-item" id="menu-refresh"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right" style="font-size: 1rem;"></i></div><div class="rightMenu-item" id="menu-top"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></div></div><div class="rightMenu-group rightMenu-line rightMenuPlugin"><div class="rightMenu-item" id="menu-copytext"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制选中文本</span></div><div class="rightMenu-item" id="menu-pastetext"><i class="anzhiyufont anzhiyu-icon-paste"></i><span>粘贴文本</span></div><a class="rightMenu-item" id="menu-commenttext"><i class="anzhiyufont anzhiyu-icon-comment-medical"></i><span>引用到评论</span></a><div class="rightMenu-item" id="menu-newwindow"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开</span></div><div class="rightMenu-item" id="menu-copylink"><i class="anzhiyufont anzhiyu-icon-link"></i><span>复制链接地址</span></div><div class="rightMenu-item" id="menu-copyimg"><i class="anzhiyufont anzhiyu-icon-images"></i><span>复制此图片</span></div><div class="rightMenu-item" id="menu-downloadimg"><i class="anzhiyufont anzhiyu-icon-download"></i><span>下载此图片</span></div><div class="rightMenu-item" id="menu-newwindowimg"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开图片</span></div><div class="rightMenu-item" id="menu-search"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>站内搜索</span></div><div class="rightMenu-item" id="menu-searchBaidu"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>百度搜索</span></div><div class="rightMenu-item" id="menu-music-toggle"><i class="anzhiyufont anzhiyu-icon-play"></i><span>播放音乐</span></div><div class="rightMenu-item" id="menu-music-back"><i class="anzhiyufont anzhiyu-icon-backward"></i><span>切换到上一首</span></div><div class="rightMenu-item" id="menu-music-forward"><i class="anzhiyufont anzhiyu-icon-forward"></i><span>切换到下一首</span></div><div class="rightMenu-item" id="menu-music-playlist" onclick="window.open(&quot;https://y.qq.com/n/ryqq/playlist/8802438608&quot;, &quot;_blank&quot;);" style="display: none;"><i class="anzhiyufont anzhiyu-icon-radio"></i><span>查看所有歌曲</span></div><div class="rightMenu-item" id="menu-music-copyMusicName"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制歌名</span></div></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item menu-link" id="menu-randomPost"><i class="anzhiyufont anzhiyu-icon-shuffle"></i><span>随便逛逛</span></a><a class="rightMenu-item menu-link" href="/categories/"><i class="anzhiyufont anzhiyu-icon-cube"></i><span>博客分类</span></a><a class="rightMenu-item menu-link" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags"></i><span>文章标签</span></a></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item" id="menu-copy" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制地址</span></a><a class="rightMenu-item" id="menu-commentBarrage" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-message"></i><span class="menu-commentBarrage-text">关闭热评</span></a><a class="rightMenu-item" id="menu-darkmode" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span class="menu-darkmode-text">深色模式</span></a><a class="rightMenu-item" id="menu-translate" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-language"></i><span>轉為繁體</span></a></div></div><div id="rightmenu-mask"></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.umd.js"></script><script src="https://cdn.cbd.int/instant.page@5.2.0/instantpage.js" type="module"></script><script src="https://cdn.cbd.int/vanilla-lazyload@17.8.5/dist/lazyload.iife.min.js"></script><script src="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.js"></script><canvas id="universe"></canvas><script async src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/dark/dark.js"></script><script>// 消除控制台打印
+var HoldLog = console.log;
+console.log = function () {};
+let now1 = new Date();
+queueMicrotask(() => {
+  const Log = function () {
+    HoldLog.apply(console, arguments);
+  }; //在恢复前输出日志
+  const grt = new Date("04/01/2021 00:00:00"); //此处修改你的建站时间或者网站上线时间
+  now1.setTime(now1.getTime() + 250);
+  const days = (now1 - grt) / 1000 / 60 / 60 / 24;
+  const dnum = Math.floor(days);
+  const ascll = [
+    `欢迎您第一位访问者！!`,
+    `生活明朗, 万物可爱`,
+    "已上线",
+    dnum,
+    "天"
+  ];
+  const ascll2 = [`NCC2-036`, `调用前置摄像头拍照成功，识别为【小笨蛋】.`, `Photo captured: `, `🤪`];
+
+  setTimeout(
+    Log.bind(
+      console,
+      `\n%c${ascll[0]} %c ${ascll[1]} %c ${ascll[2]} %c${ascll[3]}%c ${ascll[4]}%c ${ascll[5]}\n\n%c ${ascll[6]}\n`,
+      "color:#425AEF",
+      "",
+      "color:#425AEF",
+      "color:#425AEF",
+      "",
+      "color:#425AEF",
+      ""
+    )
+  );
+  setTimeout(
+    Log.bind(
+      console,
+      `%c ${ascll2[0]} %c ${ascll2[1]} %c \n${ascll2[2]} %c\n${ascll2[3]}\n`,
+      "color:white; background-color:#4fd953",
+      "",
+      "",
+      'background:url("https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/tinggge.gif") no-repeat;font-size:450%'
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c WELCOME %c 你好，小笨蛋.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(
+      console,
+      "%c ⚡ Powered by 安知鱼 %c 你正在访问 Flaw 的博客.",
+      "color:white; background-color:#f0ad4e",
+      ""
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c W23-12 %c 你已打开控制台.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(console, "%c S013-782 %c 你现在正处于监控中.", "color:white; background-color:#d9534f", "")
+  );
+});</script><script async src="/anzhiyu/random.js"></script><script src="https://cdn.cbd.int/algoliasearch@4.18.0/dist/algoliasearch-lite.umd.js"></script><script src="https://cdn.cbd.int/instantsearch.js@4.60.0/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js"></script><div class="js-pjax"><input type="hidden" name="page-type" id="page-type" value="post"></div><script>var visitorMail = "";
+</script><script async data-pjax src="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/waterfall/waterfall.js"></script><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/qrcodejs/1.0.0/qrcode.min.js"></script><script src="/js/anzhiyu/right_click_menu.js"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.9/icon/ali_iconfont_css.css"><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/aplayer/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.cbd.int/anzhiyu-blog-static@1.0.1/js/APlayer.min.js"></script><script src="https://cdn.cbd.int/hexo-anzhiyu-music@1.0.1/assets/js/Meting2.min.js"></script><script src="https://cdn.cbd.int/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+  // removeEventListener scroll 
+  anzhiyu.removeGlobalFnEvent('pjax')
+  anzhiyu.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script charset="UTF-8" src="https://cdn.cbd.int/anzhiyu-theme-static@1.1.5/accesskey/accesskey.js"></script></div><div id="popup-window"><div class="popup-window-title">通知</div><div class="popup-window-divider"></div><div class="popup-window-content"><div class="popup-tip">你好呀</div><div class="popup-link"><i class="anzhiyufont anzhiyu-icon-arrow-circle-right"></i></div></div></div></body></html>
