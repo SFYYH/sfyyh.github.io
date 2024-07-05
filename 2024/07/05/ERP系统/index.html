@@ -1,0 +1,398 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><title>ERP系统 | 卿云</title><meta name="keywords" content="系统架构,软件系统"><meta name="author" content="Flaw"><meta name="copyright" content="Flaw"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f9fe"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-touch-fullscreen" content="yes"><meta name="apple-mobile-web-app-title" content="ERP系统"><meta name="application-name" content="ERP系统"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="#f7f9fe"><meta property="og:type" content="article"><meta property="og:title" content="ERP系统"><meta property="og:url" content="http://sfyyh.github.io/2024/07/05/ERP%E7%B3%BB%E7%BB%9F/index.html"><meta property="og:site_name" content="卿云"><meta property="og:description" content="1.ERP系统的定义 ERP，全称企业资源规划，那么，ERP究竟是什么？简单来说，ERP的本质上是一个集成化的管理平台，致力于将企业的核心运营环节——财务、人力资源、生产、供应链、服务和采购等——纳入一个统一的系统中。ERP不仅提供了对这些流程的高效管理，还促进了企业运营的协调和优化。因此，ERP被"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/07/05/14-14-22-image-20240705141422847-c0620d.png"><meta property="article:author" content="Flaw"><meta property="article:tag"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/07/05/14-14-22-image-20240705141422847-c0620d.png"><meta name="description" content="1.ERP系统的定义 ERP，全称企业资源规划，那么，ERP究竟是什么？简单来说，ERP的本质上是一个集成化的管理平台，致力于将企业的核心运营环节——财务、人力资源、生产、供应链、服务和采购等——纳入一个统一的系统中。ERP不仅提供了对这些流程的高效管理，还促进了企业运营的协调和优化。因此，ERP被"><link rel="shortcut icon" href="/favicon.ico"><link rel="canonical" href="http://sfyyh.github.io/2024/07/05/ERP%E7%B3%BB%E7%BB%9F/"><link rel="preconnect" href="//cdn.cbd.int"/><meta name="google-site-verification" content="xxx"/><meta name="baidu-site-verification" content="code-xxx"/><meta name="msvalidate.01" content="xxx"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/swiper/swiper.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  linkPageTop: undefined,
+  peoplecanvas: undefined,
+  postHeadAiDescription: {"enable":true,"gptName":"AnZhiYu","mode":"local","switchBtn":false,"btnLink":"https://afdian.net/item/886a79d4db6711eda42a52540025c377","randomNum":3,"basicWordCount":1000,"key":"xxxx","Referer":"https://xx.xx/"},
+  diytitle: {"enable":true,"leaveTitle":"w(ﾟДﾟ)w 不要走！再看看嘛！","backTitle":"♪(^∇^*)欢迎肥来！"},
+  LA51: undefined,
+  greetingBox: undefined,
+  twikooEnvId: '',
+  commentBarrageConfig:undefined,
+  root: '/',
+  preloader: {"source":3},
+  friends_vue_info: undefined,
+  navMusic: true,
+  mainTone: undefined,
+  authorStatus: {"skills":["🤖️ 数码科技爱好者","🔍 分享与热心帮助","🏠 智能家居小能手","🔨 设计开发一条龙","🤝 专修交互与设计","🏃 脚踏实地行动派","🧱 团队小组发动机","💢 壮汉人狠话不多"]},
+  algolia: {"appId":"LCING6Z89I","apiKey":"aaad301b93e4fcad31834c7191ae2cd5","indexName":"hexo_blog","hits":{"per_page":6},"languages":{"input_placeholder":"输入关键词后按下回车查找","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简","rightMenuMsgToTraditionalChinese":"转为繁体","rightMenuMsgToSimplifiedChinese":"转为简体"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":330},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    simplehomepage: true,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"copy":true,"copyrightEbable":false,"limitCount":50,"languages":{"author":"作者: Flaw","link":"链接: ","source":"来源: 卿云","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。","copySuccess":"复制成功，复制和转载请标注本文地址"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#425AEF","bgDark":"#1f1f1f","position":"top-center"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.min.js',
+      css: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  shortcutKey: undefined,
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  configTitle: '卿云',
+  title: 'ERP系统',
+  postAI: '',
+  pageFillDescription: '1.ERP系统的定义, ERP全称企业资源规划那么ERP究竟是什么？简单来说ERP的本质上是一个集成化的管理平台致力于将企业的核心运营环节——财务、人力资源、生产、供应链、服务和采购等——纳入一个统一的系统中。ERP不仅提供了对这些流程的高效管理还促进了企业运营的协调和优化。因此ERP被广泛认为是企业运营中不可或缺的记录系统。, 2.企业为什么要使用ERP？, 3.ERP系统有哪些优势？, 4.ERP适用于哪些行业？, 5.ERP系统的基本原理, 6.ERP的主要模块有哪些系统的定义全称企业资源规划那么究竟是什么简单来说的本质上是一个集成化的管理平台致力于将企业的核心运营环节财务人力资源生产供应链服务和采购等纳入一个统一的系统中不仅提供了对这些流程的高效管理还促进了企业运营的协调和优化因此被广泛认为是企业运营中不可或缺的记录系统企业为什么要使用软件系统能够提升数据管理效率增强业务流程的透明度和协同性并有助于减少资源浪费和提高运营效率因此有时又被称为企业的中枢神经系统企业的大多数或全部数据都应存储在系统中这样就能为整个企业提供统一的真实数据源此外还有助于企业的知识管理和创新能力的提升同时提供完整的业务流程审计跟踪以实现风险管理总的来说系统的实施对于企业的运营竞争力和可持续发展都具有重要的意义财务部门需要利用快速进行结算营销部门需要借助全面掌握市场动向制定更有效的营销策略物流部门需要依靠强大的软件按时向客户交付正确的产品和服务质量管理部门需要系统实现全流程的质量管理提高产品和服务的质量人力资源部门需要借助系统实现自动化的招聘流程和员工培训管理项目管理部门可利用系统实时掌握项目的进展情况合理制定项目规划软件不断增长的采用率也体现了其对企业的重要性根据的研究到年全球软件市场规模预计将达到亿美元年到年间年复合增长率将达到系统有哪些优势优秀的管理系统以其强大的功能和集成性能够为企业运营带来众多显著的优势这些优势会因系统的部署方式而有所差异例如在本地和云之间其特点会有所不同但一般来说现代解决方案都具有以下六个核心优势提高工作效率通过简化核心业务流程和实现运营自动化系统帮助企业员工以更少的资源完成更多任务这样不仅显著提升了整体工作效率还解放了员工的时间使他们能够专注于更具战略性的工作深化洞察力系统消除信息孤岛建立统一的真实数据源为企业提供全面和精确的业务视图这种透明度使管理层能够快速识别和解决关键业务问题从而支持更明智的决策加速报告流程系统能够快速生成并轻松分享各种业务和财务报表企业可以根据实时数据洞察立即采取行动从而提高业务绩效确保决策过程更加敏捷和有效降低风险系统显著提高了业务的可视性和可控性帮助企业确保遵守各项法规要求通过提前预测和防范潜在风险企业可以降低运营风险保障长期稳定发展简化通过集成式应用企业可以共享一个数据库从而简化管理这样不仅降低了复杂性和成本还使所有员工的工作更加轻松高效减少了技术障碍提高敏捷性系统通过实现高效运营和随时访问实时数据使企业能够快速发现和响应市场上的新机遇这种敏捷性使企业在竞争中处于优势地位能够迅速调整策略以适应变化适用于哪些行业系统适用于各种行业其应用范围十分广泛无论是制造业零售业服务业还是金融业医疗行业等都可以借助系统实现准确实时的信息和业务流程管理现代企业的运营离不开对数据的管理而系统在这一方面表现出其独特的优势不同行业使用软件的目的也各不相同例如公用事业企业需要不断审查自身的资本资产不仅是为了满足未来的服务需求还是因为老旧资产需要更换如果没有系统企业将很难确定需要优先进行哪些重大资产投资并且也容易出错系统还可以帮助解决公用事业企业面临的另一个关键问题预测备件需求如果企业在设备故障期间无法及时获得所需部件将会造成严重的客户服务问题但如果备件过多又会导致企业成本过高和库存过时对于批发商进口商提供直接配送到店服务的企业以及第三方第四方物流服务提供商而言按时交货至关重要这类企业都希望能够降低配送成本提高库存周转率并缩短订单到收款的时间而要实现这些目标企业就需要集成库存管理采购和物流功能并构建支持按需定制的自动化流程离散制造企业批量生产企业和连续流程制造企业都在利用系统和供应链系统来达成产品质量目标管理资产利用率控制加班成本处理客户退货等制造企业还可以实现端到端库存控制比如监控库存移动确定高绩效和低绩效产品更高效地管理采购等服务企业包括会计税务工程法律和其他专业服务机构需要利用强大的实时移动技术来平衡服务交付承诺与财务健康专业服务企业成功的关键在于他们能够按照计划交付服务同时高效管理项目盈利能力资源利用率收入确认经常性收入目标和业务增长机会随着电子商务与其他销售渠道以及实体业务融合零售行业经历了重大转型企业要想为客户提供自助的产品查找配置购买和运输选项必须依靠整合的数据现代还能帮助零售商降低购物车放弃率提高网站转化率提升平均订单金额和客户终身价值金融业需要不断审查其资产组合不仅为了优化投资回报还为了确保合规和风险管理系统能够帮助投资者优化资产组合提升投资回报率此外系统还能帮助解决金融业面临的另一个关键问题风险预测和管理如果在市场波动期间无法及时调整风险敞口可能会导致重大财务损失和客户信任度下降但如果风险管理过于保守又会错失潜在的盈利机会通过系统金融机构可以精确管理资产和风险确保稳定运营和持续增长在医疗行业医院和诊所正利用系统和供应链管理系统实现患者护理状况监测优化资源利用控制运营成本和处理患者反馈等医疗机构还可以实现端到端的库存管理例如监控药品和医疗设备的移动识别高需求和低需求药物更高效地管理药品采购流程等通过这些系统医疗行业能够提高整体运营效率确保优质的患者护理服务系统的基本原理系统是一种复杂的企业级资源规划系统也称为套件它通过集成多个模块或业务应用并让这些应用之间能够互相通信并共享一个数据库从而实现对整个企业运营活动的全面管理每个模块通常只专注于一个业务领域但所有模块都使用相同的数据以协同的方式运行满足企业的需求财务会计人力资源销售采购物流和供应链模块是企业最常选择的切入点企业可以选择先部署最需要的模块然后再根据发展需要添加或扩展其他模块企业还可以添加系统核心功能或构建应用扩展并将之与套件无缝集成以此来满足行业特定的需求软件的购买方式取决于部署模式云软件即服务采用订阅模式本地采用许可模式的主要模块有哪些系统由多个不同模块组成每个模块专注于支持特定的业务流程比如财务采购制造等这些模块为各个部门的员工提供了完成工作所需的功能和洞察能力使事务处理更加高效准确此外每个模块都与系统紧密相连从而构建了一个统一的真实的数据源这个数据源不仅确保了各个部门之间的数据共享还实现了数据的实时更新和准确性应用最广泛的模块包括财务财务和会计模块是大多数系统的支柱除了管理总账和自动执行关键财务任务外财务模块还能帮助企业跟踪应付账款和应收账款高效执行财务结算生成财务报表遵守收入确认标准降低财务风险等人力资源管理大多数系统都包含模块该模块提供工时考勤以及薪资核算等核心功能扩展组件甚至整个人力资本管理套件都可以连接至系统提供更加强大的功能包括劳动力分析员工体验管理等寻源和采购寻源和采购模块可以帮助企业采购产品生产所需的物料和服务或是想要转售的商品该模块可以集中自动处理采购业务包括询价合同创建和审批等借助该模块企业能够利用基于的分析功能尽可能地减少采购不足和过度采购的情况并更好地与供应商谈判甚至可以无缝连接采购商网络销售销售模块可以跟踪企业与潜在客户和现有客户的沟通帮助销售代表利用由数据驱动的洞察开展恰当的促销活动把握追加销售机会提高销量并挖掘更多销售线索该模块提供了订单到收款流程所需的各种功能包括订单管理合同管理计费管理销售绩效管理和销售团队支持制造制造模块是软件的关键计划和执行组件可以帮助企业简化复杂的制造流程确保按需生产该模块通常包含物料需求计划生产调度制造执行质量管理等功能物流和供应链管理作为系统的另一关键组件供应链模块能够跟踪企业供应链中商品和物资的移动情况该模块提供实时库存管理仓储运营运输和物流工具可以帮助提高供应链的可视性和韧性服务在系统中服务模块可以帮助企业交付客户期望的可靠个性化服务该模块包含多种工具支持内部维修管理备件管理现场服务管理和基于服务的收入流管理此外该模块还提供分析功能可以帮助服务代表和技术人员快速解决客户问题提高客户忠诚度研发和工程功能丰富的系统包含研发和工程模块该模块提供产品设计和开发产品生命周期管理产品合规性管理等工具支持企业以经济高效的方式快速打造创新产品企业资产管理功能强大的系统会包含模块这个模块可以帮助资产密集型企业尽可能地减少停机时间确保机器和设备以最高效率运行该模块具备预测性维护调度资产运营与计划以及环境健康与安全等功能项目管理项目管理模块在系统中扮演着重要角色帮助企业规划和执行项目除了制定项目计划和进度安排外该模块还能管理项目预算跟踪项目成本分配资源和生成项目报告通过项目管理模块企业可以确保项目按时按预算完成提高项目成功率客户关系管理模块在系统中至关重要帮助企业管理与客户的互动该模块提供客户信息管理销售线索跟踪客户服务管理和营销活动分析等功能通过模块企业能够提升客户满意度增加销售机会并建立长期客户关系',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-07-05 14:14:51',
+  postMainColor: '',
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#18171d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f9fe')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.2.0"></head><body data-type="anzhiyu"><div id="web_bg"></div><div id="an_music_bg"></div><div id="loading-box" onclick="document.getElementById(&quot;loading-box&quot;).classList.add(&quot;loaded&quot;)"><div class="loading-bg"><img class="loading-img nolazyload" alt="加载头像" src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/23/03-13-21-%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240623031309-4c1443.jpg"/><div class="loading-image-dot"></div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.getElementById('loading-box').classList.add("loaded");
+  },
+  initLoading: () => {
+    document.getElementById('loading-box').classList.remove("loaded")
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+setTimeout(function(){preloader.endLoading();},10000)
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.10/progress_bar/progress_bar.css"/><script async="async" src="https://cdn.cbd.int/pace-js@1.2.4/pace.min.js" data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}"></script><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><div id="nav-group"><span id="blog_name"><div class="back-home-button"><i class="anzhiyufont anzhiyu-icon-grip-vertical"></i><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" href="https://sfyyh.github.io/" title="博客"><img class="back-menu-item-icon" src="/img/favicon.ico" alt="博客"/><span class="back-menu-item-text">博客</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://chat.qingyunzc.cc" title="卿云AI"><img class="back-menu-item-icon" src="https://image.anheyu.com/favicon.ico" alt="卿云AI"/><span class="back-menu-item-text">卿云AI</span></a></div></div></div></div><a id="site-name" href="/" accesskey="h"><div class="title">卿云</div><i class="anzhiyufont anzhiyu-icon-house-chimney"></i></a></span><div class="mask-name-container"><div id="name-container"><a id="page-name" href="javascript:anzhiyu.scrollToDest(0, 500)">PAGE_NAME</a></div></div><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 隧道</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 友链</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/link/"><i class="anzhiyufont anzhiyu-icon-link faa-tada" style="font-size: 0.9em;"></i><span> 友人帐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/comments/"><i class="anzhiyufont anzhiyu-icon-envelope faa-tada" style="font-size: 0.9em;"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/album/"><i class="anzhiyufont anzhiyu-icon-images faa-tada" style="font-size: 0.9em;"></i><span> 相册集</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/air-conditioner/"><i class="anzhiyufont anzhiyu-icon-fan faa-tada" style="font-size: 0.9em;"></i><span> 小空调</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/essay/"><i class="anzhiyufont anzhiyu-icon-lightbulb faa-tada" style="font-size: 0.9em;"></i><span> 闲言碎语</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/equipment/"><i class="anzhiyufont anzhiyu-icon-dice-d20 faa-tada" style="font-size: 0.9em;"></i><span> 我的装备</span></a></li></ul></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/music/?id=6799820199&amp;server=netease"><span> 音乐馆</span></a></div></div></div><div id="nav-right"><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机前往一个文章" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-dice"></i></a></div><div class="nav-button" id="search-button"><a class="site-page social-icon search" href="javascript:void(0);" title="搜索🔍" accesskey="s"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span> 搜索</span></a></div><input id="center-console" type="checkbox"/><label class="widget" for="center-console" title="中控台" onclick="anzhiyu.switchConsole();"><i class="left"></i><i class="widget center"></i><i class="widget right"></i></label><div id="console"><div class="console-card-group-reward"><ul class="reward-all console-card"><li class="reward-item"><a href="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/23/03-08-09-%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240623030747-010bf4.jpg" target="_blank"><img class="post-qr-code-img" alt="微信" src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/23/03-08-09-%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240623030747-010bf4.jpg"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/23/03-08-09-%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240623030743-4e58a3.jpg" target="_blank"><img class="post-qr-code-img" alt="支付宝" src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/23/03-08-09-%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240623030743-4e58a3.jpg"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div><div class="console-card-group"><div class="console-card-group-left"><div class="console-card" id="card-newest-comments"><div class="card-content"><div class="author-content-item-tips">互动</div><span class="author-content-item-title"> 最新评论</span></div><div class="aside-list"><span>正在加载中...</span></div></div></div><div class="console-card-group-right"><div class="console-card tags"><div class="card-content"><div class="author-content-item-tips">兴趣点</div><span class="author-content-item-title">寻找你感兴趣的领域</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/CD/" style="font-size: 1.05rem;">CD<sup>1</sup></a><a href="/tags/CI/" style="font-size: 1.05rem;">CI<sup>1</sup></a><a href="/tags/Docker/" style="font-size: 1.05rem;">Docker<sup>1</sup></a><a href="/tags/Docker%E5%AE%89%E8%A3%85/" style="font-size: 1.05rem;">Docker安装<sup>1</sup></a><a href="/tags/Eureka/" style="font-size: 1.05rem;">Eureka<sup>2</sup></a><a href="/tags/Git/" style="font-size: 1.05rem;">Git<sup>1</sup></a><a href="/tags/GitLab/" style="font-size: 1.05rem;">GitLab<sup>1</sup></a><a href="/tags/Gitlab/" style="font-size: 1.05rem;">Gitlab<sup>1</sup></a><a href="/tags/Gogs/" style="font-size: 1.05rem;">Gogs<sup>1</sup></a><a href="/tags/HA/" style="font-size: 1.05rem;">HA<sup>1</sup></a><a href="/tags/Jenkins/" style="font-size: 1.05rem;">Jenkins<sup>2</sup></a><a href="/tags/LNMP/" style="font-size: 1.05rem;">LNMP<sup>2</sup></a><a href="/tags/Linux/" style="font-size: 1.05rem;">Linux<sup>8</sup></a><a href="/tags/Linux%E5%91%BD%E4%BB%A4/" style="font-size: 1.05rem;">Linux命令<sup>2</sup></a><a href="/tags/Linux%E8%BF%90%E7%BB%B4/" style="font-size: 1.05rem;">Linux运维<sup>1</sup></a><a href="/tags/MYSQL/" style="font-size: 1.05rem;">MYSQL<sup>4</sup></a><a href="/tags/Nacos/" style="font-size: 1.05rem;">Nacos<sup>3</sup></a><a href="/tags/Nacos%E9%9B%86%E7%BE%A4/" style="font-size: 1.05rem;">Nacos集群<sup>1</sup></a><a href="/tags/Ribbon/" style="font-size: 1.05rem;">Ribbon<sup>1</sup></a><a href="/tags/Shell/" style="font-size: 1.05rem;">Shell<sup>1</sup></a><a href="/tags/Socket/" style="font-size: 1.05rem;">Socket<sup>1</sup></a><a href="/tags/SpringCloud/" style="font-size: 1.05rem;">SpringCloud<sup>9</sup></a><a href="/tags/VRRP%E5%8D%8F%E8%AE%AE/" style="font-size: 1.05rem;">VRRP协议<sup>1</sup></a><a href="/tags/Vue/" style="font-size: 1.05rem;">Vue<sup>5</sup></a><a href="/tags/keepalive/" style="font-size: 1.05rem;">keepalive<sup>1</sup></a><a href="/tags/mysql/" style="font-size: 1.05rem;">mysql<sup>3</sup></a><a href="/tags/mysqls/" style="font-size: 1.05rem;">mysqls<sup>1</sup></a><a href="/tags/%E4%BC%81%E4%B8%9A%E7%BA%A7%E8%BF%90%E7%BB%B4/" style="font-size: 1.05rem;">企业级运维<sup>2</sup></a><a href="/tags/%E5%A5%97%E6%8E%A5%E5%AD%97/" style="font-size: 1.05rem;">套接字<sup>1</sup></a><a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" style="font-size: 1.05rem;">微服务<sup>8</sup></a><a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D/" style="font-size: 1.05rem;">数据库备份与恢复<sup>1</sup></a><a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93%E9%AB%98%E5%8F%AF%E7%94%A8/" style="font-size: 1.05rem;">数据库高可用<sup>1</sup></a><a href="/tags/%E6%BB%9A%E5%8A%A8%E6%9B%B4%E6%96%B0/" style="font-size: 1.05rem;">滚动更新<sup>1</sup></a><a href="/tags/%E7%81%B0%E5%BA%A6%E5%8F%91%E5%B8%83/" style="font-size: 1.05rem;">灰度发布<sup>1</sup></a><a href="/tags/%E8%84%9A%E6%9C%AC/" style="font-size: 1.05rem;">脚本<sup>1</sup></a><a href="/tags/%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4/" style="font-size: 1.05rem;">自动化运维<sup>3</sup></a><a href="/tags/%E8%87%AA%E5%8A%A8%E5%8F%91%E5%B8%83%E7%B3%BB%E7%BB%9F/" style="font-size: 1.05rem;">自动发布系统<sup>1</sup></a><a href="/tags/%E8%93%9D%E7%BB%BF%E9%83%A8%E7%BD%B2/" style="font-size: 1.05rem;">蓝绿部署<sup>1</sup></a><a href="/tags/%E8%BF%90%E7%BB%B4/" style="font-size: 1.05rem;">运维<sup>6</sup></a><a href="/tags/%E8%BF%9B%E7%A8%8B%E6%A3%80%E6%B5%8B%E4%B8%8E%E6%8E%A7%E5%88%B6/" style="font-size: 1.05rem;">进程检测与控制<sup>1</sup></a></div></div><hr/></div></div><div class="console-card history"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-box-archiv"></i><span>文章</span></div><div class="card-archives"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/07/"><span class="card-archive-list-date">七月 2024</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">6</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/06/"><span class="card-archive-list-date">六月 2024</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">25</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/05/"><span class="card-archive-list-date">五月 2024</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/07/"><span class="card-archive-list-date">七月 2022</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">2</span><span>篇</span></div></a></li></ul></div><hr/></div></div></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" title="显示模式切换" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-moon"></i></a></div><div class="console-btn-item" id="consoleHideAside" onclick="anzhiyu.hideAsideBtn()" title="边栏显示控制"><a class="asideSwitch"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></a></div><div class="console-btn-item" id="consoleMusic" onclick="anzhiyu.musicToggle()" title="音乐开关"><a class="music-switch"><i class="anzhiyufont anzhiyu-icon-music"></i></a></div></div><div class="console-mask" onclick="anzhiyu.hideConsole()" href="javascript:void(0);"></div></div><div class="nav-button" id="nav-totop"><a class="totopbtn" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i><span id="percent" onclick="anzhiyu.scrollToDest(0,500)">0</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" title="切换"><i class="anzhiyufont anzhiyu-icon-bars"></i></a></div></div></div></nav><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original">原创</a><span class="post-meta-categories"><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%85%A8%E6%A0%88/" itemprop="url">全栈</a><i class="anzhiyufont anzhiyu-icon-angle-right post-meta-separator"></i><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%85%A8%E6%A0%88/%E7%B3%BB%E7%BB%9F/" itemprop="url">系统</a><i class="anzhiyufont anzhiyu-icon-angle-right post-meta-separator"></i><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%85%A8%E6%A0%88/%E7%B3%BB%E7%BB%9F/%E6%8B%93%E5%B1%95/" itemprop="url">拓展</a></span><span class="article-meta tags"><a class="article-meta__tags" href="/tags/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>系统架构</span></a><a class="article-meta__tags" href="/tags/%E8%BD%AF%E4%BB%B6%E7%B3%BB%E7%BB%9F/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>软件系统</span></a></span></div></div><h1 class="post-title" itemprop="name headline">ERP系统</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" itemprop="dateCreated datePublished" datetime="2024-07-05T06:11:56.000Z" title="发表于 2024-07-05 14:11:56">2024-07-05</time><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-history post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" itemprop="dateCreated datePublished" datetime="2024-07-05T06:14:51.013Z" title="更新于 2024-07-05 14:14:51">2024-07-05</time></span></div><div class="meta-secondline"><span class="post-meta-separator">       </span><span class="post-meta-position" title="作者IP属地为北京"><i class="anzhiyufont anzhiyu-icon-location-dot"></i>北京</span></div></div></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section><div id="post-top-cover"><img class="nolazyload" id="post-top-bg" src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/07/05/14-14-22-image-20240705141422847-c0620d.png"></div></header><main id="blog-container"><div class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container" itemscope itemtype="http://sfyyh.github.io/2024/07/05/ERP%E7%B3%BB%E7%BB%9F/"><header><a class="post-meta-categories" href="/categories/%E5%85%A8%E6%A0%88/" itemprop="url">全栈</a><a class="post-meta-categories" href="/categories/%E5%85%A8%E6%A0%88/%E7%B3%BB%E7%BB%9F/" itemprop="url">系统</a><a class="post-meta-categories" href="/categories/%E5%85%A8%E6%A0%88/%E7%B3%BB%E7%BB%9F/%E6%8B%93%E5%B1%95/" itemprop="url">拓展</a><a href="/tags/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/" tabindex="-1" itemprop="url">系统架构</a><a href="/tags/%E8%BD%AF%E4%BB%B6%E7%B3%BB%E7%BB%9F/" tabindex="-1" itemprop="url">软件系统</a><h1 id="CrawlerTitle" itemprop="name headline">ERP系统</h1><span itemprop="author" itemscope itemtype="http://schema.org/Person">Flaw</span><time itemprop="dateCreated datePublished" datetime="2024-07-05T06:11:56.000Z" title="发表于 2024-07-05 14:11:56">2024-07-05</time><time itemprop="dateCreated datePublished" datetime="2024-07-05T06:14:51.013Z" title="更新于 2024-07-05 14:14:51">2024-07-05</time></header><h2 id="1-ERP系统的定义"><a href="#1-ERP系统的定义" class="headerlink" title="1.ERP系统的定义"></a>1.ERP系统的定义</h2><blockquote>
+<h3 id="ERP，全称企业资源规划，那么，ERP究竟是什么？简单来说，ERP的本质上是一个集成化的管理平台，致力于将企业的核心运营环节——财务、人力资源、生产、供应链、服务和采购等——纳入一个统一的系统中。ERP不仅提供了对这些流程的高效管理，还促进了企业运营的协调和优化。因此，ERP被广泛认为是企业运营中不可或缺的记录系统。"><a href="#ERP，全称企业资源规划，那么，ERP究竟是什么？简单来说，ERP的本质上是一个集成化的管理平台，致力于将企业的核心运营环节——财务、人力资源、生产、供应链、服务和采购等——纳入一个统一的系统中。ERP不仅提供了对这些流程的高效管理，还促进了企业运营的协调和优化。因此，ERP被广泛认为是企业运营中不可或缺的记录系统。" class="headerlink" title="ERP，全称企业资源规划，那么，ERP究竟是什么？简单来说，ERP的本质上是一个集成化的管理平台，致力于将企业的核心运营环节——财务、人力资源、生产、供应链、服务和采购等——纳入一个统一的系统中。ERP不仅提供了对这些流程的高效管理，还促进了企业运营的协调和优化。因此，ERP被广泛认为是企业运营中不可或缺的记录系统。"></a>ERP，全称企业资源规划，那么，ERP究竟是什么？简单来说，ERP的本质上是一个集成化的管理平台，致力于将企业的核心运营环节——财务、人力资源、生产、供应链、服务和采购等——纳入一个统一的系统中。ERP不仅提供了对这些流程的高效管理，还促进了企业运营的协调和优化。因此，ERP被广泛认为是企业运营中不可或缺的记录系统。</h3></blockquote>
+<h2 id="2-企业为什么要使用ERP？"><a href="#2-企业为什么要使用ERP？" class="headerlink" title="2.企业为什么要使用ERP？"></a>2.企业为什么要使用ERP？</h2><p>ERP软件系统能够提升数据管理效率，增强业务流程的透明度和协同性，并有助于减少资源浪费和提高运营效率，因此有时又被称为“企业的中枢神经系统”。企业的大多数或全部数据都应存储在 ERP 系统中，这样就能为整个企业提供统一的真实数据源。</p>
+<p>此外，ERP还有助于企业的知识管理和创新能力的提升，同时提供完整的业务流程审计跟踪以实现风险管理。总的来说，ERP系统的实施对于企业的运营、竞争力和可持续发展都具有重要的意义。</p>
+<blockquote>
+<p>财务部门需要利用 ERP 快速进行结算；</p>
+<p>营销部门需要借助 ERP 全面掌握市场动向，制定更有效的营销策略；</p>
+<p>物流部门需要依靠强大的 ERP 软件，按时向客户交付正确的产品和服务；质量管理部门需要 ERP 系统实现全流程的质量管理，提高产品和服务的质量；</p>
+<p>人力资源部门需要借助 ERP 系统实现自动化的招聘流程和员工培训管理；项目管理部门可利用 ERP 系统实时掌握项目的进展情况，合理制定项目规划。</p>
+</blockquote>
+<p>ERP 软件不断增长的采用率也体现了其对企业的重要性。根据 <a target="_blank" rel="noopener" href="https://learn.g2.com/erp-statistics">G2</a> 的研究，“到 2026 年，全球 ERP 软件市场规模预计将达到 784 亿美元，2019 年到 2026 年间，年复合增长率将达到 10.2%。”</p>
+<h2 id="3-ERP系统有哪些优势？"><a href="#3-ERP系统有哪些优势？" class="headerlink" title="3.ERP系统有哪些优势？"></a>3.ERP系统有哪些优势？</h2><blockquote>
+<p>优秀的ERP管理系统以其强大的功能和集成性，能够为企业运营带来众多显著的优势。这些优势会因系统的部署方式而有所差异，例如在本地ERP和ERP云之间，其特点会有所不同。但一般来说，现代ERP解决方案都具有以下六个核心优势：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/07/05/14-06-14-image-20240705140614354-2831c1.png" alt="image-20240705140614354"></p>
+<ol>
+<li><strong>提高工作效率：</strong>通过简化核心业务流程和实现运营自动化，ERP系统帮助企业员工以更少的资源完成更多任务。这样不仅显著提升了整体工作效率，还解放了员工的时间，使他们能够专注于更具战略性的工作。</li>
+<li><strong>深化洞察力：</strong>ERP系统消除信息孤岛，建立统一的真实数据源，为企业提供全面和精确的业务视图。这种透明度使管理层能够快速识别和解决关键业务问题，从而支持更明智的决策。</li>
+<li><strong>加速报告流程：</strong>ERP系统能够快速生成并轻松分享各种业务和财务报表。企业可以根据实时数据洞察立即采取行动，从而提高业务绩效，确保决策过程更加敏捷和有效。</li>
+<li><strong>降低风险：</strong>ERP系统显著提高了业务的可视性和可控性，帮助企业确保遵守各项法规要求。通过提前预测和防范潜在风险，企业可以降低运营风险，保障长期稳定发展。</li>
+<li><strong>简化 IT：</strong>通过集成式ERP应用，企业可以共享一个数据库，从而简化IT管理。这样不仅降低了IT复杂性和成本，还使所有员工的工作更加轻松高效，减少了技术障碍。</li>
+<li><strong>提高敏捷性：</strong>ERP系统通过实现高效运营和随时访问实时数据，使企业能够快速发现和响应市场上的新机遇。这种敏捷性使企业在竞争中处于优势地位，能够迅速调整策略以适应变化。</li>
+</ol>
+</blockquote>
+<h2 id="4-ERP适用于哪些行业？"><a href="#4-ERP适用于哪些行业？" class="headerlink" title="4.ERP适用于哪些行业？"></a>4.ERP适用于哪些行业？</h2><blockquote>
+<p>ERP系统适用于各种行业，其应用范围十分广泛。无论是制造业、零售业、服务业，还是金融业、医疗行业等，都可以借助ERP系统实现准确、实时的信息和业务流程管理。现代企业的运营离不开对数据的管理，而ERP系统在这一方面表现出其独特的优势。不同行业使用ERP软件的目的也各不相同，例如：</p>
+<ul>
+<li><strong>公用事业企业</strong>需要不断审查自身的资本资产，不仅是为了满足未来的服务需求，还是因为老旧资产需要更换。如果没有 ERP 系统，企业将很难确定需要优先进行哪些重大资产投资，并且也容易出错。ERP 系统还可以帮助解决公用事业企业面临的另一个关键问题：预测备件需求。如果企业在设备故障期间无法及时获得所需部件，将会造成严重的客户服务问题，但如果备件过多，又会导致企业成本过高和库存过时。</li>
+<li>对于<strong>批发商</strong>、进口商、提供直接配送到店服务的企业以及第三方&#x2F;第四方物流服务提供商而言，按时交货至关重要。这类企业都希望能够降低配送成本，提高库存周转率，并缩短订单到收款的时间。而要实现这些目标，企业就需要集成库存管理、采购和物流功能，并构建支持按需定制的自动化流程。</li>
+<li>离散<strong>制造企业</strong>、批量生产企业和连续流程制造企业都在利用 ERP 系统和<a target="_blank" rel="noopener" href="https://www.sap.cn/insights/supply-chain.html">供应链</a>系统，来达成产品质量目标、管理资产利用率、控制加班成本、处理客户退货等。制造企业还可以实现端到端库存控制，比如，监控库存移动、确定高绩效和低绩效产品、更高效地管理采购等。</li>
+<li><strong>服务企业</strong>（包括会计、税务、工程、IT、法律和其他专业服务机构）需要利用强大的实时移动 ERP 技术，来平衡服务交付承诺与财务健康。专业服务企业成功的关键在于，他们能够按照计划交付服务，同时高效管理项目盈利能力、资源利用率、收入确认、经常性收入目标和业务增长机会。</li>
+<li>随着电子商务与其他销售渠道以及实体业务融合，<strong>零售行业</strong>经历了重大转型。企业要想为客户提供自助的产品查找、配置、购买和运输选项，必须依靠整合的数据。现代 ERP 还能帮助零售商降低购物车放弃率，提高网站转化率，提升平均订单金额和客户终身价值。</li>
+<li><strong>金融业</strong>需要不断审查其资产组合，不仅为了优化投资回报，还为了确保合规和风险管理。ERP 系统能够帮助投资者优化资产组合，提升投资回报率。此外，ERP系统还能帮助解决金融业面临的另一个关键问题：风险预测和管理。如果在市场波动期间无法及时调整风险敞口，可能会导致重大财务损失和客户信任度下降；但如果风险管理过于保守，又会错失潜在的盈利机会。通过ERP系统，金融机构可以精确管理资产和风险，确保稳定运营和持续增长。</li>
+<li>在<strong>医疗行业</strong>，医院和诊所正利用ERP系统和供应链管理系统，实现患者护理状况监测、优化资源利用、控制运营成本和处理患者反馈等。医疗机构还可以实现端到端的库存管理，例如监控药品和医疗设备的移动、识别高需求和低需求药物、更高效地管理药品采购流程等。通过这些系统，医疗行业能够提高整体运营效率，确保优质的患者护理服务。</li>
+</ul>
+</blockquote>
+<h2 id="5-ERP系统的基本原理"><a href="#5-ERP系统的基本原理" class="headerlink" title="5.ERP系统的基本原理"></a>5.ERP系统的基本原理</h2><blockquote>
+<p>ERP系统是一种复杂的企业级资源规划系统，也称为ERP套件，它通过集成多个模块或业务应用，并让这些应用之间能够互相通信并共享一个数据库，从而实现对整个企业运营活动的全面管理。</p>
+<p>每个 ERP 模块通常只专注于一个业务领域，但所有模块都使用相同的数据，以协同的方式运行，满足企业的需求。财务、会计、人力资源、销售、采购、物流和供应链模块是企业最常选择的切入点。企业可以选择先部署最需要的模块，然后再根据发展需要添加或扩展其他模块。</p>
+<p>企业还可以添加系统核心功能或构建应用扩展，并将之与 ERP 套件无缝集成，以此来满足行业特定的需求。</p>
+<p>ERP 软件的购买方式取决于部署模式。ERP 云（软件即服务）采用订阅模式；本地 ERP 采用许可模式。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/07/05/14-08-15-image-20240705140815768-6e90d0.png" alt="image-20240705140815768"></p>
+</blockquote>
+<h2 id="6-ERP的主要模块有哪些"><a href="#6-ERP的主要模块有哪些" class="headerlink" title="6.ERP的主要模块有哪些"></a>6.ERP的主要模块有哪些</h2><blockquote>
+<p>ERP系统由多个不同模块组成，每个模块专注于支持特定的业务流程，比如财务、采购、制造等。这些模块为各个部门的员工提供了完成工作所需的功能和洞察能力，使事务处理更加高效、准确。此外，每个模块都与ERP系统紧密相连，从而构建了一个统一的、真实的数据源。这个数据源不仅确保了各个部门之间的数据共享，还实现了数据的实时更新和准确性。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/07/05/14-08-36-image-20240705140836499-6f446d.png" alt="image-20240705140836499"></p>
+<p>应用最广泛的 ERP 模块包括：</p>
+<ol>
+<li><strong>财务：</strong>财务和会计模块是大多数 ERP 系统的支柱。除了管理总账和自动执行关键财务任务外，财务模块还能帮助企业跟踪应付账款 (AP) 和应收账款 (AR)、高效执行财务结算、生成财务报表、遵守收入确认标准、降低财务风险等。</li>
+<li><strong>人力资源管理：</strong>大多数 ERP 系统都包含 HR 模块，该模块提供工时、考勤以及薪资核算等核心功能。扩展组件甚至整个<a target="_blank" rel="noopener" href="https://www.sap.cn/products/hcm.html">人力资本管理 (HCM)</a> 套件都可以连接至 ERP 系统，提供更加强大的 HR 功能，包括劳动力分析、员工体验管理等。</li>
+<li><strong>寻源和采购：</strong>寻源和采购模块可以帮助企业采购产品生产所需的物料和服务，或是想要转售的商品。该模块可以集中自动处理采购业务，包括询价、合同创建和审批等。借助该模块，企业能够利用基于 AI 的分析功能，尽可能地减少采购不足和过度采购的情况，并更好地与供应商谈判，甚至可以无缝连接采购商网络。</li>
+<li><strong>销售：</strong>销售模块可以跟踪企业与潜在客户和现有客户的沟通，帮助销售代表利用由数据驱动的洞察，开展恰当的促销活动，把握追加销售机会，提高销量并挖掘更多销售线索。该模块提供了订单到收款流程所需的各种功能，包括订单管理、<a target="_blank" rel="noopener" href="https://www.sap.cn/products/spend-management/contract-management-software.html">合同管理</a>、计费管理、销售绩效管理和销售团队支持。</li>
+<li><strong>制造：</strong>制造模块是 ERP 软件的关键计划和执行组件，可以帮助企业简化复杂的制造流程，确保按需生产。该模块通常包含物料需求计划 (MRP)、生产调度、制造执行、质量管理等功能。</li>
+<li><strong>物流和供应链管理：</strong>作为 ERP 系统的另一关键组件，供应链模块能够跟踪企业供应链中商品和物资的移动情况。该模块提供实时库存管理、仓储运营、运输和物流工具，可以帮助提高供应链的可视性和韧性。</li>
+<li><strong>服务：</strong>在 ERP 系统中，服务模块可以帮助企业交付客户期望的可靠个性化服务。该模块包含多种工具，支持内部维修管理、备件管理、现场服务管理和基于服务的收入流管理。此外，该模块还提供分析功能，可以帮助服务代表和技术人员快速解决客户问题，提高客户忠诚度。</li>
+<li><strong>研发和工程：</strong>功能丰富的 ERP 系统包含研发和工程模块。该模块提供产品设计和开发、产品生命周期管理 (PLM)、产品合规性管理等工具，支持企业以经济高效的方式快速打造创新产品。</li>
+<li><strong>企业资产管理 (EAM)：</strong>功能强大的 ERP 系统会包含 EAM 模块，这个模块可以帮助资产密集型企业尽可能地减少停机时间，确保机器和设备以最高效率运行。该模块具备预测性维护、调度、资产运营与计划以及环境、健康与安全 (EHS) 等功能。</li>
+<li>项目管理：项目管理模块在ERP系统中扮演着重要角色，帮助企业规划和执行项目。除了制定项目计划和进度安排外，该模块还能管理项目预算、跟踪项目成本、分配资源和生成项目报告。通过项目管理模块，企业可以确保项目按时按预算完成，提高项目成功率。</li>
+<li>**客户关系管理 (CRM)**：CRM模块在ERP系统中至关重要，帮助企业管理与客户的互动。该模块提供客户信息管理、销售线索跟踪、客户服务管理和营销活动分析等功能。通过CRM模块，企业能够提升客户满意度，增加销售机会，并建立长期客户关系。</li>
+</ol>
+</blockquote>
+</article><div class="post-copyright"><div class="copyright-cc-box"><i class="anzhiyufont anzhiyu-icon-copyright"></i></div><div class="post-copyright__author_box"><a class="post-copyright__author_img" href="/" title="头像"><img class="post-copyright__author_img_back" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/23/03-13-21-%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240623031309-4c1443.jpg" title="头像" alt="头像"><img class="post-copyright__author_img_front" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/23/03-13-21-%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240623031309-4c1443.jpg" title="头像" alt="头像"></a><div class="post-copyright__author_name">Flaw</div><div class="post-copyright__author_desc"></div></div><div class="post-copyright__post__info"><a class="post-copyright__original" title="该文章为原创文章，注意版权协议" href="http://sfyyh.github.io/2024/07/05/ERP%E7%B3%BB%E7%BB%9F/">原创</a><a class="post-copyright-title"><span onclick="rm.copyPageUrl('http://sfyyh.github.io/2024/07/05/ERP%E7%B3%BB%E7%BB%9F/')">ERP系统</span></a></div><div class="post-tools" id="post-tools"><div class="post-tools-left"><div class="rewardLeftButton"><div class="post-reward" onclick="anzhiyu.addRewardMask()"><div class="reward-button button--animated" title="赞赏作者"><i class="anzhiyufont anzhiyu-icon-hand-heart-fill"></i>打赏作者</div><div class="reward-main"><div class="reward-all"><span class="reward-title">感谢你赐予我前进的力量</span><ul class="reward-group"><li class="reward-item"><a href="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/23/03-08-09-%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240623030747-010bf4.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/23/03-08-09-%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240623030747-010bf4.jpg" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/23/03-08-09-%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240623030743-4e58a3.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/23/03-08-09-%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240623030743-4e58a3.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul><a class="reward-main-btn" href="/about/#about-reward" target="_blank"><div class="reward-text">赞赏者名单</div><div class="reward-dec">因为你们的支持让我意识到写文章的价值🙏</div></a></div></div></div><div id="quit-box" onclick="anzhiyu.removeRewardMask()" style="display: none"></div></div><div class="shareRight"><div class="share-link mobile"><div class="share-qrcode"><div class="share-button" title="使用手机访问这篇文章"><i class="anzhiyufont anzhiyu-icon-qrcode"></i></div><div class="share-main"><div class="share-main-all"><div id="qrcode" title="http://sfyyh.github.io/2024/07/05/ERP%E7%B3%BB%E7%BB%9F/"></div><div class="reward-dec">使用手机访问这篇文章</div></div></div></div></div><div class="share-link weibo"><a class="share-button" target="_blank" href="https://service.weibo.com/share/share.php?title=ERP系统&amp;url=http://sfyyh.github.io/2024/07/05/ERP%E7%B3%BB%E7%BB%9F/&amp;pic=https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/07/05/14-14-22-image-20240705141422847-c0620d.png" rel="external nofollow noreferrer noopener"><i class="anzhiyufont anzhiyu-icon-weibo"></i></a></div><script>function copyCurrentPageUrl() {
+  var currentPageUrl = window.location.href;
+  var input = document.createElement("input");
+  input.setAttribute("value", currentPageUrl);
+  document.body.appendChild(input);
+  input.select();
+  input.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+  document.body.removeChild(input);
+}</script><div class="share-link copyurl"><div class="share-button" id="post-share-url" title="复制链接" onclick="copyCurrentPageUrl()"><i class="anzhiyufont anzhiyu-icon-link"></i></div></div></div></div></div><div class="post-copyright__notice"><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://sfyyh.github.io" target="_blank">卿云</a>！</span></div></div><div class="post-tools-right"><div class="tag_share"><div class="post-meta__box"><div class="post-meta__box__tag-list"><a class="post-meta__box__tags" href="/tags/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>系统架构<span class="tagsPageCount">1</span></a><a class="post-meta__box__tags" href="/tags/%E8%BD%AF%E4%BB%B6%E7%B3%BB%E7%BB%9F/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>软件系统<span class="tagsPageCount">1</span></a></div></div></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/07/05/15-36-45-%E4%B8%8B%E8%BD%BDundefined4undefined-8659a4.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"/><script src="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer="defer"></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/07/03/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/07/03/00-26-26-image-20240703002626330-389f65.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Vue生命周期</div></div></a></div><div class="next-post pull-right"><a href="/2024/07/05/Activiti7/"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/07/05/15-36-45-%E4%B8%8B%E8%BD%BDundefined4undefined-8659a4.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Activiti7-工作流</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-content"><div class="author-info__sayhi" id="author-info__sayhi" onclick="anzhiyu.changeSayHelloText()"></div><div class="author-info-avatar"><img class="avatar-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/06/23/03-13-21-%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240623031309-4c1443.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-status"><img class="g-status" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2023/08/24/64e6ce9c507bb.png" alt="status"/></div></div><div class="author-info__description"><div style="line-height:1.38;margin:0.6rem 0;text-align:justify;color:rgba(255, 255, 255, 0.8);">这有关于<b style="color:#fff">产品、设计、开发</b>相关的问题和看法，还有<b style="color:#fff">文章翻译</b>和<b style="color:#fff">分享</b>。</div><div style="line-height:1.38;margin:0.6rem 0;text-align:justify;color:rgba(255, 255, 255, 0.8);">相信你可以在这里找到对你有用的<b style="color:#fff">知识</b>和<b style="color:#fff">教程</b>。</div></div><div class="author-info__bottom-group"><a class="author-info__bottom-group-left" href="/about"><h1 class="author-info__name">Flaw</h1><div class="author-info__desc"></div></a><div class="card-info-social-icons is-center"><a class="social-icon faa-parent animated-hover" href="https://github.com/SFYYH" target="_blank" title="Github"><i class="anzhiyufont anzhiyu-icon-github"></i></a></div></div></div></div><div class="card-widget anzhiyu-right-widget" id="card-wechat" onclick="null"><div id="flip-wrapper"><div id="flip-content"><div class="face" style="background: url(https://img02.anheyu.com/adminuploads/1/2022/09/11/631ddb7c9b250.png) center center / 100% no-repeat"></div><div class="back face" style="background: url(https://img02.anheyu.com/adminuploads/1/2022/09/11/631ddb7c9b250.png) center center / 100% no-repeat"></div></div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bars"></i><span>文章目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-ERP%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-number">1.</span> <span class="toc-text">1.ERP系统的定义</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ERP%EF%BC%8C%E5%85%A8%E7%A7%B0%E4%BC%81%E4%B8%9A%E8%B5%84%E6%BA%90%E8%A7%84%E5%88%92%EF%BC%8C%E9%82%A3%E4%B9%88%EF%BC%8CERP%E7%A9%B6%E7%AB%9F%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F%E7%AE%80%E5%8D%95%E6%9D%A5%E8%AF%B4%EF%BC%8CERP%E7%9A%84%E6%9C%AC%E8%B4%A8%E4%B8%8A%E6%98%AF%E4%B8%80%E4%B8%AA%E9%9B%86%E6%88%90%E5%8C%96%E7%9A%84%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B0%EF%BC%8C%E8%87%B4%E5%8A%9B%E4%BA%8E%E5%B0%86%E4%BC%81%E4%B8%9A%E7%9A%84%E6%A0%B8%E5%BF%83%E8%BF%90%E8%90%A5%E7%8E%AF%E8%8A%82%E2%80%94%E2%80%94%E8%B4%A2%E5%8A%A1%E3%80%81%E4%BA%BA%E5%8A%9B%E8%B5%84%E6%BA%90%E3%80%81%E7%94%9F%E4%BA%A7%E3%80%81%E4%BE%9B%E5%BA%94%E9%93%BE%E3%80%81%E6%9C%8D%E5%8A%A1%E5%92%8C%E9%87%87%E8%B4%AD%E7%AD%89%E2%80%94%E2%80%94%E7%BA%B3%E5%85%A5%E4%B8%80%E4%B8%AA%E7%BB%9F%E4%B8%80%E7%9A%84%E7%B3%BB%E7%BB%9F%E4%B8%AD%E3%80%82ERP%E4%B8%8D%E4%BB%85%E6%8F%90%E4%BE%9B%E4%BA%86%E5%AF%B9%E8%BF%99%E4%BA%9B%E6%B5%81%E7%A8%8B%E7%9A%84%E9%AB%98%E6%95%88%E7%AE%A1%E7%90%86%EF%BC%8C%E8%BF%98%E4%BF%83%E8%BF%9B%E4%BA%86%E4%BC%81%E4%B8%9A%E8%BF%90%E8%90%A5%E7%9A%84%E5%8D%8F%E8%B0%83%E5%92%8C%E4%BC%98%E5%8C%96%E3%80%82%E5%9B%A0%E6%AD%A4%EF%BC%8CERP%E8%A2%AB%E5%B9%BF%E6%B3%9B%E8%AE%A4%E4%B8%BA%E6%98%AF%E4%BC%81%E4%B8%9A%E8%BF%90%E8%90%A5%E4%B8%AD%E4%B8%8D%E5%8F%AF%E6%88%96%E7%BC%BA%E7%9A%84%E8%AE%B0%E5%BD%95%E7%B3%BB%E7%BB%9F%E3%80%82"><span class="toc-number">1.1.</span> <span class="toc-text">ERP，全称企业资源规划，那么，ERP究竟是什么？简单来说，ERP的本质上是一个集成化的管理平台，致力于将企业的核心运营环节——财务、人力资源、生产、供应链、服务和采购等——纳入一个统一的系统中。ERP不仅提供了对这些流程的高效管理，还促进了企业运营的协调和优化。因此，ERP被广泛认为是企业运营中不可或缺的记录系统。</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E4%BC%81%E4%B8%9A%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E4%BD%BF%E7%94%A8ERP%EF%BC%9F"><span class="toc-number">2.</span> <span class="toc-text">2.企业为什么要使用ERP？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-ERP%E7%B3%BB%E7%BB%9F%E6%9C%89%E5%93%AA%E4%BA%9B%E4%BC%98%E5%8A%BF%EF%BC%9F"><span class="toc-number">3.</span> <span class="toc-text">3.ERP系统有哪些优势？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-ERP%E9%80%82%E7%94%A8%E4%BA%8E%E5%93%AA%E4%BA%9B%E8%A1%8C%E4%B8%9A%EF%BC%9F"><span class="toc-number">4.</span> <span class="toc-text">4.ERP适用于哪些行业？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-ERP%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86"><span class="toc-number">5.</span> <span class="toc-text">5.ERP系统的基本原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-ERP%E7%9A%84%E4%B8%BB%E8%A6%81%E6%A8%A1%E5%9D%97%E6%9C%89%E5%93%AA%E4%BA%9B"><span class="toc-number">6.</span> <span class="toc-text">6.ERP的主要模块有哪些</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-history"></i><span>最近发布</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/07/05/Activiti7/" title="Activiti7-工作流"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/07/05/15-36-45-%E4%B8%8B%E8%BD%BDundefined4undefined-8659a4.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Activiti7-工作流"/></a><div class="content"><a class="title" href="/2024/07/05/Activiti7/" title="Activiti7-工作流">Activiti7-工作流</a><time datetime="2024-07-05T07:35:18.000Z" title="发表于 2024-07-05 15:35:18">2024-07-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/07/05/ERP%E7%B3%BB%E7%BB%9F/" title="ERP系统"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/07/05/14-14-22-image-20240705141422847-c0620d.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ERP系统"/></a><div class="content"><a class="title" href="/2024/07/05/ERP%E7%B3%BB%E7%BB%9F/" title="ERP系统">ERP系统</a><time datetime="2024-07-05T06:11:56.000Z" title="发表于 2024-07-05 14:11:56">2024-07-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/07/03/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" title="Vue生命周期"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/07/03/00-26-26-image-20240703002626330-389f65.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Vue生命周期"/></a><div class="content"><a class="title" href="/2024/07/03/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" title="Vue生命周期">Vue生命周期</a><time datetime="2024-07-03T00:32:55.000Z" title="发表于 2024-07-03 08:32:55">2024-07-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/07/03/Vue%E7%BB%84%E4%BB%B6%E9%80%9A%E4%BF%A1%E5%9F%BA%E7%A1%80/" title="Vue组件通信基础"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/07/03/00-26-26-image-20240703002626330-389f65.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Vue组件通信基础"/></a><div class="content"><a class="title" href="/2024/07/03/Vue%E7%BB%84%E4%BB%B6%E9%80%9A%E4%BF%A1%E5%9F%BA%E7%A1%80/" title="Vue组件通信基础">Vue组件通信基础</a><time datetime="2024-07-02T16:36:57.000Z" title="发表于 2024-07-03 00:36:57">2024-07-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/07/03/Vue%E8%84%9A%E6%89%8B%E6%9E%B6%E5%9F%BA%E7%A1%80/" title="Vue脚手架基础"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://cdn.jsdelivr.net/gh/SFYYH/pic_bed@main/images/2024/07/03/00-26-26-image-20240703002626330-389f65.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Vue脚手架基础"/></a><div class="content"><a class="title" href="/2024/07/03/Vue%E8%84%9A%E6%89%8B%E6%9E%B6%E5%9F%BA%E7%A1%80/" title="Vue脚手架基础">Vue脚手架基础</a><time datetime="2024-07-02T16:24:07.000Z" title="发表于 2024-07-03 00:24:07">2024-07-03</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"></div><div id="footer-bar"><div class="footer-bar-links"><div class="footer-bar-left"><div id="footer-bar-tips"><div class="copyright">&copy;2020 - 2024 By <a class="footer-bar-link" href="/" title="Flaw" target="_blank">Flaw</a></div></div><div id="footer-type-tips"></div></div><div class="footer-bar-right"><a class="footer-bar-link" target="_blank" rel="noopener" href="https://github.com/SFYYH" title="Github">Github</a></div></div></div></footer></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="sidebar-site-data site-data is-center"><a href="/archives/" title="archive"><div class="headline">文章</div><div class="length-num">34</div></a><a href="/tags/" title="tag"><div class="headline">标签</div><div class="length-num">50</div></a><a href="/categories/" title="category"><div class="headline">分类</div><div class="length-num">9</div></a></div><span class="sidebar-menu-item-title">功能</span><div class="sidebar-menu-item"><a class="darkmode_switchbutton menu-child" href="javascript:void(0);" title="显示模式"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span>显示模式</span></a></div><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" href="https://sfyyh.github.io/" title="博客"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/favicon.ico" alt="博客"/><span class="back-menu-item-text">博客</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://chat.qingyunzc.cc" title="卿云AI"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.anheyu.com/favicon.ico" alt="卿云AI"/><span class="back-menu-item-text">卿云AI</span></a></div></div></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 隧道</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 友链</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/link/"><i class="anzhiyufont anzhiyu-icon-link faa-tada" style="font-size: 0.9em;"></i><span> 友人帐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/comments/"><i class="anzhiyufont anzhiyu-icon-envelope faa-tada" style="font-size: 0.9em;"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/album/"><i class="anzhiyufont anzhiyu-icon-images faa-tada" style="font-size: 0.9em;"></i><span> 相册集</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/air-conditioner/"><i class="anzhiyufont anzhiyu-icon-fan faa-tada" style="font-size: 0.9em;"></i><span> 小空调</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/essay/"><i class="anzhiyufont anzhiyu-icon-lightbulb faa-tada" style="font-size: 0.9em;"></i><span> 闲言碎语</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/equipment/"><i class="anzhiyufont anzhiyu-icon-dice-d20 faa-tada" style="font-size: 0.9em;"></i><span> 我的装备</span></a></li></ul></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/music/?id=6799820199&amp;server=netease"><span> 音乐馆</span></a></div></div><span class="sidebar-menu-item-title">标签</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/CD/" style="font-size: 0.88rem;">CD<sup>1</sup></a><a href="/tags/CI/" style="font-size: 0.88rem;">CI<sup>1</sup></a><a href="/tags/Docker/" style="font-size: 0.88rem;">Docker<sup>1</sup></a><a href="/tags/Docker%E5%AE%89%E8%A3%85/" style="font-size: 0.88rem;">Docker安装<sup>1</sup></a><a href="/tags/Eureka/" style="font-size: 0.88rem;">Eureka<sup>2</sup></a><a href="/tags/Git/" style="font-size: 0.88rem;">Git<sup>1</sup></a><a href="/tags/GitLab/" style="font-size: 0.88rem;">GitLab<sup>1</sup></a><a href="/tags/Gitlab/" style="font-size: 0.88rem;">Gitlab<sup>1</sup></a><a href="/tags/Gogs/" style="font-size: 0.88rem;">Gogs<sup>1</sup></a><a href="/tags/HA/" style="font-size: 0.88rem;">HA<sup>1</sup></a><a href="/tags/Jenkins/" style="font-size: 0.88rem;">Jenkins<sup>2</sup></a><a href="/tags/LNMP/" style="font-size: 0.88rem;">LNMP<sup>2</sup></a><a href="/tags/Linux/" style="font-size: 0.88rem;">Linux<sup>8</sup></a><a href="/tags/Linux%E5%91%BD%E4%BB%A4/" style="font-size: 0.88rem;">Linux命令<sup>2</sup></a><a href="/tags/Linux%E8%BF%90%E7%BB%B4/" style="font-size: 0.88rem;">Linux运维<sup>1</sup></a><a href="/tags/MYSQL/" style="font-size: 0.88rem;">MYSQL<sup>4</sup></a><a href="/tags/Nacos/" style="font-size: 0.88rem;">Nacos<sup>3</sup></a><a href="/tags/Nacos%E9%9B%86%E7%BE%A4/" style="font-size: 0.88rem;">Nacos集群<sup>1</sup></a><a href="/tags/Ribbon/" style="font-size: 0.88rem;">Ribbon<sup>1</sup></a><a href="/tags/Shell/" style="font-size: 0.88rem;">Shell<sup>1</sup></a><a href="/tags/Socket/" style="font-size: 0.88rem;">Socket<sup>1</sup></a><a href="/tags/SpringCloud/" style="font-size: 0.88rem;">SpringCloud<sup>9</sup></a><a href="/tags/VRRP%E5%8D%8F%E8%AE%AE/" style="font-size: 0.88rem;">VRRP协议<sup>1</sup></a><a href="/tags/Vue/" style="font-size: 0.88rem;">Vue<sup>5</sup></a><a href="/tags/keepalive/" style="font-size: 0.88rem;">keepalive<sup>1</sup></a><a href="/tags/mysql/" style="font-size: 0.88rem;">mysql<sup>3</sup></a><a href="/tags/mysqls/" style="font-size: 0.88rem;">mysqls<sup>1</sup></a><a href="/tags/%E4%BC%81%E4%B8%9A%E7%BA%A7%E8%BF%90%E7%BB%B4/" style="font-size: 0.88rem;">企业级运维<sup>2</sup></a><a href="/tags/%E5%A5%97%E6%8E%A5%E5%AD%97/" style="font-size: 0.88rem;">套接字<sup>1</sup></a><a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" style="font-size: 0.88rem;">微服务<sup>8</sup></a><a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D/" style="font-size: 0.88rem;">数据库备份与恢复<sup>1</sup></a><a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93%E9%AB%98%E5%8F%AF%E7%94%A8/" style="font-size: 0.88rem;">数据库高可用<sup>1</sup></a><a href="/tags/%E6%BB%9A%E5%8A%A8%E6%9B%B4%E6%96%B0/" style="font-size: 0.88rem;">滚动更新<sup>1</sup></a><a href="/tags/%E7%81%B0%E5%BA%A6%E5%8F%91%E5%B8%83/" style="font-size: 0.88rem;">灰度发布<sup>1</sup></a><a href="/tags/%E8%84%9A%E6%9C%AC/" style="font-size: 0.88rem;">脚本<sup>1</sup></a><a href="/tags/%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4/" style="font-size: 0.88rem;">自动化运维<sup>3</sup></a><a href="/tags/%E8%87%AA%E5%8A%A8%E5%8F%91%E5%B8%83%E7%B3%BB%E7%BB%9F/" style="font-size: 0.88rem;">自动发布系统<sup>1</sup></a><a href="/tags/%E8%93%9D%E7%BB%BF%E9%83%A8%E7%BD%B2/" style="font-size: 0.88rem;">蓝绿部署<sup>1</sup></a><a href="/tags/%E8%BF%90%E7%BB%B4/" style="font-size: 0.88rem;">运维<sup>6</sup></a><a href="/tags/%E8%BF%9B%E7%A8%8B%E6%A3%80%E6%B5%8B%E4%B8%8E%E6%8E%A7%E5%88%B6/" style="font-size: 0.88rem;">进程检测与控制<sup>1</sup></a></div></div><hr/></div></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="anzhiyufont anzhiyu-icon-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="anzhiyufont anzhiyu-icon-gear"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="anzhiyufont anzhiyu-icon-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></button></div></div><div id="nav-music"><a id="nav-music-hoverTips" onclick="anzhiyu.musicToggle()" accesskey="m">播放音乐</a><div id="console-music-bg"></div><meting-js id="6799820199" server="netease" type="playlist" mutex="true" preload="none" theme="var(--anzhiyu-main)" data-lrctype="0" order="random" volume="0.7"></meting-js></div><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="anzhiyufont anzhiyu-icon-xmark"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div></div><div id="rightMenu"><div class="rightMenu-group rightMenu-small"><div class="rightMenu-item" id="menu-backward"><i class="anzhiyufont anzhiyu-icon-arrow-left"></i></div><div class="rightMenu-item" id="menu-forward"><i class="anzhiyufont anzhiyu-icon-arrow-right"></i></div><div class="rightMenu-item" id="menu-refresh"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right" style="font-size: 1rem;"></i></div><div class="rightMenu-item" id="menu-top"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></div></div><div class="rightMenu-group rightMenu-line rightMenuPlugin"><div class="rightMenu-item" id="menu-copytext"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制选中文本</span></div><div class="rightMenu-item" id="menu-pastetext"><i class="anzhiyufont anzhiyu-icon-paste"></i><span>粘贴文本</span></div><a class="rightMenu-item" id="menu-commenttext"><i class="anzhiyufont anzhiyu-icon-comment-medical"></i><span>引用到评论</span></a><div class="rightMenu-item" id="menu-newwindow"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开</span></div><div class="rightMenu-item" id="menu-copylink"><i class="anzhiyufont anzhiyu-icon-link"></i><span>复制链接地址</span></div><div class="rightMenu-item" id="menu-copyimg"><i class="anzhiyufont anzhiyu-icon-images"></i><span>复制此图片</span></div><div class="rightMenu-item" id="menu-downloadimg"><i class="anzhiyufont anzhiyu-icon-download"></i><span>下载此图片</span></div><div class="rightMenu-item" id="menu-newwindowimg"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开图片</span></div><div class="rightMenu-item" id="menu-search"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>站内搜索</span></div><div class="rightMenu-item" id="menu-searchBaidu"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>百度搜索</span></div><div class="rightMenu-item" id="menu-music-toggle"><i class="anzhiyufont anzhiyu-icon-play"></i><span>播放音乐</span></div><div class="rightMenu-item" id="menu-music-back"><i class="anzhiyufont anzhiyu-icon-backward"></i><span>切换到上一首</span></div><div class="rightMenu-item" id="menu-music-forward"><i class="anzhiyufont anzhiyu-icon-forward"></i><span>切换到下一首</span></div><div class="rightMenu-item" id="menu-music-playlist" onclick="window.open(&quot;https://y.qq.com/n/ryqq/playlist/8802438608&quot;, &quot;_blank&quot;);" style="display: none;"><i class="anzhiyufont anzhiyu-icon-radio"></i><span>查看所有歌曲</span></div><div class="rightMenu-item" id="menu-music-copyMusicName"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制歌名</span></div></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item menu-link" id="menu-randomPost"><i class="anzhiyufont anzhiyu-icon-shuffle"></i><span>随便逛逛</span></a><a class="rightMenu-item menu-link" href="/categories/"><i class="anzhiyufont anzhiyu-icon-cube"></i><span>博客分类</span></a><a class="rightMenu-item menu-link" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags"></i><span>文章标签</span></a></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item" id="menu-copy" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制地址</span></a><a class="rightMenu-item" id="menu-commentBarrage" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-message"></i><span class="menu-commentBarrage-text">关闭热评</span></a><a class="rightMenu-item" id="menu-darkmode" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span class="menu-darkmode-text">深色模式</span></a><a class="rightMenu-item" id="menu-translate" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-language"></i><span>轉為繁體</span></a></div></div><div id="rightmenu-mask"></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.umd.js"></script><script src="https://cdn.cbd.int/instant.page@5.2.0/instantpage.js" type="module"></script><script src="https://cdn.cbd.int/vanilla-lazyload@17.8.5/dist/lazyload.iife.min.js"></script><script src="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.js"></script><canvas id="universe"></canvas><script async src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/dark/dark.js"></script><script>// 消除控制台打印
+var HoldLog = console.log;
+console.log = function () {};
+let now1 = new Date();
+queueMicrotask(() => {
+  const Log = function () {
+    HoldLog.apply(console, arguments);
+  }; //在恢复前输出日志
+  const grt = new Date("04/01/2021 00:00:00"); //此处修改你的建站时间或者网站上线时间
+  now1.setTime(now1.getTime() + 250);
+  const days = (now1 - grt) / 1000 / 60 / 60 / 24;
+  const dnum = Math.floor(days);
+  const ascll = [
+    `欢迎您第一位访问者！!`,
+    `生活明朗, 万物可爱`,
+    "已上线",
+    dnum,
+    "天"
+  ];
+  const ascll2 = [`NCC2-036`, `调用前置摄像头拍照成功，识别为【小笨蛋】.`, `Photo captured: `, `🤪`];
+
+  setTimeout(
+    Log.bind(
+      console,
+      `\n%c${ascll[0]} %c ${ascll[1]} %c ${ascll[2]} %c${ascll[3]}%c ${ascll[4]}%c ${ascll[5]}\n\n%c ${ascll[6]}\n`,
+      "color:#425AEF",
+      "",
+      "color:#425AEF",
+      "color:#425AEF",
+      "",
+      "color:#425AEF",
+      ""
+    )
+  );
+  setTimeout(
+    Log.bind(
+      console,
+      `%c ${ascll2[0]} %c ${ascll2[1]} %c \n${ascll2[2]} %c\n${ascll2[3]}\n`,
+      "color:white; background-color:#4fd953",
+      "",
+      "",
+      'background:url("https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/tinggge.gif") no-repeat;font-size:450%'
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c WELCOME %c 你好，小笨蛋.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(
+      console,
+      "%c ⚡ Powered by 安知鱼 %c 你正在访问 Flaw 的博客.",
+      "color:white; background-color:#f0ad4e",
+      ""
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c W23-12 %c 你已打开控制台.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(console, "%c S013-782 %c 你现在正处于监控中.", "color:white; background-color:#d9534f", "")
+  );
+});</script><script async src="/anzhiyu/random.js"></script><script src="https://cdn.cbd.int/algoliasearch@4.18.0/dist/algoliasearch-lite.umd.js"></script><script src="https://cdn.cbd.int/instantsearch.js@4.60.0/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js"></script><div class="js-pjax"><input type="hidden" name="page-type" id="page-type" value="post"></div><script>var visitorMail = "";
+</script><script async data-pjax src="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/waterfall/waterfall.js"></script><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/qrcodejs/1.0.0/qrcode.min.js"></script><script src="/js/anzhiyu/right_click_menu.js"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.9/icon/ali_iconfont_css.css"><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/aplayer/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.cbd.int/anzhiyu-blog-static@1.0.1/js/APlayer.min.js"></script><script src="https://cdn.cbd.int/hexo-anzhiyu-music@1.0.1/assets/js/Meting2.min.js"></script><script src="https://cdn.cbd.int/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+  // removeEventListener scroll 
+  anzhiyu.removeGlobalFnEvent('pjax')
+  anzhiyu.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script charset="UTF-8" src="https://cdn.cbd.int/anzhiyu-theme-static@1.1.5/accesskey/accesskey.js"></script></div><div id="popup-window"><div class="popup-window-title">通知</div><div class="popup-window-divider"></div><div class="popup-window-content"><div class="popup-tip">你好呀</div><div class="popup-link"><i class="anzhiyufont anzhiyu-icon-arrow-circle-right"></i></div></div></div></body></html>
